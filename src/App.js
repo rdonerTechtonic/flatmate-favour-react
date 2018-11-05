@@ -94,7 +94,7 @@ class App extends Component {
   // following key and value pair you want set it to.  It can take any number of
   // the following: eventTitle: 'string', eventLocation: 'string', eventRoommates:
   // ['string', 'string'], eventNotes: 'string', eventStartDate: 'date string',
-  // eventEndDate: 'date string', eventStatus: 'string', eventPostedBy: 'string'.
+  // eventEndDate: 'date string', eventStatus: eventObj, eventPostedBy: 'string'.
   editEvent(index, input) {
     let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
     let eventToEdit = currentEvents[index];
@@ -188,7 +188,6 @@ class App extends Component {
   }
 
   getEventPositionById(input) {
-    console.log(this.state.ffEvents)
     for (var i = 0; i < this.state.ffEvents.length; i++) {
       if (this.state.ffEvents[i].eventId === input) {
         return i;
@@ -241,10 +240,11 @@ class App extends Component {
     return newEventObj;
   }
 
-  // Function to delete an event.  Pass this the index of the event you want to delete.
-  deleteEvent(index) {
+  // Function to delete an event.  Pass this the ID of the event you want to delete.
+  deleteEvent(eventId) {
+    let eventPosition = this.getEventPositionById(eventId)
     let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
-    currentEvents.splice(index, 1);
+    currentEvents.splice(eventPosition, 1);
     this.setState({ ffEvents: currentEvents });
     this.saveState();
   }

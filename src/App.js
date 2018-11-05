@@ -207,28 +207,34 @@ class App extends Component {
     let selectedRoommates = [];
     for (var i = 0; i < document.getElementById('selectRoommate').length; i++) {
       if (document.getElementById('selectRoommate')[i].selected) {
-        selectedRoommates.push(document.getElementById('selectRoommate')[i].text);
+        selectedRoommates.push(parseInt(document.getElementById('selectRoommate')[i].value));
       }
     }
-
     let newEventStartDate = document.getElementById('startEventDate').value
       + 'T' + document.getElementById('startEventTime').value + '.000Z';
     let newEventEndDate = document.getElementById('endEventDate').value
       + 'T' + document.getElementById('endEventTime').value + '.000Z';
     let newEventObj =
-    {
+    [{
+      eventId: Math.floor((Math.random() * 100000000000000) + 1),
       eventTitle: document.getElementById('eventTitle').value,
       eventLocation: document.getElementById('eventLocation').value,
-      eventRoommates: selectedRoommates,
-      eventNotes: document.getElementById('eventNotes').value,
+      eventAssignees: selectedRoommates,
+      eventDescription: document.getElementById('eventNotes').value,
       eventStartDate: newEventStartDate,
       eventEndDate: newEventStartDate,
-      eventPostedBy: 'current user',
-    };
+      eventOwner: 1,
+      houseId: this.state.ffHouse.houseId
+    }];
     if (!this.state.editEventMode) {
-      newEventObj.eventStatus = 'pending';
+      newEventObj[0].eventStatus =
+      { requested: true,
+        accepted: false,
+        completed: false,
+        thanked: false,
+        archived: false,
+      };
     }
-
     return newEventObj;
   }
 

@@ -20,15 +20,17 @@ export const EventDashboard = function (props) {
               <EventItem
                 key={index}
                 index={index}
-                eventStatus={props.ffEvents[index].eventStatus}
-                eventOwner={props.ffEvents[index].eventOwner.userName}
-                eventAcceptor={props.ffEvents[index].eventAssignees.userName}
-                eventTitle={props.ffEvents[index].eventTitle}
-                eventStartDate={props.ffEvents[index].eventStartDate}
-                eventEndDate={props.ffEvents[index].eventEndDate}
-                eventLocation={props.ffEvents[index].eventLocation}
-                eventDescription={props.ffEvents[index].eventDescription}
-                ffEvents={props.ffEvents}
+                eventStatus={elem.eventStatus}
+                eventOwner={elem.eventOwner.userName}
+                eventAcceptor={elem.eventAssignees.userName}
+                eventTitle={elem.eventTitle}
+                eventStartDate={elem.eventStartDate}
+                eventEndDate={elem.eventEndDate}
+                eventLocation={elem.eventLocation}
+                eventDescription={elem.eventDescription}
+                eventId={elem.eventId}
+                handleUpdateEventStatus={props.handleUpdateEventStatus}
+                ffEvents={elem}
                 />
             ))
           }

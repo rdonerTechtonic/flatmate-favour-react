@@ -21,11 +21,11 @@ export const Event = function (props) {
         <div class="form-group">
           <label for="selectRoommate">Roommate(s):</label>
           <select multiple class="custom-select" id="selectRoommate" >
-            {props.currentRoommates.map((element) =>
-              <option value={props.currentRoommates.indexOf(element)}>
-                {element}
-              </option>)
-            }
+          {props.currentRoommates.map((element, index) =>
+            <option key={index} value={element.userId}>
+            {element.userName}
+            </option>)
+          }
           </select>
         </div>
         <div class="form-group">
@@ -70,11 +70,11 @@ export const Event = function (props) {
       <div class="form-group">
         <label for="selectRoommate">Roommate(s):</label>
         <select multiple class="custom-select" id="selectRoommate" >
-          {props.currentRoommates.map((element) =>
-            <option value={props.currentRoommates.indexOf(element)}>
-              {element}
-            </option>)
-          }
+        {props.currentRoommates.map((element, index) =>
+          <option key={index} value={element.userId}>
+          {element.userName}
+          </option>)
+        }
         </select>
       </div>
       <div class="form-group">

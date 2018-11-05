@@ -37,6 +37,7 @@ class App extends Component {
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
     this.handleRoommateSubmit = this.handleRoommateSubmit.bind(this);
     this.handleRoommateDelete = this.handleRoommateDelete.bind(this);
+    this.getEventPositionById = this.getEventPositionById.bind(this);
   }
 
   // Function to create a new household.
@@ -48,25 +49,24 @@ class App extends Component {
 
   // Function to add a new roommate.
   newRoommate(roommateObjs) {
+    let currentHouse = JSON.parse(JSON.stringify(this.state.ffHouse));
     let currentRoommates = JSON.parse(JSON.stringify(this.state.ffRoommates));
     for (var i = 0; i < roommateObjs.length; i++) {
       currentRoommates.push(roommateObjs[i]);
+      currentHouse.houseRoommates.push(roommateObjs[i].userId)
     }
-
-    this.setState({ ffRoommates: currentRoommates });
+    this.setState({ ffRoommates: currentRoommates, ffHouse: currentHouse });
   };
-
-
-
 
   // Function to add new event.
   newEvent(eventObjs) {
+    let currentHouse = JSON.parse(JSON.stringify(this.state.ffHouse));
     let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
     for (let i = 0; i < eventObjs.length; i++) {
       currentEvents.push(eventObjs[i]);
+      currentHouse.houseEvents.push(eventObjs[i].eventId)
     }
-
-    this.setState({ ffEvents: currentEvents });
+    this.setState({ ffEvents: currentEvents, ffHouse: currentHouse });
   }
 
   // Function to edit a household.  Pass this an object with the key and value
@@ -170,6 +170,11 @@ class App extends Component {
     this.saveState();
   };
 
+  handleEventEdit(eventId) {
+    this.state.editEventMode = true;
+    this.state.eventToEdit = this.getEventPositionById(eventId);
+  }
+
   handleEventSubmit() {
     if (this.state.editEventMode) {
       this.editEvent(this.state.eventToEdit, this.getEventFormData());
@@ -180,6 +185,15 @@ class App extends Component {
 
     this.saveState();
 
+  }
+
+  getEventPositionById(input) {
+    console.log(this.state.ffEvents)
+    for (var i = 0; i < this.state.ffEvents.length; i++) {
+      if (this.state.ffEvents[i].eventId === input) {
+        return i;
+      }
+    }
   }
 
   getHouseNameFormData() {

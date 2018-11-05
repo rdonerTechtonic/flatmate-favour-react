@@ -126,20 +126,9 @@ class App extends Component {
       eventToEdit.eventStatus = input.eventStatus;
     }
 
-    if (input.hasOwnProperty('eventPostedBy')) {
-      eventToEdit.eventPostedBy = input.eventPostedBy;
-    }
-
     currentEvents[index] = eventToEdit;
     this.setState({ ffEvents: currentEvents });
   }
-
-  // eventStatus:
-  //     { requested: true,
-  //       accepted: false,
-  //       completed: false,
-  //       thanked: false,
-  //       archived: false,
 
   handleRoommateSubmit() {
     let newRoommateObj =

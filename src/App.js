@@ -37,6 +37,7 @@ class App extends Component {
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
     this.handleRoommateSubmit = this.handleRoommateSubmit.bind(this);
     this.handleRoommateDelete = this.handleRoommateDelete.bind(this);
+    this.handleUpdateEventStatus = this.handleUpdateEventStatus.bind(this);
   }
 
   // Function to create a new household.
@@ -65,7 +66,6 @@ class App extends Component {
     for (let i = 0; i < eventObjs.length; i++) {
       currentEvents.push(eventObjs[i]);
     }
-
     this.setState({ ffEvents: currentEvents });
   }
 
@@ -274,13 +274,13 @@ class App extends Component {
         eventEndDate: '2018-12-02T21:48:56.637Z',
         eventLocation: 'eventLocation1',
         houseId: 111,
-        eventStatus:
-        { requested: true,
-          accepted: false,
-          completed: false,
-          thanked: false,
-          archived: false,
-        },
+        eventStatus: 'pending'
+        // { requested: true,
+        //   accepted: false,
+        //   completed: false,
+        //   thanked: false,
+        //   archived: false,
+        // },
       },
       { eventId: 2,
         eventTitle: 'testEvent2',
@@ -291,13 +291,13 @@ class App extends Component {
         eventEndDate: '2018-14-02T21:48:56.637Z',
         eventLocation: 'eventLocation2',
         houseId: 111,
-        eventStatus:
-        { requested: true,
-          accepted: false,
-          completed: false,
-          thanked: false,
-          archived: false,
-        },
+        eventStatus: 'accepted'
+        // { requested: true,
+        //   accepted: false,
+        //   completed: false,
+        //   thanked: false,
+        //   archived: false,
+        // },
       },
       { eventId: 3,
         eventTitle: 'testEvent3',
@@ -308,13 +308,30 @@ class App extends Component {
         eventEndDate: '2018-16-02T21:48:56.637Z',
         eventLocation: 'eventLocation3',
         houseId: 111,
-        eventStatus:
-        { requested: true,
-          accepted: false,
-          completed: false,
-          thanked: false,
-          archived: false,
-        },
+        eventStatus: 'done'
+        // { requested: true,
+        //   accepted: false,
+        //   completed: false,
+        //   thanked: false,
+        //   archived: false,
+        // },
+      },
+      { eventId: 4,
+        eventTitle: 'testEvent4',
+        eventOwner: 1,
+        eventAssignees: [1, 2, 3],
+        eventDescription: 'testDescription4',
+        eventStartDate: '2018-15-02T21:48:56.637Z',
+        eventEndDate: '2018-16-02T21:48:56.637Z',
+        eventLocation: 'eventLocation4',
+        houseId: 111,
+        eventStatus: 'thanked'
+        // { requested: true,
+        //   accepted: false,
+        //   completed: false,
+        //   thanked: false,
+        //   archived: false,
+        // },
       },
     ];
     let houseObj = {
@@ -337,6 +354,27 @@ class App extends Component {
     this.loadState();
   }
 
+  handleUpdateEventStatus(e) {
+    const index = e.target.attributes.getNamedItem('data-index').value;
+    const status = e.target.attributes.getNamedItem('data-status').value;
+    let newStatus = '';
+
+    if (status == 'pending') {
+      newStatus = 'accepted';
+      console.log('accepted');
+    } else if (status == 'accepted') {
+      newStatus = 'done';
+      console.log('done');
+    } else if (status == 'done') {
+      newStatus = 'thanked';
+      console.log('thanked');
+    } else if (status === 'thanked') {
+      newStatus = 'thanked';
+      console.log('already thanked');
+    }
+  this.editEvent(index, { eventStatus: newStatus });
+}
+
   render() {
     return (
       <Router>
@@ -348,7 +386,7 @@ class App extends Component {
           <li><Link to="/household">household</Link></li>
           <li><Link to="/Event">Event</Link></li>
           <Route path="/login" component={Login} />
-          <Route path="/dashboard" render={(props) => <Dashboard ffEvents={this.state.ffEvents} ffRoommates={this.state.ffRoommates} />} />
+          <Route path="/dashboard" render={(props) => <Dashboard ffEvents={this.state.ffEvents} ffRoommates={this.state.ffRoommates} handleUpdateEventStatus={this.handleUpdateEventStatus} />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}
             currentRoommates={this.state.ffRoommates}

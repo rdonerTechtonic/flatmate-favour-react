@@ -2,47 +2,49 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import gravatar from 'gravatar';
 
-// export class EventItem extends Component {
-//   render() {
 export const EventItem = function (props) {
     let statusImg = '';
     let statusButtonText = '';
-    console.log(props.eventStatus);
-    if (!props.eventStatus.accepted) {
-      statusImg = '/Handshake-Icon.png';
-      statusButtonText = 'Accept?';
-    }
 
-    if (props.eventStatus.accepted && !props.eventStatus.completed) {
-      statusImg = '/Hourglass-Icon.png';
-      statusButtonText = 'Done?';
-    }
-
-    if (props.eventStatus.completed && !props.eventStatus.thanked) {
-      statusImg = '/Check-Icon.png';
-      statusButtonText = 'Thank?';
-    }
-
-    if (props.eventStatus.thanked) {
-      statusImg = '/Check-Icon.png';
-      statusButtonText = 'Thanked';
-    }
-    // switch (props.eventStatus) {
-    //   case 'pending':
-    //     console.log('pending');
-    //     break;
-    //   case 'accepted':
-    //     console.log('accepted');
-    //     statusImg = '/Handshake-Icon.png';
-    //     statusButtonText = 'Done?';
-    //     break;
-    //   case 'done':
-    //     console.log('done');
-    //     break;
-    //   case 'thanked':
-    //     console.log('thanked');
-    //     break;
+    // if (!props.eventStatus.accepted) {
+    //   statusImg = '/Handshake-Icon.png';
+    //   statusButtonText = 'Accept?';
     // }
+    //
+    // if (props.eventStatus.accepted && !props.eventStatus.completed) {
+    //   statusImg = '/Hourglass-Icon.png';
+    //   statusButtonText = 'Done?';
+    // }
+    //
+    // if (props.eventStatus.completed && !props.eventStatus.thanked) {
+    //   statusImg = '/Check-Icon.png';
+    //   statusButtonText = 'Thank?';
+    // }
+    //
+    // if (props.eventStatus.thanked) {
+    //   statusImg = '/Check-Icon.png';
+    //   statusButtonText = 'Thanked';
+    // }
+
+
+    switch (props.eventStatus) {
+      case 'pending':
+        statusImg = '/Handshake-Icon.png';
+        statusButtonText = 'Accept?';
+        break;
+      case 'accepted':
+        statusImg = '/Hourglass-Icon.png';
+        statusButtonText = 'Done?';
+        break;
+      case 'done':
+        statusImg = '/Check-Icon.png';
+        statusButtonText = 'Thank?';
+        break;
+      case 'thanked':
+        statusImg = '/Check-Icon.png';
+        statusButtonText = 'Thanked';
+        break;
+    }
     return (
       <div className="card">
               <div className="card-header task-accepted" id="heading'+ i +'">
@@ -53,7 +55,7 @@ export const EventItem = function (props) {
                     <button className="col-6 collapsed alert status" data-toggle="collapse" data-target={`#collapse${props.index}`} aria-expanded="false" aria-controls={props.index} id="item1">
                   {props.eventTitle}
                 </button>
-                    <button className="col-3 ml-auto changeStatus btn" type="button" name="button" data-eventindex="1">
+                    <button onClick={props.handleUpdateEventStatus} className="col-3 ml-auto changeStatus btn" type="button" name="button" data-eventindex="1" data-index={props.index} data-status={props.eventStatus}>
                   {statusButtonText}
                 </button>
                   </div>

@@ -19,8 +19,9 @@ export const Login = function (props) {
       </div>
 
       <div class="centerButton">
-        <a href="https://www.google.com/" id="googleAPIButton" class="btn btn-primary btn-lg" role="button">
-        Sign in with G+</a>
+        <center>
+        <a class="g-signin2" data-onsuccess="onSignIn">
+        </a></center>
       </div>
     </div>
   );

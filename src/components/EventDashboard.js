@@ -31,6 +31,7 @@ export const EventDashboard = function (props) {
                 eventDescription={elem.eventDescription}
                 eventId={elem.eventId}
                 handleUpdateEventStatus={props.handleUpdateEventStatus}
+                handleEventEdit={props.handleEventEdit}
                 ffEvents={elem}
                 />
             ))

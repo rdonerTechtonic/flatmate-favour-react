@@ -39,6 +39,7 @@ class App extends Component {
     this.deleteRoommate = this.deleteRoommate.bind(this);
     this.handleUpdateEventStatus = this.handleUpdateEventStatus.bind(this);
     this.handleEditHouse = this.handleEditHouse.bind(this);
+    this.handleEventEdit = this.handleEventEdit.bind(this);
   }
 
   // Function to create a new household.  Takes in a house object that looks like this:
@@ -208,16 +209,16 @@ class App extends Component {
   }
 
   // Function to call utility functions when the edit event button is pressed.
-  handleEventEdit(eventId) {
-    this.state.editEventMode = true;
-    this.state.eventToEdit = this.getEventPositionById(eventId);
+  handleEventEdit(e) {
+    this.setState({ editEventMode: true });
+    this.setState({ eventToEdit: this.getEventPositionById(parseInt(e.target.id)) });
   }
 
   // Function to call utility functions when the create new event button is pressed.
   handleEventSubmit() {
     if (this.state.editEventMode) {
       this.editEvent(this.state.eventToEdit, this.getEventFormData());
-      this.state.editEventMode = false;
+      this.setState({ editEventMode: false })
     } else {
       this.newEvent(this.getEventFormData());
     }
@@ -459,6 +460,7 @@ class App extends Component {
             handleUpdateEventStatus={this.handleUpdateEventStatus}
             handleDateChange={this.handleDateChange}
             handleEditHouse={this.handleEditHouse}
+            handleEventEdit={this.handleEventEdit}
             />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}

@@ -116,7 +116,7 @@ export const EventItem = function (props) {
                         {props.eventDescription}
                       </p>
                     </div>
-                      <Link className="ml-auto btn btn-light" to="/Event">Event</Link>
+                      <Link id={props.eventId} onClick={props.handleEventEdit} className="ml-auto btn btn-light" to="/Event">Event</Link>
                   </div>
                 </div>
               </div>

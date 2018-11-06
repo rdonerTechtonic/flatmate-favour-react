@@ -1,4 +1,3 @@
-//test line 2
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -72,6 +71,7 @@ class App extends Component {
       currentRoommates.push(roommateObjs[i]);
       currentHouse.houseRoommates.push(roommateObjs[i].userId);
     }
+
     this.setState({ ffRoommates: currentRoommates, ffHouse: currentHouse }, this.saveStateToStorage);
   }
 
@@ -94,6 +94,7 @@ class App extends Component {
       currentEvents.push(eventObjs[i]);
       currentHouse.houseEvents.push(eventObjs[i].eventId);
     }
+
     this.setState({ ffEvents: currentEvents, ffHouse: currentHouse }, this.saveStateToStorage);
   }
 
@@ -215,6 +216,7 @@ class App extends Component {
     this.setState({ eventToEdit: this.getEventPositionById(parseInt(e.target.id)) });
   }
 
+  // Function to switch out of editEventMode when new event button is pressed.
   handleNewEvent () {
     this.setState({ editEventMode: false });
   }
@@ -223,7 +225,7 @@ class App extends Component {
   handleEventSubmit() {
     if (this.state.editEventMode) {
       this.editEvent(this.state.eventToEdit, this.getEventFormData());
-      this.setState({ editEventMode: false })
+      this.setState({ editEventMode: false });
     } else {
       this.newEvent(this.getEventFormData());
     }
@@ -238,6 +240,7 @@ class App extends Component {
     }
   }
 
+  // Function to handled updating the status of an event when.
   handleUpdateEventStatus(e) {
     const index = e.target.attributes.getNamedItem('data-index').value;
     const status = e.target.attributes.getNamedItem('data-status').value;
@@ -266,8 +269,9 @@ class App extends Component {
     let date = e.target.value;
   }
 
+  //  Function to switch into edit mode when pressing the edit house button.
   handleEditHouse() {
-    this.setState({ editHouseMode: true })
+    this.setState({ editHouseMode: true });
   }
 
   // Function to grab form data (housename) from the household page and return it.
@@ -308,7 +312,7 @@ class App extends Component {
       houseId: this.state.ffHouse.houseId,
     },];
     if (!this.state.editEventMode) {
-      newEventObj[0].eventStatus = 'pending'
+      newEventObj[0].eventStatus = 'pending';
     }
 
     return newEventObj;

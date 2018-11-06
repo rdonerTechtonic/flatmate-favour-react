@@ -40,6 +40,7 @@ class App extends Component {
     this.handleUpdateEventStatus = this.handleUpdateEventStatus.bind(this);
     this.handleEditHouse = this.handleEditHouse.bind(this);
     this.handleEventEdit = this.handleEventEdit.bind(this);
+    this.handleNewEvent = this.handleNewEvent.bind(this);
   }
 
   // Function to create a new household.  Takes in a house object that looks like this:
@@ -212,6 +213,10 @@ class App extends Component {
   handleEventEdit(e) {
     this.setState({ editEventMode: true });
     this.setState({ eventToEdit: this.getEventPositionById(parseInt(e.target.id)) });
+  }
+
+  handleNewEvent () {
+    this.setState({ editEventMode: false });
   }
 
   // Function to call utility functions when the create new event button is pressed.
@@ -393,7 +398,7 @@ class App extends Component {
         eventAssignees: ['rdoner@email.arizona.edu', 'ridemralphio@yahoo.com', 'ryan.doner@techtonic.com'],
         eventDescription: 'testDescription1',
         eventStartDate: '2018-11-02T21:48:56.637Z',
-        eventEndDate: '2018-12-02T21:48:56.637Z',
+        eventEndDate: '2018-11-02T21:48:56.637Z',
         eventLocation: 'eventLocation1',
         houseId: 111,
         eventStatus: 'pending',
@@ -403,8 +408,8 @@ class App extends Component {
         eventOwner: 'rdoner@email.arizona.edu',
         eventAssignees: ['rdoner@email.arizona.edu', 'ridemralphio@yahoo.com', 'ryan.doner@techtonic.com'],
         eventDescription: 'testDescription2',
-        eventStartDate: '2018-13-02T21:48:56.637Z',
-        eventEndDate: '2018-14-02T21:48:56.637Z',
+        eventStartDate: '2018-12-02T21:48:56.637Z',
+        eventEndDate: '2018-12-02T21:48:56.637Z',
         eventLocation: 'eventLocation2',
         houseId: 111,
         eventStatus: 'accepted',
@@ -414,8 +419,8 @@ class App extends Component {
         eventOwner: 'rdoner@email.arizona.edu',
         eventAssignees: ['rdoner@email.arizona.edu', 'ridemralphio@yahoo.com', 'ryan.doner@techtonic.com'],
         eventDescription: 'testDescription3',
-        eventStartDate: '2018-15-02T21:48:56.637Z',
-        eventEndDate: '2018-16-02T21:48:56.637Z',
+        eventStartDate: '2018-05-02T21:48:56.637Z',
+        eventEndDate: '2018-05-02T21:48:56.637Z',
         eventLocation: 'eventLocation3',
         houseId: 111,
         eventStatus: 'done',
@@ -425,8 +430,8 @@ class App extends Component {
         eventOwner: 'rdoner@email.arizona.edu',
         eventAssignees: ['rdoner@email.arizona.edu', 'ridemralphio@yahoo.com', 'ryan.doner@techtonic.com'],
         eventDescription: 'testDescription4',
-        eventStartDate: '2018-15-02T21:48:56.637Z',
-        eventEndDate: '2018-16-02T21:48:56.637Z',
+        eventStartDate: '2018-09-02T21:48:56.637Z',
+        eventEndDate: '2018-09-02T21:48:56.637Z',
         eventLocation: 'eventLocation4',
         houseId: 111,
         eventStatus: 'thanked',
@@ -461,6 +466,7 @@ class App extends Component {
             handleDateChange={this.handleDateChange}
             handleEditHouse={this.handleEditHouse}
             handleEventEdit={this.handleEventEdit}
+            handleNewEvent={this.handleNewEvent}
             />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}

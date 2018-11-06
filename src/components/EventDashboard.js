@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { EventItem } from './EventItem.js';
 import { Link } from 'react-router-dom';
 
+//holds datepicker, and all events in an accordion. For each event, make a new EventItem with all these props
 export const EventDashboard = function (props) {
     return (
       <div>

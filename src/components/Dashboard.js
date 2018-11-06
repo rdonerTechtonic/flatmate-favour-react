@@ -3,6 +3,8 @@ import { UserBar } from './UserBar.js';
 import { EventDashboard } from './EventDashboard';
 import { Link } from 'react-router-dom';
 
+//holds entire dashboard page
+//dashboard includes logo, pictures of users with button functionality, and an event dashboard that holds all events
 export const Dashboard = ({ ffRoommates, ffEvents, handleUpdateEventStatus }) => {
     return (
       <div>

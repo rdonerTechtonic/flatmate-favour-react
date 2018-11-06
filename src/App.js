@@ -36,7 +36,7 @@ class App extends Component {
     this.getHouseNameFormData = this.getHouseNameFormData.bind(this);
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
     this.handleRoommateSubmit = this.handleRoommateSubmit.bind(this);
-    this.handleRoommateDelete = this.handleRoommateDelete.bind(this);
+    this.deleteRoommate = this.deleteRoommate.bind(this);
     this.handleUpdateEventStatus = this.handleUpdateEventStatus.bind(this);
   }
 
@@ -455,7 +455,7 @@ class App extends Component {
             currentHouse={this.state.ffHouse}
             handleHouseSubmit={this.handleHouseSubmit}
             handleRoommateSubmit={this.handleRoommateSubmit}
-            handleRoommateDelete={this.handleRoommateDelete}
+            deleteRoommate={this.deleteRoommate}
             />}/>
           <Route path='/event' render={(props) => <Event
             handleEventSubmit={this.handleEventSubmit}

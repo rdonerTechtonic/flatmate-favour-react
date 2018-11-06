@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import gravatar from 'gravatar';
 
+//user bar will grab gravatars based off the email off the user. Eventually we will filter events by user
 export const UserBar = function (props) {
     return (
       <div align="center">

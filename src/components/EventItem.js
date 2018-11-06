@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import gravatar from 'gravatar';
 
+//based on eventStatus, change the image and text of the action rightButton
+//each event is a card
+//pass in the event data through props to each card
+//one of the props is the handleUpdateEventStatus which will change the state of the event
 export const EventItem = function (props) {
     let statusImg = '';
     let statusButtonText = '';

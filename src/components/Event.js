@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
+//if the page is in edit mode, it will pull the data from props to populate the page
+//if not in edit mode, make a blank form that will pull the input data and add it to the state with the handleEventSubmit
 export const Event = function (props) {
 
   if (props.editEventMode) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+//holds buttons to create new house, and login with google account
 export const Login = function (props) {
   return (
     <div>

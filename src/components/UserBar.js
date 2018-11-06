@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import gravatar from 'gravatar';
+import { Link } from 'react-router-dom';
+
+//<Link to="/household"></Link>
+// onClick={props.handleEditHouse}
 
 //user bar will grab gravatars based off the email off the user. Eventually we will filter events by user
 export const UserBar = function (props) {
@@ -18,15 +22,12 @@ export const UserBar = function (props) {
               <a key={index} href=''>
                   <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }}  src={gravatar.url(elem.userEmail, { size: '400' })} />
               </a>
-
           ))
         }
         </span>
-        <button className="btn btn-info">
-          <a href="household.html">
+        <Link to="/household"><button onClick={props.handleEditHouse} className="btn btn-info">
             <i className="fas fa-users-cog"></i>
-          </a>
-        </button>
+        </button></Link>
       </div>
     );
   };

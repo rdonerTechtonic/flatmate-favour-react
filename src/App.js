@@ -38,6 +38,7 @@ class App extends Component {
     this.handleRoommateSubmit = this.handleRoommateSubmit.bind(this);
     this.deleteRoommate = this.deleteRoommate.bind(this);
     this.handleUpdateEventStatus = this.handleUpdateEventStatus.bind(this);
+    this.handleEditHouse = this.handleEditHouse.bind(this);
   }
 
   // Function to create a new household.  Takes in a house object that looks like this:
@@ -259,6 +260,10 @@ class App extends Component {
     let date = e.target.value;
   }
 
+  handleEditHouse() {
+    this.setState({ editHouseMode: true })
+  }
+
   // Function to grab form data (housename) from the household page and return it.
   getHouseNameFormData() {
     let newHouseName = document.getElementById('houseName').value;
@@ -452,7 +457,9 @@ class App extends Component {
             ffEvents={this.state.ffEvents}
             ffRoommates={this.state.ffRoommates}
             handleUpdateEventStatus={this.handleUpdateEventStatus}
-            handleDateChange={this.handleDateChange} />} />
+            handleDateChange={this.handleDateChange}
+            handleEditHouse={this.handleEditHouse}
+            />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}
             currentRoommates={this.state.ffRoommates}

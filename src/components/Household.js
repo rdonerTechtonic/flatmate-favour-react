@@ -30,7 +30,7 @@ export const Household = (props) => {
               </select></p>
           </div>
               <div className="form-group centerButton">
-              <center><button type="button" id="removeRoommateList" onClick={props.handleRoommateDelete} className="btn btn-danger"><i className="fas fa-minus-circle"></i></button></center>
+              <center><button type="button" id="removeRoommateList" onClick={props.deleteRoommate} className="btn btn-danger"><i className="fas fa-minus-circle"></i></button></center>
               </div>
           <div className="form-group inline-form rightButton">
           <Link to="/dashboard"><button type="button" id="confirmInformation" class="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>
@@ -68,7 +68,7 @@ export const Household = (props) => {
           </select></p>
         </div>
           <div className="form-group centerButton">
-          <center><button type="button" id="removeRoommateList" onClick={props.handleRoommateDelete} className="btn btn-danger"><i className="fas fa-minus-circle"></i></button></center>
+          <center><button type="button" id="removeRoommateList" onClick={props.deleteRoommate} className="btn btn-danger"><i className="fas fa-minus-circle"></i></button></center>
       </div>
       <div className="form-group inline-form rightButton">
         <Link to="/dashboard"><button type="button" id="confirmInformation" class="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>

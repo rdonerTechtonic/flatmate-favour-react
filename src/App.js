@@ -40,33 +40,58 @@ class App extends Component {
     this.handleUpdateEventStatus = this.handleUpdateEventStatus.bind(this);
   }
 
-  // Function to create a new household.
+  // Function to create a new household.  Takes in a house object that looks like this:
+  // {
+  //   houseId: Math.floor((Math.random() * 100000000000000) + 1),
+  //   houseName: 'testHouseName',
+  //   houseOwner: 'delaney',
+  //   houseRoommates: [],
+  //   houseLat: '1',
+  //   houseLon: '2',
+  //   houseAddress: '555 Central Ave',
+  //   houseEvents: [],
+  // };
   newHouse(houseObj) {
-    this.setState({
-      ffHouse: houseObj, });
-    this.saveStateToStorage();
+    this.setState({ ffHouse: houseObj }, this.saveStateToStorage);
   }
 
-  // Function to add a new roommate.
+  // Function to add a new roommate.  Takes in an array of roommate objects that looks like this:
+  // [{
+  //   userName: 'ryan',
+  //   userId: Math.floor((Math.random() * 100000000000000) + 1),
+  //   houseId: houseObj.houseId,
+  //   userEmail: 'rdoner@email.arizona.edu',
+  // }]
   newRoommate(roommateObjs) {
     let currentHouse = JSON.parse(JSON.stringify(this.state.ffHouse));
     let currentRoommates = JSON.parse(JSON.stringify(this.state.ffRoommates));
     for (var i = 0; i < roommateObjs.length; i++) {
       currentRoommates.push(roommateObjs[i]);
-      currentHouse.houseRoommates.push(roommateObjs[i].userId)
+      currentHouse.houseRoommates.push(roommateObjs[i].userId);
     }
-    this.setState({ ffRoommates: currentRoommates, ffHouse: currentHouse });
-  };
+    this.setState({ ffRoommates: currentRoommates, ffHouse: currentHouse }, this.saveStateToStorage);
+  }
 
-  // Function to add new event.
+  // Function to add new event.  Takes in an array of event objects that looks like this:
+  // [{ eventId: Math.floor((Math.random() * 100000000000000) + 1),
+  //     eventTitle: 'testEvent1',
+  //     eventOwner: 1,
+  //     eventAssignees: [1, 2, 3],
+  //     eventDescription: 'testDescription1',
+  //     eventStartDate: '2018-11-02T21:48:56.637Z',
+  //     eventEndDate: '2018-12-02T21:48:56.637Z',
+  //     eventLocation: 'eventLocation1',
+  //     houseId: 111,
+  //     eventStatus: 'pending',
+  //   },]
   newEvent(eventObjs) {
     let currentHouse = JSON.parse(JSON.stringify(this.state.ffHouse));
     let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
     for (let i = 0; i < eventObjs.length; i++) {
       currentEvents.push(eventObjs[i]);
-      currentHouse.houseEvents.push(eventObjs[i].eventId)
+      currentHouse.houseEvents.push(eventObjs[i].eventId);
     }
-    this.setState({ ffEvents: currentEvents, ffHouse: currentHouse });
+    this.setState({ ffEvents: currentEvents, ffHouse: currentHouse }, this.saveStateToStorage);
   }
 
   // Function to edit a household.  Pass this an object with the key and value
@@ -87,7 +112,8 @@ class App extends Component {
       currentHouse.houseRoommates = input.houseRoommates;
     }
 
-    this.setState({ ffHouse: currentHouse });
+    this.setState({ ffHouse: currentHouse }, this.saveStateToStorage);
+
   }
 
   // Function to edit an event.  Pass this an event index and object with the
@@ -127,9 +153,27 @@ class App extends Component {
     }
 
     currentEvents[index] = eventToEdit;
-    this.setState({ ffEvents: currentEvents });
+    this.setState({ ffEvents: currentEvents }, this.saveStateToStorage);
   }
 
+  // Function to delete an event.  Pass this the ID of the event you want to delete.
+  deleteEvent(eventId) {
+    let eventPosition = this.getEventPositionById(eventId);
+    let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
+    currentEvents.splice(eventPosition, 1);
+    this.setState({ ffEvents: currentEvents });
+    this.saveStateToStorage();
+  }
+
+  // Function to delete a roommate.  Pass this the ID of the roommate to delete.
+  deleteRoommate(userId) {
+    let roommatePosition = this.getRoommatePositionById(userId);
+    let currentRoommates = JSON.parse(JSON.stringify(this.state.ffRoommates));
+    currentRoommates.splice(roommatePosition, 1);
+    this.setState({ ffRoommates: currentRoommates }, this.saveStateToStorage);
+  }
+
+  // Function to call utility functions when the submit new Roommate Button is pressed.
   handleRoommateSubmit() {
     let newRoommateObj =
     [{
@@ -139,15 +183,9 @@ class App extends Component {
       userEmail: this.getRoommateNameFormData(),
     },];
     this.newRoommate(newRoommateObj);
-    this.saveStateToStorage();
+  }
 
-  };
-
-  handleRoommateDelete() {
-    console.log('handleRoommateDelete');
-
-  };
-
+  // Function to call utility functions when the submit new/edit house button is pressed
   handleHouseSubmit() {
     if (this.state.editHouseMode) {
       this.editHouse({ houseName: this.getHouseNameFormData() });
@@ -155,26 +193,26 @@ class App extends Component {
     } else {
       let newHouseObj =
         {
-          houseId: Math.floor((Math.random() * 100000000000000) + 1),               //replace with function to generate ID,
+          houseId: Math.floor((Math.random() * 100000000000000) + 1),
           houseName: this.getHouseNameFormData(),
-          houseOwner: 'delaney',        //replace with function to detect creator
-          houseRoommates: [],           //currently overwrites roommates added at same time as newHouse creation
-          houseLat: '1',                //replace with function that detects coords from address below
-          houseLong: '2',               //replace with function that detects coords from address below
-          houseAddress: '123 Fake St.', //form needed on new household, with google map functionality
+          houseOwner: 'delaney',
+          houseRoommates: [],
+          houseLat: '1',
+          houseLong: '2',
+          houseAddress: '123 Fake St.',
           houseEvents: [],
         };
       this.newHouse(newHouseObj);
-    };
+    }
+  }
 
-    this.saveStateToStorage();
-  };
-
+  // Function to call utility functions when the edit event button is pressed.
   handleEventEdit(eventId) {
     this.state.editEventMode = true;
     this.state.eventToEdit = this.getEventPositionById(eventId);
   }
 
+  // Function to call utility functions when the create new event button is pressed.
   handleEventSubmit() {
     if (this.state.editEventMode) {
       this.editEvent(this.state.eventToEdit, this.getEventFormData());
@@ -183,27 +221,51 @@ class App extends Component {
       this.newEvent(this.getEventFormData());
     }
 
-    this.saveStateToStorage();
-
   }
 
+  // Function to call utility functions when the delete roommate button is pressed.
   handleDeleteRoommatesSubmit() {
     let selectedRoommates = this.getSelectedRoommates();
     for (var i = 0; i < selectedRoommates.length; i++) {
-       this.deleteRoommate(selectedRoommates[i])
+      this.deleteRoommate(selectedRoommates[i]);
     }
   }
 
+  handleUpdateEventStatus(e) {
+    const index = e.target.attributes.getNamedItem('data-index').value;
+    const status = e.target.attributes.getNamedItem('data-status').value;
+    let newStatus = '';
+
+    if (status == 'pending') {
+      newStatus = 'accepted';
+      console.log('accepted');
+    } else if (status == 'accepted') {
+      newStatus = 'done';
+      console.log('done');
+    } else if (status == 'done') {
+      newStatus = 'thanked';
+      console.log('thanked');
+    } else if (status === 'thanked') {
+      newStatus = 'thanked';
+      console.log('already thanked');
+    }
+
+    this.editEvent(index, { eventStatus: newStatus });
+  }
+
+  // Function to grab form data (housename) from the household page and return it.
   getHouseNameFormData() {
     let newHouseName = document.getElementById('houseName').value;
     return newHouseName;
   }
 
+  // Function to grab form data (roommate email) from the household page and return it.
   getRoommateNameFormData() {
     let newRoommateName = document.getElementById('inviteRoommate').value;
     return newRoommateName;
-  };
+  }
 
+  // Function to grab form data from the event page and return a new event object.
   getEventFormData() {
     let selectedRoommates = [];
     for (var i = 0; i < document.getElementById('selectRoommate').length; i++) {
@@ -211,10 +273,11 @@ class App extends Component {
         selectedRoommates.push(parseInt(document.getElementById('selectRoommate')[i].value));
       }
     }
-    let newEventStartDate = document.getElementById('startEventDate').value
-      + 'T' + document.getElementById('startEventTime').value + '.000Z';
-    let newEventEndDate = document.getElementById('endEventDate').value
-      + 'T' + document.getElementById('endEventTime').value + '.000Z';
+
+    let newEventStartDate = document.getElementById('startEventDate').value + 'T' +
+    document.getElementById('startEventTime').value + '.000Z';
+    let newEventEndDate = document.getElementById('endEventDate').value + 'T' +
+    document.getElementById('endEventTime').value + '.000Z';
     let newEventObj =
     [{
       eventId: Math.floor((Math.random() * 100000000000000) + 1),
@@ -225,37 +288,16 @@ class App extends Component {
       eventStartDate: newEventStartDate,
       eventEndDate: newEventStartDate,
       eventOwner: 1,
-      houseId: this.state.ffHouse.houseId
-    }];
+      houseId: this.state.ffHouse.houseId,
+    },];
     if (!this.state.editEventMode) {
-      newEventObj[0].eventStatus =
-      { requested: true,
-        accepted: false,
-        completed: false,
-        thanked: false,
-        archived: false,
-      };
+      newEventObj[0].eventStatus = 'pending'
     }
+
     return newEventObj;
   }
 
-  // Function to delete an event.  Pass this the ID of the event you want to delete.
-  deleteEvent(eventId) {
-    let eventPosition = this.getEventPositionById(eventId)
-    let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
-    currentEvents.splice(eventPosition, 1);
-    this.setState({ ffEvents: currentEvents });
-    this.saveStateToStorage();
-  }
-
-  deleteRoommate(userId) {
-    let roommatePosition = this.getRoommatePositionById(userId)
-    let currentRoommates = JSON.parse(JSON.stringify(this.state.ffRoommates));
-    currentRoommates.splice(roommatePosition, 1);
-    this.setState({ ffRoommates: currentRoommates})
-    this.saveStateToStorage();
-  }
-
+  // Utility function to assist with deleteEvent(), finds the position of the ffEvents to splice.
   getEventPositionById(input) {
     for (var i = 0; i < this.state.ffEvents.length; i++) {
       if (this.state.ffEvents[i].eventId === input) {
@@ -264,6 +306,8 @@ class App extends Component {
     }
   }
 
+  // Utility function to assist with deleteRoommate(), finds the position of the
+  // ffRoommates to splice.
   getRoommatePositionById(input) {
     for (var i = 0; i < this.state.ffRoommates.length; i++) {
       if (this.state.ffRoommates[i].userId == input) {
@@ -272,29 +316,18 @@ class App extends Component {
     }
   }
 
+  // Function to get the ID of the roommates selected on the household/event page.
+  // Returns an array of roommate Id's
   getSelectedRoommates() {
     let selectedRoommates = [];
     for (var i = 0; i < document.getElementById('selectRoommate').length; i++) {
       if (document.getElementById('selectRoommate')[i].selected) {
-        selectedRoommates.push(document.getElementById('selectRoommate')[i].value)
+        selectedRoommates.push(document.getElementById('selectRoommate')[i].value);
       }
     }
+
     return selectedRoommates;
   }
-
-
-  saveHouseState(newHouse){
-    this.setState({ ffHouse: newHouse });
-  }
-
-  saveEventState(newEvents){
-    this.setState({ ffEvents: newEvents });
-  }
-
-  saveRoommateState(newRoommates){
-    this.setState({ ffRoommates: newRoommates });
-  }
-
 
   // Function to save the state to local storage using store.js.  Should be called
   // automatically when a function to create edit or delete something from state is called.
@@ -317,8 +350,8 @@ class App extends Component {
     }
   }
 
+  // Utility function to populate the app with test data.
   testData() {
-
     let houseObj = {
       houseId: Math.floor((Math.random() * 100000000000000) + 1),
       houseName: 'testHouseName',
@@ -330,11 +363,16 @@ class App extends Component {
       houseEvents: [],
     };
     let roommateObjs = [
-        { userName: 'ryan', userId: Math.floor((Math.random() * 100000000000000) + 1), houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu' },
-        { userName: 'devin', userId: Math.floor((Math.random() * 100000000000000) + 1), houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu' },
-        { userName: 'steve', userId: Math.floor((Math.random() * 100000000000000) + 1), houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu' },
-        { userName: 'renee', userId: Math.floor((Math.random() * 100000000000000) + 1), houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu' },
-        { userName: 'delaney', userId: Math.floor((Math.random() * 100000000000000) + 1), houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu' },
+        { userName: 'ryan', userId: Math.floor((Math.random() * 100000000000000) + 1),
+        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
+        { userName: 'devin', userId: Math.floor((Math.random() * 100000000000000) + 1),
+        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
+        { userName: 'steve', userId: Math.floor((Math.random() * 100000000000000) + 1),
+        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
+        { userName: 'renee', userId: Math.floor((Math.random() * 100000000000000) + 1),
+        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
+        { userName: 'delaney', userId: Math.floor((Math.random() * 100000000000000) + 1),
+        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
     ];
     let eventObjs = [
       { eventId: Math.floor((Math.random() * 100000000000000) + 1),
@@ -346,13 +384,7 @@ class App extends Component {
         eventEndDate: '2018-12-02T21:48:56.637Z',
         eventLocation: 'eventLocation1',
         houseId: 111,
-        eventStatus: 'pending'
-        // { requested: true,
-        //   accepted: false,
-        //   completed: false,
-        //   thanked: false,
-        //   archived: false,
-        // },
+        eventStatus: 'pending',
       },
       { eventId: Math.floor((Math.random() * 100000000000000) + 1),
         eventTitle: 'testEvent2',
@@ -363,13 +395,7 @@ class App extends Component {
         eventEndDate: '2018-14-02T21:48:56.637Z',
         eventLocation: 'eventLocation2',
         houseId: 111,
-        eventStatus: 'accepted'
-        // { requested: true,
-        //   accepted: false,
-        //   completed: false,
-        //   thanked: false,
-        //   archived: false,
-        // },
+        eventStatus: 'accepted',
       },
       { eventId: Math.floor((Math.random() * 100000000000000) + 1),
         eventTitle: 'testEvent3',
@@ -380,13 +406,7 @@ class App extends Component {
         eventEndDate: '2018-16-02T21:48:56.637Z',
         eventLocation: 'eventLocation3',
         houseId: 111,
-        eventStatus: 'done'
-        // { requested: true,
-        //   accepted: false,
-        //   completed: false,
-        //   thanked: false,
-        //   archived: false,
-        // },
+        eventStatus: 'done',
       },
       { eventId: 4,
         eventTitle: 'testEvent4',
@@ -397,13 +417,7 @@ class App extends Component {
         eventEndDate: '2018-16-02T21:48:56.637Z',
         eventLocation: 'eventLocation4',
         houseId: 111,
-        eventStatus: 'thanked'
-        // { requested: true,
-        //   accepted: false,
-        //   completed: false,
-        //   thanked: false,
-        //   archived: false,
-        // },
+        eventStatus: 'thanked',
       },
     ];
     this.newHouse(houseObj);
@@ -412,30 +426,10 @@ class App extends Component {
     this.saveStateToStorage();
   }
 
+  // Function to load storage automatically when the app runs.
   componentWillMount() {
     this.loadStateFromStorage();
   }
-
-  handleUpdateEventStatus(e) {
-    const index = e.target.attributes.getNamedItem('data-index').value;
-    const status = e.target.attributes.getNamedItem('data-status').value;
-    let newStatus = '';
-
-    if (status == 'pending') {
-      newStatus = 'accepted';
-      console.log('accepted');
-    } else if (status == 'accepted') {
-      newStatus = 'done';
-      console.log('done');
-    } else if (status == 'done') {
-      newStatus = 'thanked';
-      console.log('thanked');
-    } else if (status === 'thanked') {
-      newStatus = 'thanked';
-      console.log('already thanked');
-    }
-  this.editEvent(index, { eventStatus: newStatus });
-}
 
   render() {
     return (
@@ -448,7 +442,10 @@ class App extends Component {
           <li><Link to="/household">household</Link></li>
           <li><Link to="/Event">Event</Link></li>
           <Route path="/login" component={Login} />
-          <Route path="/dashboard" render={(props) => <Dashboard ffEvents={this.state.ffEvents} ffRoommates={this.state.ffRoommates} handleUpdateEventStatus={this.handleUpdateEventStatus} />} />
+          <Route path="/dashboard" render={(props) => <Dashboard
+            ffEvents={this.state.ffEvents}
+            ffRoommates={this.state.ffRoommates}
+            handleUpdateEventStatus={this.handleUpdateEventStatus} />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}
             currentRoommates={this.state.ffRoommates}

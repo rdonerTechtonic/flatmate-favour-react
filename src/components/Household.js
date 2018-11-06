@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+
+// Using props the Household page has conditional rendering to switch between
+// a new house and a edit house situation. T
 export const Household = (props) => {
   console.log(props.currentRoommates);
   if (props.editHouseMode) {
+// This will create a default value for the housename/roommate/and list of roommates to pull a default value upon load of test data
+// It will also create a list of roommate elements with keys and values in a form
+// Both the edit and new pages will take an array of house roommates
+// It will add roommates to the roommate array with the + button and delete them from the array with the -
+// button. Then save the information to the house object with the save button.
+
     return (<div className= "container"><center><h1>Edit Household</h1></center>
       <div className="container-fluid">
         <div className="backgroundTag">
@@ -22,6 +31,7 @@ export const Household = (props) => {
           <div className="form-group">
               <label htmlFor="selectRoommate">Remove Roommate(s):</label>
               <p><select multiple className="custom-select" id="selectRoommate">
+
               {props.currentRoommates.map((element, index) =>
                 <option key={index} value={element.userId}>
                 {element.userName}

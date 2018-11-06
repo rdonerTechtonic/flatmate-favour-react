@@ -11,7 +11,7 @@ export const EventDashboard = function (props) {
             <label htmlFor="formGroupExampleInput2" className="dashboard-label">
               Date:
             </label>
-            <input type="date" className="form-control datepicker" id="formGroupExampleInput2" placeholder="Another input" />
+            <input type="date" onChange={props.handleDateChange} className="form-control datepicker" id="formGroupExampleInput2" placeholder="Another input" />
           </div>
         </form>
 

@@ -253,6 +253,12 @@ class App extends Component {
     this.editEvent(index, { eventStatus: newStatus });
   }
 
+  handleDateChange(e) {
+    console.log('Date has changed');
+    console.log(e.target.value);
+    let date = e.target.value;
+  }
+
   // Function to grab form data (housename) from the household page and return it.
   getHouseNameFormData() {
     let newHouseName = document.getElementById('houseName').value;
@@ -445,7 +451,8 @@ class App extends Component {
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}
             ffRoommates={this.state.ffRoommates}
-            handleUpdateEventStatus={this.handleUpdateEventStatus} />} />
+            handleUpdateEventStatus={this.handleUpdateEventStatus}
+            handleDateChange={this.handleDateChange} />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}
             currentRoommates={this.state.ffRoommates}

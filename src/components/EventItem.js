@@ -66,33 +66,42 @@ export const EventItem = function (props) {
                 </div>
                 <div id={`collapse${props.index}`} className="collapse drop-down" aria-labelledby="heading1" data-parent="#accordion">
                   <div className="card-body">
-                    <ul className="list-inline">
-                      <h2>
-                    Acceptor(s):
-                  </h2>
-                      <li className="list-inline-item">
-                        {props.eventAcceptor}
-                      </li>
-                    </ul>
+                      <div>
+                        <h2>Requestor:</h2>
+                          <figure>
+                            <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(props.eventOwner)} />
+                            <figcaption>{props.eventOwner}</figcaption>
+                          </figure>
+                      </div>
+                      <div>
+                        <h2>
+                          Acceptors:
+                        </h2>
+                        <span>
+                          {
+                            props.eventAcceptor.map((elem, index) => (
+                              <figure key={index} >
+                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem, { size: '400' })} />
+                                <figcaption>{elem}</figcaption>
+                              </figure>
+                            ))
+                          }
+                        </span>
+                      </div>
+
+
                     <div>
-                      <h2>Requestor:</h2>
-                      <img src={gravatar.url('rdoner@email.arizona.edu')} />
+                      <h2>Start time</h2>
                       <p>
-                        {props.eventOwner}
+                        {props.eventStartDate.split("T")[0]}<br></br>
+                        {props.eventStartDate.slice(11,16)}
                       </p>
                     </div>
                     <div>
-                      <h2>Begin:</h2>
+                      <h2>End Time</h2>
                       <p>
-                        {props.eventStartDate}<br />
-                        Start time
-                      </p>
-                    </div>
-                    <div>
-                      <h2>End:</h2>
-                      <p>
-                      {props.eventEndDate}<br />
-                      End Time
+                        {props.eventEndDate.split("T")[0]}<br></br>
+                      {props.eventEndDate.slice(11,16)}
                       </p>
                     </div>
                     <div>
@@ -107,7 +116,7 @@ export const EventItem = function (props) {
                         {props.eventDescription}
                       </p>
                     </div>
-                      <Link className="ml-auto btn btn-light" to="/Event">Event</Link>
+                      <Link id={props.eventId} onClick={props.handleEventEdit} className="ml-auto btn btn-light" to="/Event">Event</Link>
                   </div>
                 </div>
               </div>
@@ -116,3 +125,10 @@ export const EventItem = function (props) {
   };
 
 // <a href="event.html" className="ml-auto btn btn-light" type="button" name="button">
+
+
+// {
+//   props.eventAcceptor.map((elem, index) => (
+//     <img key={index} style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem.userEmail, { size: '400' })} />
+//   ))
+// }

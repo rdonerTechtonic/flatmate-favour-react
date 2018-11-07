@@ -22,8 +22,8 @@ export const EventDashboard = function (props) {
                 key={index}
                 index={index}
                 eventStatus={elem.eventStatus}
-                eventOwner={elem.eventOwner.userName}
-                eventAcceptor={elem.eventAssignees.userName}
+                eventOwner={elem.eventOwner}
+                eventAcceptor={elem.eventAssignees}
                 eventTitle={elem.eventTitle}
                 eventStartDate={elem.eventStartDate}
                 eventEndDate={elem.eventEndDate}
@@ -31,6 +31,7 @@ export const EventDashboard = function (props) {
                 eventDescription={elem.eventDescription}
                 eventId={elem.eventId}
                 handleUpdateEventStatus={props.handleUpdateEventStatus}
+                handleEventEdit={props.handleEventEdit}
                 ffEvents={elem}
                 />
             ))
@@ -38,7 +39,7 @@ export const EventDashboard = function (props) {
         </div>
 
         <div className="form-group rightButton">
-          <Link to="/event">
+          <Link onClick={props.handleNewEvent} to="/event">
             <button type="button" id="createEventObject" className="btn btn-primary">
               <i className="fas fa-plus-circle"></i>
             </button>

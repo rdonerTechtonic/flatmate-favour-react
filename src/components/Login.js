@@ -1,5 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Auth from '../Auth/Auth.js';
+
+const auth = new Auth();
+
+function handleLogin() {
+  auth.login();
+}
+
 
 //holds buttons to create new house, and login with google account
 export const Login = function (props) {
@@ -19,9 +27,11 @@ export const Login = function (props) {
       </div>
 
       <div class="centerButton">
-        <a href="https://www.google.com/" id="googleAPIButton" class="btn btn-primary btn-lg" role="button">
-        Sign in with G+</a>
+        <button onClick={handleLogin}>Login</button>
       </div>
     </div>
   );
 };
+
+// <a href="https://www.google.com/" id="googleAPIButton" class="btn btn-primary btn-lg" role="button">
+// Sign in with G+</a>

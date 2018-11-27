@@ -13,6 +13,7 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
+import axios from 'axios';
 var store = require('store');
 
 class App extends Component {
@@ -30,8 +31,8 @@ class App extends Component {
     this.loadStateFromStorage = this.loadStateFromStorage.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.editEvent = this.editEvent.bind(this);
-    this.newEvent = this.newEvent.bind(this);
-    this.newRoommate = this.newRoommate.bind(this);
+//    this.newEvent = this.newEvent.bind(this);
+//    this.newRoommate = this.newRoommate.bind(this);
     this.getEventFormData = this.getEventFormData.bind(this);
     this.getHouseNameFormData = this.getHouseNameFormData.bind(this);
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
@@ -43,124 +44,122 @@ class App extends Component {
     this.handleNewEvent = this.handleNewEvent.bind(this);
   }
 
+  // standard houseObj example
   // {
   //   houseName: "The Davis's",
-  //   houseAddress: "123 Main",
+  //   houseAddress: "12345 Main",
   //   houseOwner: "5bf5a3fa16018b9d0931b701",
   //   houseCity: "Boulder",
   //   houseState: "CO",
   //   houseLongitude: "",
   //   houseLatitude: ""
   // }
-  postNewHouse(newHouseObj){
-    axios({
+
+  // Pass this function a standard houseObj and it will create it on the database.
+  postNewHouse(houseObj){
+    axios
+    ({
       method: 'post',
       url: 'http://localhost:3005/household?',
-      data: newHouseObj
-    }).then((response) => {console.log(response.data);
-    }).catch((response) => {console.log("New House Not Posted");
+      data: houseObj
     })
+    .then((response) => {return console.log(response.data)})
+    .catch((response) => {console.log("postNewHouse() failed.")})
   }
 
-// {
-//   userName: "Daffy Duck",
-//   userEmail: "daffy@gmail.com",
-//   userPassword: "password123",
-//   houseId: "5bf5a3fa16018b9d0931b72a",
-// }
+  // Pass this function a houseId and a standard houseObj and it will edit that house on the database.
+  editHouse(houseId, houseObj){
+    axios({
+      method: 'put',
+      url: 'http://localhost:3005/household?houseId=' + houseId,
+      data: houseObj
+    })
+    .then((response) => {return console.log(response.data)})
+    .catch((response) => {console.log("editHouse() failed.")})
+  }
+
+  // Pass this function a houseId and it will return that house.
+  getHouse(houseId){
+    axios({
+      method: 'get',
+      url: 'http://localhost:3005/household?houseId=' + houseId,
+    })
+    .then((response) => {return console.log(response.data[0])})
+    .catch((response) => {console.log("getHouse() failed.")})
+  }
+
+  //  standard roommateObj example
+  // {
+  //   userName: "Daffy Duck",
+  //   userEmail: "daffy@gmail.com",
+  //   userPassword: "password123",
+  //   houseId: "5bf5a3fa16018b9d0931b72a",
+  // }
+
+  // Pass this function a standard roommateObj and it'll create it on the database.
   postNewRoommate(newRoommateObj){
     axios({
       method: 'post',
       url: 'http://localhost:3005/roommate?',
       data: newRoommateObj
-    }).then((response) => {console.log(response.data);
-    }).catch((response) => {console.log("New Roommate Not Posted");
+    }).then((response) => {return console.log(response.data);
+    }).catch((response) => {console.log("postNewRoommate() failed.");
     })
   }
-  
-  // Function to add new event.  Takes in an array of event objects that looks like this:
-  // [{ eventId: Math.floor((Math.random() * 100000000000000) + 1),
-  //     eventTitle: 'testEvent1',
-  //     eventOwner: 1,
-  //     eventAssignees: [1, 2, 3],
-  //     eventDescription: 'testDescription1',
-  //     eventStartDate: '2018-11-02T21:48:56.637Z',
-  //     eventEndDate: '2018-12-02T21:48:56.637Z',
-  //     eventLocation: 'eventLocation1',
-  //     houseId: 111,
-  //     eventStatus: 'pending',
-  //   },]
-  newEvent(eventObjs) {
-    let currentHouse = JSON.parse(JSON.stringify(this.state.ffHouse));
-    let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
-    for (let i = 0; i < eventObjs.length; i++) {
-      currentEvents.push(eventObjs[i]);
-      currentHouse.houseEvents.push(eventObjs[i].eventId);
-    }
 
-    this.setState({ ffEvents: currentEvents, ffHouse: currentHouse }, this.saveStateToStorage);
+  // Pass this function a houseId and it will return all roommates belonging to that house.
+  getRoommates(houseId){
+    axios({
+      method: 'get',
+      url: 'http://localhost:3005/roommate?houseId=' + houseId,
+    })
+    .then((response) => {return console.log(response.data);})
+    .catch((response) => {console.log("getRoommates() failed.")})
   }
 
-  // Function to edit a household.  Pass this an object with the key and value
-  // pair you want to set it to.  It can take any number of the following:
-  // houseName: 'string', houseOwner: 'string', houseRoommates: ['string', 'string']
-  editHouse(input) {
-    let currentHouse = JSON.parse(JSON.stringify(this.state.ffHouse));
+  // Standard eventObj example
+  // {
+  //   eventTitle: "Mow the Lawn",
+  //   eventOwner: "5bf5a3fa16018b9d0931b722",
+  //   eventAssignees: ["5bf5a3fa16018b9d0931b721","5bf5a3fa16018b9d0931b723"],
+  //   eventDescription: "It's not gonna mow itself",
+  //   eventStartDate: "2018-01-01T00:00:00.000Z",
+  //   eventEndDate: "2018-01-01T00:00:00.000Z",
+  //   eventLocation: "Back Yard",
+  //   eventStatus: "pending",
+  //   houseId: "5bf5a3fa16018b9d0931b72b"
+  // }
 
-    if (input.hasOwnProperty('houseName')) {
-      currentHouse.houseName = input.houseName;
-    }
-
-    if (input.hasOwnProperty('houseOwner')) {
-      currentHouse.houseOwner = input.houseOwner;
-    }
-
-    if (input.hasOwnProperty('houseRoommates')) {
-      currentHouse.houseRoommates = input.houseRoommates;
-    }
-
-    this.setState({ ffHouse: currentHouse }, this.saveStateToStorage);
-
+  // Pass this function a standard eventObj and it will create it on the database.
+  postNewEvent(eventObj){
+    axios({
+      method: 'post',
+      url: 'http://localhost:3005/event?',
+      data: eventObj})
+      .then((response) => {console.log(response.data)})
+      .catch((response) => {console.log("postNewEvent() failed.")
+    })
   }
 
-  // Function to edit an event.  Pass this an event index and object with the
-  // following key and value pair you want set it to.  It can take any number of
-  // the following: eventTitle: 'string', eventLocation: 'string', eventRoommates:
-  // ['string', 'string'], eventNotes: 'string', eventStartDate: 'date string',
-  // eventEndDate: 'date string', eventStatus: eventObj, eventPostedBy: 'string'.
-  editEvent(index, input) {
-    let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
-    let eventToEdit = currentEvents[index];
-    if (input.hasOwnProperty('eventTitle')) {
-      eventToEdit.eventTitle = input.eventTitle;
-    }
+  // Pass this function an eventId and a standard eventObj and it will edit that event on the database.
+  editEvent(eventId, eventObj){
+    axios({
+      method: 'put',
+      url: 'http://localhost:3005/event?eventId=' + eventId,
+      data: eventObj
+    })
+    .then((response) => {return console.log(response.data)})
+    .catch((response) => {console.log("editEvent() failed.")})
+  }
 
-    if (input.hasOwnProperty('eventLocation')) {
-      eventToEdit.eventLocation = input.eventLocation;
-    }
-
-    if (input.hasOwnProperty('eventAssignees')) {
-      eventToEdit.eventAssignees = input.eventAssignees;
-    }
-
-    if (input.hasOwnProperty('eventDescription')) {
-      eventToEdit.eventDescription = input.eventDescription;
-    }
-
-    if (input.hasOwnProperty('eventStartDate')) {
-      eventToEdit.eventStartDate = input.eventStartDate;
-    }
-
-    if (input.hasOwnProperty('eventEndDate')) {
-      eventToEdit.eventEndDate = input.eventEndDate;
-    }
-
-    if (input.hasOwnProperty('eventStatus')) {
-      eventToEdit.eventStatus = input.eventStatus;
-    }
-
-    currentEvents[index] = eventToEdit;
-    this.setState({ ffEvents: currentEvents }, this.saveStateToStorage);
+  // Pass this function a houseId and it will return all events belonging to that house.
+  getEvents(houseId){
+    axios({
+      method: 'get',
+      url: 'http://localhost:3005/event?houseId=' + houseId,
+    })
+    .then((response) => {return console.log(response.data);})
+    .catch((response) => {console.log("getEvents() failed.")})
   }
 
   // Function to delete an event.  Pass this the ID of the event you want to delete.

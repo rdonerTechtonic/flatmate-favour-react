@@ -12,6 +12,7 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
+
 var store = require('store');
 
 class App extends Component {

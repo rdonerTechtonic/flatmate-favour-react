@@ -43,39 +43,41 @@ class App extends Component {
     this.handleNewEvent = this.handleNewEvent.bind(this);
   }
 
-  // Function to create a new household.  Takes in a house object that looks like this:
   // {
-  //   houseId: Math.floor((Math.random() * 100000000000000) + 1),
-  //   houseName: 'testHouseName',
-  //   houseOwner: 'delaney',
-  //   houseRoommates: [],
-  //   houseLat: '1',
-  //   houseLon: '2',
-  //   houseAddress: '555 Central Ave',
-  //   houseEvents: [],
-  // };
-  newHouse(houseObj) {
-    this.setState({ ffHouse: houseObj }, this.saveStateToStorage);
+  //   houseName: "The Davis's",
+  //   houseAddress: "123 Main",
+  //   houseOwner: "5bf5a3fa16018b9d0931b701",
+  //   houseCity: "Boulder",
+  //   houseState: "CO",
+  //   houseLongitude: "",
+  //   houseLatitude: ""
+  // }
+  postNewHouse(newHouseObj){
+    axios({
+      method: 'post',
+      url: 'http://localhost:3005/household?',
+      data: newHouseObj
+    }).then((response) => {console.log(response.data);
+    }).catch((response) => {console.log("New House Not Posted");
+    })
   }
 
-  // Function to add a new roommate.  Takes in an array of roommate objects that looks like this:
-  // [{
-  //   userName: 'ryan',
-  //   userId: Math.floor((Math.random() * 100000000000000) + 1),
-  //   houseId: houseObj.houseId,
-  //   userEmail: 'rdoner@email.arizona.edu',
-  // }]
-  newRoommate(roommateObjs) {
-    let currentHouse = JSON.parse(JSON.stringify(this.state.ffHouse));
-    let currentRoommates = JSON.parse(JSON.stringify(this.state.ffRoommates));
-    for (var i = 0; i < roommateObjs.length; i++) {
-      currentRoommates.push(roommateObjs[i]);
-      currentHouse.houseRoommates.push(roommateObjs[i].userId);
-    }
-
-    this.setState({ ffRoommates: currentRoommates, ffHouse: currentHouse }, this.saveStateToStorage);
+// {
+//   userName: "Daffy Duck",
+//   userEmail: "daffy@gmail.com",
+//   userPassword: "password123",
+//   houseId: "5bf5a3fa16018b9d0931b72a",
+// }
+  postNewRoommate(newRoommateObj){
+    axios({
+      method: 'post',
+      url: 'http://localhost:3005/roommate?',
+      data: newRoommateObj
+    }).then((response) => {console.log(response.data);
+    }).catch((response) => {console.log("New Roommate Not Posted");
+    })
   }
-
+  
   // Function to add new event.  Takes in an array of event objects that looks like this:
   // [{ eventId: Math.floor((Math.random() * 100000000000000) + 1),
   //     eventTitle: 'testEvent1',

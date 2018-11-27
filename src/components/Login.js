@@ -4,25 +4,35 @@ import { Link } from 'react-router-dom';
 //holds buttons to create new house, and login with google account
 export const Login = function (props) {
   return (
-    <div>
-      <div class="centerButton">
-        <img src="/Flatmate-Favour-Logo.png" class="rounded" alt="Logo" />
-      </div>
+      <div>
+        <div class="centerButton">
+          <img src="/Flatmate-Favour-Logo.png" class="rounded" alt="Logo" />
+        </div>
 
-      <div class="centerButton">
-        <Link to="/household"><button type="button" id="createHouseholdLandButton" class="btn btn-primary btn-lg">Create New Household</button>
-        </Link>
-      </div>
+        <div className= "container"><center><h1>Flatmate Login</h1></center>
+          <div className="container-fluid">
+            <div className="backgroundTag">
+              <div className="form-group">
+                <label htmlFor="userLogin">Username:</label>
+                <p><input type="text" className="form-control" id="userLogin" placeholder="Username"
+                /></p>
+              </div>
 
-      <div class="centerText">
-        OR
-      </div>
+              <div className="form-group">
+                <label htmlFor="userLogin">Password:</label>
+                <p><input type="text" className="form-control" id="userLogin" placeholder="Password"
+                /></p>
+              </div>
 
-      <div class="centerButton">
-        <center>
-        <a class="g-signin2" data-onsuccess="onSignIn">
-        </a></center>
+
+
+              <div className="form-group inline-form rightButton">
+              <Link to="/dashboard"><button type="button" id="confirmInformation" class="btn btn-primary" onClick={props.handleHouseSubmit}>Login</button></Link>
+              <Link to="/dashboard"><button type="button" id="cancelInformation" class="btn btn-danger">Cancel</button></Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
 };

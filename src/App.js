@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Homepage } from './components/Homepage.js';
+import { JoinHousehold } from './components/JoinHousehold.js';
 import { Registration } from './components/Registration.js';
 import { Login } from './components/Login.js';
 import { Dashboard } from './components/Dashboard.js';
@@ -24,6 +26,7 @@ class App extends Component {
       ffRoommates: [],
       editEventMode: false,
       editHouseMode: false,
+      //emailInvitedMode: false,
       eventToEdit: 0,
     };
     this.saveStateToStorage = this.saveStateToStorage.bind(this);
@@ -41,6 +44,7 @@ class App extends Component {
     this.handleEditHouse = this.handleEditHouse.bind(this);
     this.handleEventEdit = this.handleEventEdit.bind(this);
     this.handleNewEvent = this.handleNewEvent.bind(this);
+    this.handleInvitedEmail = this.handleInvitedEmail.bind(this);
   }
 
   // Function to create a new household.  Takes in a house object that looks like this:
@@ -275,6 +279,12 @@ class App extends Component {
     this.setState({ editHouseMode: true });
   }
 
+  handleInvitedEmail(){
+    console.log("handling");
+    this.setState({ emailInvitedMode: true },(state) => console.log(state));
+  }
+
+
   // Function to grab form data (housename) from the household page and return it.
   getHouseNameFormData() {
     let newHouseName = document.getElementById('houseName').value;
@@ -459,11 +469,17 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
           </header>
+          <li><Link to="/homepage">Homepage</Link></li>
+          <li><Link to="/joinhousehold">JoinHousehold</Link></li>
           <li><Link to="/registration">Registration</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/household">household</Link></li>
           <li><Link to="/Event">Event</Link></li>
+          <Route path="/homepage" component={Homepage} />
+          <Route path="/joinhousehold" render={(props) => <JoinHousehold
+            emailInvitedMode={this.state.emailInvitedMode} handleInvitedEmail={this.handleInvitedEmail}
+          />} />
           <Route path="/registration" component={Registration} />
           <Route path="/login" component={Login} />
           <Route path="/dashboard" render={(props) => <Dashboard

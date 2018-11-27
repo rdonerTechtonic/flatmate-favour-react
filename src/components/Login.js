@@ -28,7 +28,7 @@ export const Login = function (props) {
 
               <div className="form-group inline-form rightButton">
               <Link to="/dashboard"><button type="button" id="confirmInformation" class="btn btn-primary" onClick={props.handleHouseSubmit}>Login</button></Link>
-              <Link to="/dashboard"><button type="button" id="cancelInformation" class="btn btn-danger">Cancel</button></Link>
+              <Link to="/homepage"><button type="button" id="cancelInformation" class="btn btn-danger">Cancel</button></Link>
               </div>
             </div>
           </div>

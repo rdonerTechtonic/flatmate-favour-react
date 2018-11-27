@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Registration } from './components/Registration.js';
 import { Login } from './components/Login.js';
 import { Dashboard } from './components/Dashboard.js';
 import { Household } from './components/Household.js';
@@ -458,10 +459,12 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
           </header>
+          <li><Link to="/registration">Registration</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/household">household</Link></li>
           <li><Link to="/Event">Event</Link></li>
+          <Route path="/registration" component={Registration} />
           <Route path="/login" component={Login} />
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}

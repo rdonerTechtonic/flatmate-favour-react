@@ -190,7 +190,7 @@ class App extends Component {
   handleRoommateSubmit() {
 
 
-  
+
     // if(loginStatus === "loggedin"){
     //   return <Redirect push to="/dashboard" />
     // }else if(loginStatus === "join"){
@@ -283,33 +283,10 @@ class App extends Component {
     this.setState({ editHouseMode: true });
   }
 
-  handleInvitedEmail(){
-    console.log("handling");
-    this.setState({ emailInvitedMode: true },(state) => console.log(state));
-  }
-
-
   // Function to grab form data (housename) from the household page and return it.
   getHouseNameFormData() {
     let newHouseName = document.getElementById('houseName').value;
     return newHouseName;
-  }
-
-  getEmailInitationFormData() {
-    let enteredEmail = document.getElementById('invitedEmail').value;
-    return enteredEmail;
-  }
-
-  getLoginInformation() {
-    let enteredEmail = document.getElementById('userEmail').value;
-    return enteredEmail;
-  }
-
-
-  // Function to grab form data (roommate email) from the household page and return it.
-  getRoommateNameFormData() {
-    let newRoommateName = document.getElementById('inviteRoommate').value;
-    return newRoommateName;
   }
 
   // Function to grab form data from the event page and return a new event object.
@@ -494,20 +471,13 @@ class App extends Component {
           <li><Link to="/Event">Event</Link></li>
           <Route path="/homepage" component={Homepage} />
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
-            currentRoommates={this.state.ffRoommates}
+
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
-            emailInvitedMode={this.state.emailInvitedMode}
-            handleInvitedEmail={this.handleInvitedEmail}
             currentRoommates={this.state.ffRoommates}
-            currentEmails={this.state.ffRoommates.
-            userEmail}
-            getEmailInitationFormData={this.getEmailInitationFormData}
           />} />
           <Route path="/registration" component={Registration} />
           <Route path="/login" render={(props) => <Login
-            getLoginInformation={this.getLoginInformation}
-            loginStatus={this.state.loginStatus}
              />} />
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}

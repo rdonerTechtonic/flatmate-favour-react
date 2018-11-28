@@ -23,11 +23,7 @@ export const CreateOrJoin = function (props) {
                 <label htmlFor="invitedHouses">The below houses invited you!</label>
                 <p><select multiple className="custom-select" id="invitedHouses">
 
-                {props.currentRoommates.map((element, index) =>
-                  <option key={index} value={element.userId}>
-                  {element.userName}
-                  </option>)
-                }
+            
                 </select></p>
             </div>
                 <div className="form-group centerButton">

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Homepage } from './components/Homepage.js';
+import { CreateOrJoin } from './components/CreateOrJoin.js';
+import { JoinHousehold } from './components/JoinHousehold.js';
 import { Registration } from './components/Registration.js';
 import { Login } from './components/Login.js';
 import { Dashboard } from './components/Dashboard.js';
@@ -25,6 +28,7 @@ class App extends Component {
       ffRoommates: [],
       editEventMode: false,
       editHouseMode: false,
+      //emailInvitedMode: false,
       eventToEdit: 0,
     };
     this.saveStateToStorage = this.saveStateToStorage.bind(this);
@@ -179,16 +183,20 @@ class App extends Component {
     this.setState({ ffRoommates: currentRoommates }, this.saveStateToStorage);
   }
 
+  handleLoginSubmit() {
+
+  }
+
   // Function to call utility functions when the submit new Roommate Button is pressed.
   handleRoommateSubmit() {
-    let newRoommateObj =
-    [{
-      userName: this.getRoommateNameFormData().split('@')[0],
-      userId: Math.floor((Math.random() * 100000000000000) + 1),
-      houseId: this.state.ffHouse.houseId,
-      userEmail: this.getRoommateNameFormData(),
-    },];
-    this.newRoommate(newRoommateObj);
+
+
+
+    // if(loginStatus === "loggedin"){
+    //   return <Redirect push to="/dashboard" />
+    // }else if(loginStatus === "join"){
+    //   return <Redirect push to="/joinhousehold" />
+    // }
   }
 
   // Function to call utility functions when the submit new/edit house button is pressed
@@ -280,12 +288,6 @@ class App extends Component {
   getHouseNameFormData() {
     let newHouseName = document.getElementById('houseName').value;
     return newHouseName;
-  }
-
-  // Function to grab form data (roommate email) from the household page and return it.
-  getRoommateNameFormData() {
-    let newRoommateName = document.getElementById('inviteRoommate').value;
-    return newRoommateName;
   }
 
   // Function to grab form data from the event page and return a new event object.
@@ -460,13 +462,24 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
           </header>
+          <li><Link to="/homepage">Homepage</Link></li>
+          <li><Link to="/joinhousehold">JoinHousehold</Link></li>
+          <li><Link to="/createorjoin">CreateOrJoin</Link></li>
           <li><Link to="/registration">Registration</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/household">household</Link></li>
           <li><Link to="/Event">Event</Link></li>
+          <Route path="/homepage" component={Homepage} />
+          <Route path="/createorjoin" render={(props) => <CreateOrJoin
+
+          />} />
+          <Route path="/joinhousehold" render={(props) => <JoinHousehold
+            currentRoommates={this.state.ffRoommates}
+          />} />
           <Route path="/registration" component={Registration} />
-          <Route path="/login" component={Login} />
+          <Route path="/login" render={(props) => <Login
+             />} />
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}
             ffRoommates={this.state.ffRoommates}

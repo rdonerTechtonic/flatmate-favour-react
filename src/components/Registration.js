@@ -14,21 +14,16 @@ export const Registration = function (props) {
           <div className="backgroundTag">
             <div className="form-group">
               <label htmlFor="houseName">Email:</label>
-              <p><input type="text" className="form-control" id="userRegistration" placeholder="Example: Valid email address"
+              <p><input type="text" className="form-control" id="userRegistration" placeholder="Enter Valid Email Address"
               /></p>
             </div>
 
             <div className="form-group">
-              <label htmlFor="houseName">First Name:</label>
-              <p><input type="text" className="form-control" id="userRegistration" placeholder="Example: First Name of User"
+              <label htmlFor="houseName">Roommate Name:</label>
+              <p><input type="text" className="form-control" id="userRegistration" placeholder="Name of User"
               /></p>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="houseName">Last Name:</label>
-              <p><input type="text" className="form-control" id="userRegistration" placeholder="Example: Lastname of User"
-              /></p>
-            </div>
 
             <div className="form-group">
               <label htmlFor="houseName">Password:</label>
@@ -37,7 +32,7 @@ export const Registration = function (props) {
             </div>
 
             <div className="form-group inline-form rightButton">
-            <Link to="/dashboard"><button type="button" id="confirmInformation" class="btn btn-primary" onClick={props.handleHouseSubmit}>Register</button></Link>
+            <Link to="/createorjoin"><button type="button" id="confirmRegistration" class="btn btn-primary" onClick={props.handleHouseSubmit}>Register</button></Link>
             <Link to="/homepage"><button type="button" id="cancelInformation" class="btn btn-danger">Cancel</button></Link>
             </div>
           </div>

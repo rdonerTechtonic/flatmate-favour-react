@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Homepage } from './components/Homepage.js';
+import { CreateOrJoin } from './components/CreateOrJoin.js';
 import { JoinHousehold } from './components/JoinHousehold.js';
 import { Registration } from './components/Registration.js';
 import { Login } from './components/Login.js';
@@ -44,7 +45,6 @@ class App extends Component {
     this.handleEditHouse = this.handleEditHouse.bind(this);
     this.handleEventEdit = this.handleEventEdit.bind(this);
     this.handleNewEvent = this.handleNewEvent.bind(this);
-    this.handleInvitedEmail = this.handleInvitedEmail.bind(this);
   }
 
   // Function to create a new household.  Takes in a house object that looks like this:
@@ -182,16 +182,20 @@ class App extends Component {
     this.setState({ ffRoommates: currentRoommates }, this.saveStateToStorage);
   }
 
+  handleLoginSubmit() {
+
+  }
+
   // Function to call utility functions when the submit new Roommate Button is pressed.
   handleRoommateSubmit() {
-    let newRoommateObj =
-    [{
-      userName: this.getRoommateNameFormData().split('@')[0],
-      userId: Math.floor((Math.random() * 100000000000000) + 1),
-      houseId: this.state.ffHouse.houseId,
-      userEmail: this.getRoommateNameFormData(),
-    },];
-    this.newRoommate(newRoommateObj);
+
+
+  
+    // if(loginStatus === "loggedin"){
+    //   return <Redirect push to="/dashboard" />
+    // }else if(loginStatus === "join"){
+    //   return <Redirect push to="/joinhousehold" />
+    // }
   }
 
   // Function to call utility functions when the submit new/edit house button is pressed
@@ -290,6 +294,17 @@ class App extends Component {
     let newHouseName = document.getElementById('houseName').value;
     return newHouseName;
   }
+
+  getEmailInitationFormData() {
+    let enteredEmail = document.getElementById('invitedEmail').value;
+    return enteredEmail;
+  }
+
+  getLoginInformation() {
+    let enteredEmail = document.getElementById('userEmail').value;
+    return enteredEmail;
+  }
+
 
   // Function to grab form data (roommate email) from the household page and return it.
   getRoommateNameFormData() {
@@ -471,17 +486,29 @@ class App extends Component {
           </header>
           <li><Link to="/homepage">Homepage</Link></li>
           <li><Link to="/joinhousehold">JoinHousehold</Link></li>
+          <li><Link to="/createorjoin">CreateOrJoin</Link></li>
           <li><Link to="/registration">Registration</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/household">household</Link></li>
           <li><Link to="/Event">Event</Link></li>
           <Route path="/homepage" component={Homepage} />
+          <Route path="/createorjoin" render={(props) => <CreateOrJoin
+            currentRoommates={this.state.ffRoommates}
+          />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
-            emailInvitedMode={this.state.emailInvitedMode} handleInvitedEmail={this.handleInvitedEmail}
+            emailInvitedMode={this.state.emailInvitedMode}
+            handleInvitedEmail={this.handleInvitedEmail}
+            currentRoommates={this.state.ffRoommates}
+            currentEmails={this.state.ffRoommates.
+            userEmail}
+            getEmailInitationFormData={this.getEmailInitationFormData}
           />} />
           <Route path="/registration" component={Registration} />
-          <Route path="/login" component={Login} />
+          <Route path="/login" render={(props) => <Login
+            getLoginInformation={this.getLoginInformation}
+            loginStatus={this.state.loginStatus}
+             />} />
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}
             ffRoommates={this.state.ffRoommates}

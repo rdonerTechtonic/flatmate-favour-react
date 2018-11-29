@@ -474,7 +474,7 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
           </header>
-          <li><Link to="/homepage">Homepage</Link></li>
+          <li><Link to="/">Homepage</Link></li>
           <li><Link to="/joinhousehold">JoinHousehold</Link></li>
           <li><Link to="/createorjoin">CreateOrJoin</Link></li>
           <li><Link to="/registration">Registration</Link></li>
@@ -482,7 +482,7 @@ class App extends Component {
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/household">household</Link></li>
           <li><Link to="/Event">Event</Link></li>
-          <Route path="/homepage" component={Homepage} />
+          <Route exact path="/" component={Homepage}/>
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
             handleLoginSubmit={this.handleLoginSubmit}
           />} />

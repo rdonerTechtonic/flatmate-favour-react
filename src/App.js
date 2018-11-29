@@ -174,9 +174,7 @@ class App extends Component {
       method: 'get',
       url: 'http://localhost:3005/event?houseId=' + houseId,
     })
-    .then((response) => {console.log("test");})
-
-    // .then((response) => {this.setState({ffEvents: response.data})})
+    .then((response) => {this.setState({ffEvents: response.data})})
     .catch((response) => {console.log('getEvents() failed.');});
   }
 

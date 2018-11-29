@@ -49,7 +49,6 @@ export const EventItem = function (props) {
         break;
     }
 
-    console.log(props.eventAssignees);
     return (
       <div className="card">
               <div className="card-header task-accepted" id="heading'+ i +'">

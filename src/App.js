@@ -30,13 +30,15 @@ class App extends Component {
       editHouseMode: false,
       //emailInvitedMode: false,
       eventToEdit: 0,
+      houseId: null,
+      roommateId: null,
     };
-    this.saveStateToStorage = this.saveStateToStorage.bind(this);
-    this.loadStateFromStorage = this.loadStateFromStorage.bind(this);
+    // this.saveStateToStorage = this.saveStateToStorage.bind(this);
+    this.loadState = this.loadState.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.editEvent = this.editEvent.bind(this);
-//    this.newEvent = this.newEvent.bind(this);
-//    this.newRoommate = this.newRoommate.bind(this);
+    //    this.newEvent = this.newEvent.bind(this);
+    //    this.newRoommate = this.newRoommate.bind(this);
     this.getEventFormData = this.getEventFormData.bind(this);
     this.getHouseNameFormData = this.getHouseNameFormData.bind(this);
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
@@ -60,36 +62,36 @@ class App extends Component {
   // }
 
   // Pass this function a standard houseObj and it will create it on the database.
-  postNewHouse(houseObj){
+  postNewHouse(houseObj) {
     axios
     ({
       method: 'post',
       url: 'http://localhost:3005/household?',
-      data: houseObj
+      data: houseObj,
     })
-    .then((response) => {return console.log(response.data)})
-    .catch((response) => {console.log("postNewHouse() failed.")})
+    .then((response) => {return console.log(response.data);})
+    .catch((response) => {console.log('postNewHouse() failed.');});
   }
 
   // Pass this function a houseId and a standard houseObj and it will edit that house on the database.
-  editHouse(houseId, houseObj){
+  editHouse(houseId, houseObj) {
     axios({
       method: 'put',
       url: 'http://localhost:3005/household?houseId=' + houseId,
-      data: houseObj
+      data: houseObj,
     })
-    .then((response) => {return console.log(response.data)})
-    .catch((response) => {console.log("editHouse() failed.")})
+    .then((response) => {return console.log(response.data);})
+    .catch((response) => {console.log('editHouse() failed.');});
   }
 
   // Pass this function a houseId and it will return that house.
-  getHouse(houseId){
+  getHouse(houseId) {
     axios({
       method: 'get',
       url: 'http://localhost:3005/household?houseId=' + houseId,
     })
-    .then((response) => {return console.log(response.data[0])})
-    .catch((response) => {console.log("getHouse() failed.")})
+    .then((response) => {return console.log(response.data[0]);})
+    .catch((response) => {console.log('getHouse() failed.');});
   }
 
   //  standard roommateObj example
@@ -101,24 +103,24 @@ class App extends Component {
   // }
 
   // Pass this function a standard roommateObj and it'll create it on the database.
-  postNewRoommate(newRoommateObj){
+  postNewRoommate(newRoommateObj) {
     axios({
       method: 'post',
       url: 'http://localhost:3005/roommate?',
-      data: newRoommateObj
+      data: newRoommateObj,
     }).then((response) => {return console.log(response.data);
-    }).catch((response) => {console.log("postNewRoommate() failed.");
-    })
+    }).catch((response) => {console.log('postNewRoommate() failed.');
+    });
   }
 
   // Pass this function a houseId and it will return all roommates belonging to that house.
-  getRoommates(houseId){
+  getRoommates(houseId) {
     axios({
       method: 'get',
       url: 'http://localhost:3005/roommate?houseId=' + houseId,
     })
     .then((response) => {return console.log(response.data);})
-    .catch((response) => {console.log("getRoommates() failed.")})
+    .catch((response) => {console.log('getRoommates() failed.');});
   }
 
   // Standard eventObj example
@@ -135,35 +137,35 @@ class App extends Component {
   // }
 
   // Pass this function a standard eventObj and it will create it on the database.
-  postNewEvent(eventObj){
+  postNewEvent(eventObj) {
     axios({
       method: 'post',
       url: 'http://localhost:3005/event?',
-      data: eventObj})
-      .then((response) => {console.log(response.data)})
-      .catch((response) => {console.log("postNewEvent() failed.")
-    })
+      data: eventObj, })
+      .then((response) => {console.log(response.data);})
+      .catch((response) => {console.log('postNewEvent() failed.');
+    });
   }
 
   // Pass this function an eventId and a standard eventObj and it will edit that event on the database.
-  editEvent(eventId, eventObj){
+  editEvent(eventId, eventObj) {
     axios({
       method: 'put',
       url: 'http://localhost:3005/event?eventId=' + eventId,
-      data: eventObj
+      data: eventObj,
     })
-    .then((response) => {return console.log(response.data)})
-    .catch((response) => {console.log("editEvent() failed.")})
+    .then((response) => {return console.log(response.data);})
+    .catch((response) => {console.log('editEvent() failed.');});
   }
 
   // Pass this function a houseId and it will return all events belonging to that house.
-  getEvents(houseId){
+  getEvents(houseId) {
     axios({
       method: 'get',
       url: 'http://localhost:3005/event?houseId=' + houseId,
     })
     .then((response) => {return console.log(response.data);})
-    .catch((response) => {console.log("getEvents() failed.")})
+    .catch((response) => {console.log('getEvents() failed.');});
   }
 
   // Function to delete an event.  Pass this the ID of the event you want to delete.
@@ -172,7 +174,7 @@ class App extends Component {
     let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
     currentEvents.splice(eventPosition, 1);
     this.setState({ ffEvents: currentEvents });
-    this.saveStateToStorage();
+    // this.saveStateToStorage();
   }
 
   // Function to delete a roommate.  Pass this the ID of the roommate to delete.
@@ -180,7 +182,7 @@ class App extends Component {
     let roommatePosition = this.getRoommatePositionById(userId);
     let currentRoommates = JSON.parse(JSON.stringify(this.state.ffRoommates));
     currentRoommates.splice(roommatePosition, 1);
-    this.setState({ ffRoommates: currentRoommates }, this.saveStateToStorage);
+    // this.setState({ ffRoommates: currentRoommates }, this.saveStateToStorage);
   }
 
   handleLoginSubmit() {
@@ -356,104 +358,42 @@ class App extends Component {
 
   // Function to save the state to local storage using store.js.  Should be called
   // automatically when a function to create edit or delete something from state is called.
-  saveStateToStorage() {
-    let dataToSave = JSON.parse(JSON.stringify(this.state));
-    store.set('localStorage', dataToSave);
-  }
+  // saveStateToStorage() {
+  //   let dataToSave = JSON.parse(JSON.stringify(this.state));
+  //   store.set('localStorage', dataToSave);
+  // }
 
   // Function to load state from local storage using store.js.  Should be called
   // automatically on page load.
-  loadStateFromStorage() {
-    let storedData = store.get('localStorage');
-    if (storedData !== undefined) {
-      this.setState(
-        {
-          ffHouse: storedData.ffHouse,
-          ffEvents: storedData.ffEvents,
-          ffRoommates: storedData.ffRoommates,
-        });
-    }
-  }
+  // loadStateFromStorage() {
+  //   let storedData = store.get('localStorage');
+  //   if (storedData !== undefined) {
+  //     asdf;
+  //     this.setState(
+  //       {
+  //         ffHouse: storedData.ffHouse,
+  //         ffEvents: storedData.ffEvents,
+  //         ffRoommates: storedData.ffRoommates,
+  //       });
+  //   }
+  // }
 
-  // Utility function to populate the app with test data.
-  testData() {
-    let houseObj = {
-      houseId: Math.floor((Math.random() * 100000000000000) + 1),
-      houseName: 'testHouseName',
-      houseOwner: 'delaney',
-      houseRoommates: [],
-      houseLat: '1',
-      houseLon: '2',
-      houseAddress: '555 Central Ave',
-      houseEvents: [],
-    };
-    let roommateObjs = [
-        { userName: 'ryan', userId: Math.floor((Math.random() * 100000000000000) + 1),
-        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
-        { userName: 'devin', userId: Math.floor((Math.random() * 100000000000000) + 1),
-        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
-        { userName: 'steve', userId: Math.floor((Math.random() * 100000000000000) + 1),
-        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
-        { userName: 'renee', userId: Math.floor((Math.random() * 100000000000000) + 1),
-        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
-        { userName: 'delaney', userId: Math.floor((Math.random() * 100000000000000) + 1),
-        houseId: houseObj.houseId, userEmail: 'rdoner@email.arizona.edu', },
-    ];
-    let eventObjs = [
-      { eventId: Math.floor((Math.random() * 100000000000000) + 1),
-        eventTitle: 'testEvent1',
-        eventOwner: 'rdoner@email.arizona.edu',
-        eventAssignees: ['rdoner@email.arizona.edu', 'ridemralphio@yahoo.com', 'ryan.doner@techtonic.com'],
-        eventDescription: 'testDescription1',
-        eventStartDate: '2018-11-02T21:48:56.637Z',
-        eventEndDate: '2018-11-02T21:48:56.637Z',
-        eventLocation: 'eventLocation1',
-        houseId: 111,
-        eventStatus: 'pending',
-      },
-      { eventId: Math.floor((Math.random() * 100000000000000) + 1),
-        eventTitle: 'testEvent2',
-        eventOwner: 'rdoner@email.arizona.edu',
-        eventAssignees: ['rdoner@email.arizona.edu', 'ridemralphio@yahoo.com', 'ryan.doner@techtonic.com'],
-        eventDescription: 'testDescription2',
-        eventStartDate: '2018-12-02T21:48:56.637Z',
-        eventEndDate: '2018-12-02T21:48:56.637Z',
-        eventLocation: 'eventLocation2',
-        houseId: 111,
-        eventStatus: 'accepted',
-      },
-      { eventId: Math.floor((Math.random() * 100000000000000) + 1),
-        eventTitle: 'testEvent3',
-        eventOwner: 'rdoner@email.arizona.edu',
-        eventAssignees: ['rdoner@email.arizona.edu', 'ridemralphio@yahoo.com', 'ryan.doner@techtonic.com'],
-        eventDescription: 'testDescription3',
-        eventStartDate: '2018-05-02T21:48:56.637Z',
-        eventEndDate: '2018-05-02T21:48:56.637Z',
-        eventLocation: 'eventLocation3',
-        houseId: 111,
-        eventStatus: 'done',
-      },
-      { eventId: 4,
-        eventTitle: 'testEvent4',
-        eventOwner: 'rdoner@email.arizona.edu',
-        eventAssignees: ['rdoner@email.arizona.edu', 'ridemralphio@yahoo.com', 'ryan.doner@techtonic.com'],
-        eventDescription: 'testDescription4',
-        eventStartDate: '2018-09-02T21:48:56.637Z',
-        eventEndDate: '2018-09-02T21:48:56.637Z',
-        eventLocation: 'eventLocation4',
-        houseId: 111,
-        eventStatus: 'thanked',
-      },
-    ];
-    this.newHouse(houseObj);
-    this.newRoommate(roommateObjs);
-    this.newEvent(eventObjs);
-    this.saveStateToStorage();
+  loadState() {
+    //replace with houseId returned from login
+    let houseId = '5bf5a3fa16018b9d0931b72b';
+
+    this.setState(
+      {
+        ffHouse: this.getHouse(houseId),
+        ffEvents: this.getEvents(houseId),
+        ffRoommates: this.getRoommates(houseId),
+      }
+    );
   }
 
   // Function to load storage automatically when the app runs.
   componentWillMount() {
-    this.loadStateFromStorage();
+    this.loadState();
   }
 
   render() {

@@ -96,7 +96,7 @@ class App extends Component {
       method: 'get',
       url: 'http://localhost:3005/household?houseId=' + houseId,
     })
-    .then((response) => {this.setState({ffHouse: response.data[0]})})
+    .then((response) => {this.setState({ ffHouse: response.data[0] });})
     .catch((response) => {console.log('getHouse() failed.');});
   }
 
@@ -131,7 +131,7 @@ class App extends Component {
       method: 'get',
       url: 'http://localhost:3005/roommate?houseId=' + houseId,
     })
-    .then((response) => {this.setState({ffRoommates: response.data})})
+    .then((response) => {this.setState({ ffRoommates: response.data });})
     .catch((response) => {console.log('getRoommates() failed.');});
   }
 
@@ -176,7 +176,7 @@ class App extends Component {
       method: 'get',
       url: 'http://localhost:3005/event?houseId=' + houseId,
     })
-    .then((response) => {this.setState({ffEvents: response.data})})
+    .then((response) => {this.setState({ ffEvents: response.data });})
     .catch((response) => {console.log('getEvents() failed.');});
   }
 
@@ -198,21 +198,20 @@ class App extends Component {
   }
 
   handleLoginSubmit(e) {
-  //   const { email, password } = this.state;
+    //   const { email, password } = this.state;
 
-  if (this.currentHouseId != null) {
-    window.location = "/dashboard"
-  } else {
-    window.location = "/createorjoin"
+    if (this.currentHouseId != null) {
+      window.location = '/dashboard';
+    } else {
+      window.location = '/createorjoin'
+    }
+
   }
-
-}
 
 
 
   // Function to call utility functions when the submit new Roommate Button is pressed.
   handleRoommateSubmit() {
-
 
   }
 
@@ -331,7 +330,7 @@ class App extends Component {
       eventEndDate: newEventStartDate,
       eventOwner: 1,
       houseId: this.state.ffHouse.houseId,
-    },];
+    }, ];
     if (!this.state.editEventMode) {
       newEventObj[0].eventStatus = 'pending';
     }
@@ -397,9 +396,9 @@ class App extends Component {
     //replace with houseId returned from login
     let houseId = '5bf5a3fa16018b9d0931b72b';
     // this.getHouse(houseId).then((houseObj) => {console.log(houseObj)})
-    this.getHouse(houseId)
-    this.getEvents(houseId)
-    this.getRoommates(houseId)
+    this.getHouse(houseId);
+    this.getEvents(houseId);
+    this.getRoommates(houseId);
     // this.getHouse(houseId).then((houseObj) => {this.setState({ffHouse: houseObj})})
     // this.getEvents(houseId).then((eventsArr) => {this.setState({ffEvents: eventsArr})})
     // this.getRoommates(houseId).then((roommatesArr) => {this.setState({ffRoommates: roommatesArr})})

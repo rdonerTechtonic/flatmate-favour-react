@@ -30,7 +30,6 @@ export const EventItem = function (props) {
     //   statusButtonText = 'Thanked';
     // }
 
-
     switch (props.eventStatus) {
       case 'pending':
         statusImg = '/Handshake-Icon.png';
@@ -79,9 +78,9 @@ export const EventItem = function (props) {
                         </h2>
                         <span>
                           {
-                            props.eventAcceptor.map((elem, index) => (
+                            props.eventAssignees.map((elem, index) => (
                               <figure key={index} >
-                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem, { size: '400' })} />
+                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url('rdoner@email.arizona.edu', { size: '400' })} />
                                 <figcaption>{elem}</figcaption>
                               </figure>
                             ))
@@ -93,15 +92,15 @@ export const EventItem = function (props) {
                     <div>
                       <h2>Start time</h2>
                       <p>
-                        {props.eventStartDate.split("T")[0]}<br></br>
-                        {props.eventStartDate.slice(11,16)}
+                        {props.eventStartDate.split('T')[0]}<br></br>
+                        {props.eventStartDate.slice(11, 16)}
                       </p>
                     </div>
                     <div>
                       <h2>End Time</h2>
                       <p>
-                        {props.eventEndDate.split("T")[0]}<br></br>
-                      {props.eventEndDate.slice(11,16)}
+                        {props.eventEndDate.split('T')[0]}<br></br>
+                      {props.eventEndDate.slice(11, 16)}
                       </p>
                     </div>
                     <div>

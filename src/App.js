@@ -49,6 +49,9 @@ class App extends Component {
     this.handleEventEdit = this.handleEventEdit.bind(this);
     this.handleNewEvent = this.handleNewEvent.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.getHouse = this.getHouse.bind(this);
+    this.getEvents = this.getEvents.bind(this);
+    this.loadState = this.loadState.bind(this);
   }
 
   // standard houseObj example
@@ -91,7 +94,7 @@ class App extends Component {
       method: 'get',
       url: 'http://localhost:3005/household?houseId=' + houseId,
     })
-    .then((response) => {return console.log(response.data[0]);})
+    .then((response) => {this.setState({ffHouse: response.data[0]})})
     .catch((response) => {console.log('getHouse() failed.');});
   }
 
@@ -126,7 +129,7 @@ class App extends Component {
       method: 'get',
       url: 'http://localhost:3005/roommate?houseId=' + houseId,
     })
-    .then((response) => {return console.log(response.data);})
+    .then((response) => {this.setState({ffRoommates: response.data})})
     .catch((response) => {console.log('getRoommates() failed.');});
   }
 
@@ -171,7 +174,7 @@ class App extends Component {
       method: 'get',
       url: 'http://localhost:3005/event?houseId=' + houseId,
     })
-    .then((response) => {return console.log(response.data);})
+    .then((response) => {this.setState({ffEvents: response.data})})
     .catch((response) => {console.log('getEvents() failed.');});
   }
 
@@ -397,14 +400,21 @@ class App extends Component {
   loadState() {
     //replace with houseId returned from login
     let houseId = '5bf5a3fa16018b9d0931b72b';
+    // this.getHouse(houseId).then((houseObj) => {console.log(houseObj)})
+    this.getHouse(houseId)
+    this.getEvents(houseId)
+    this.getRoommates(houseId)
+    // this.getHouse(houseId).then((houseObj) => {this.setState({ffHouse: houseObj})})
+    // this.getEvents(houseId).then((eventsArr) => {this.setState({ffEvents: eventsArr})})
+    // this.getRoommates(houseId).then((roommatesArr) => {this.setState({ffRoommates: roommatesArr})})
 
-    this.setState(
-      {
-        ffHouse: this.getHouse(houseId),
-        ffEvents: this.getEvents(houseId),
-        ffRoommates: this.getRoommates(houseId),
-      }
-    );
+    // this.setState(
+    //   {
+    //     ffHouse: this.getHouse(houseId),
+    //     ffEvents: this.getEvents(houseId),
+    //     ffRoommates: this.getRoommates(houseId),
+    //   }
+    // );
   }
 
   // Function to load storage automatically when the app runs.
@@ -425,7 +435,7 @@ class App extends Component {
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/household">household</Link></li>
-          <li><Link to="/Event">Event</Link></li>
+          <li><Link to="/event">Event</Link></li>
           <Route path="/homepage" component={Homepage} />
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
             handleLoginSubmit={this.handleLoginSubmit}

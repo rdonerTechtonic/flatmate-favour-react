@@ -9,31 +9,18 @@ export const CreateOrJoin = function (props) {
           <img src="/Flatmate-Favour-Logo.png" class="rounded" alt="Logo" />
         </div>
 
-        <div className="container-fluid">
-          <div className="backgroundTag">
-            <div className="form-group">
-              <label htmlFor="houseName">House Name:</label>
-              <p><input type="text" className="form-control" id="selectedHouseName" placeholder="Name of house"
-              /></p>
-            </div>
-            <div className="form-group centerButton">
-                <center><button type="button" className="btn btn-primary" onClick={props.handleRoommateSubmit} id="decisionButton"><i className="fas fa-plus-circle"></i></button></center>
-            </div>
-            <div className="form-group">
-                <label htmlFor="invitedHouses">The below houses invited you!</label>
-                <p><select multiple className="custom-select" id="invitedHouses">
+        <div class="centerButton">
+          <Link to="/household"><button type="button" id="createHouseButton" class="btn btn-primary btn-lg">Create Household</button>
+          </Link>
+        </div>
 
-            
-                </select></p>
-            </div>
-                <div className="form-group centerButton">
-                <center><button type="button" id="listOfHouses" onClick={props.deleteRoommate} className="btn btn-danger"><i className="fas fa-minus-circle"></i></button></center>
-                </div>
-            <div className="form-group inline-form rightButton">
-            <Link to="/dashboard"><button type="button" id="confirmHouse" class="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>
-            <Link to="/dashboard"><button type="button" id="cancelHouse" class="btn btn-danger">Cancel</button></Link>
-            </div>
-          </div>
+        <div class="centerText">
+          <p>OR</p>
+        </div>
+
+        <div class="centerButton">
+        <Link to="/joinhousehold"><button type="button" id="joinHouseButton" class="btn btn-primary btn-lg">Join Household</button>
+        </Link>
         </div>
 
 

@@ -28,6 +28,8 @@ class App extends Component {
       ffRoommates: [],
       editEventMode: false,
       editHouseMode: false,
+      currentHouseId: null,
+      currenRoommateId: null,
       //emailInvitedMode: false,
       eventToEdit: 0,
       houseId: null,
@@ -196,19 +198,13 @@ class App extends Component {
   }
 
   handleLoginSubmit(e) {
+  //   const { email, password } = this.state;
 
-
-    // const { email, password } = this.state;
-    // axios({
-    //   method: 'post',
-    //   url: 'http://localhost:3005/login',
-
-    // if(loginStatus === "loggedin"){
-    //   return <Redirect push to="/dashboard" />
-    // }else if(loginStatus === "join"){
-    //   return <Redirect push to="/joinhousehold" />
-    // }
-    alert("this works")
+  if (this.currentHouseId != null) {
+    window.location = "/dashboard"
+  } else {
+    window.location = "/createorjoin"
+  }
 
 }
 
@@ -428,15 +424,15 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
           </header>
-          <li><Link to="/homepage">Homepage</Link></li>
+          <li><Link to="/">Homepage</Link></li>
           <li><Link to="/joinhousehold">JoinHousehold</Link></li>
           <li><Link to="/createorjoin">CreateOrJoin</Link></li>
           <li><Link to="/registration">Registration</Link></li>
           <li><Link to="/login">Login</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/household">household</Link></li>
-          <li><Link to="/event">Event</Link></li>
-          <Route path="/homepage" component={Homepage} />
+          <li><Link to="/Event">Event</Link></li>
+          <Route exact path="/" component={Homepage}/>
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
             handleLoginSubmit={this.handleLoginSubmit}
           />} />

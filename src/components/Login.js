@@ -3,8 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 
 //holds buttons to create new house, and login with google account
 
-
-
 export const Login = function (props) {
 
   return (
@@ -31,7 +29,7 @@ export const Login = function (props) {
 
 
               <div className="form-group inline-form rightButton">
-              <button type="button" id="confirmInformation" className="btn btn-primary" onClick={props.handleHouseSubmit}>Login</button>
+              <button type="button" id="confirmInformation" className="btn btn-primary" onClick={props.handleLoginSubmit}>Login</button>
               <button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button>
               </div>
             </div>

@@ -46,6 +46,7 @@ class App extends Component {
     this.handleEditHouse = this.handleEditHouse.bind(this);
     this.handleEventEdit = this.handleEventEdit.bind(this);
     this.handleNewEvent = this.handleNewEvent.bind(this);
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
   }
 
   // standard houseObj example
@@ -91,6 +92,12 @@ class App extends Component {
     .then((response) => {return console.log(response.data[0])})
     .catch((response) => {console.log("getHouse() failed.")})
   }
+
+  // getLoginEmail(e){
+  //   let enteredEmail = {}
+  //   enteredEmail.push(document.getElementById('userEmail').value)
+  //   return enteredEmail;
+  // }
 
   //  standard roommateObj example
   // {
@@ -183,20 +190,29 @@ class App extends Component {
     this.setState({ ffRoommates: currentRoommates }, this.saveStateToStorage);
   }
 
-  handleLoginSubmit() {
-
-  }
-
-  // Function to call utility functions when the submit new Roommate Button is pressed.
-  handleRoommateSubmit() {
+  handleLoginSubmit(e) {
 
 
+    // const { email, password } = this.state;
+    // axios({
+    //   method: 'post',
+    //   url: 'http://localhost:3005/login',
 
     // if(loginStatus === "loggedin"){
     //   return <Redirect push to="/dashboard" />
     // }else if(loginStatus === "join"){
     //   return <Redirect push to="/joinhousehold" />
     // }
+    alert("this works")
+
+}
+
+
+
+  // Function to call utility functions when the submit new Roommate Button is pressed.
+  handleRoommateSubmit() {
+
+
   }
 
   // Function to call utility functions when the submit new/edit house button is pressed
@@ -472,13 +488,14 @@ class App extends Component {
           <li><Link to="/Event">Event</Link></li>
           <Route path="/homepage" component={Homepage} />
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
-
+            handleLoginSubmit={this.handleLoginSubmit}
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
             currentRoommates={this.state.ffRoommates}
           />} />
           <Route path="/registration" component={Registration} />
           <Route path="/login" render={(props) => <Login
+            handleLoginSubmit={this.handleLoginSubmit}
              />} />
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}

@@ -48,6 +48,7 @@ export const EventItem = function (props) {
         statusButtonText = 'Thanked';
         break;
     }
+
     return (
       <div className="card">
               <div className="card-header task-accepted" id="heading'+ i +'">
@@ -80,8 +81,8 @@ export const EventItem = function (props) {
                           {
                             props.eventAssignees.map((elem, index) => (
                               <figure key={index} >
-                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url('rdoner@email.arizona.edu', { size: '400' })} />
-                                <figcaption>{elem}</figcaption>
+                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem.userEmail, { size: '400' })} />
+                                <figcaption>{elem.userName}</figcaption>
                               </figure>
                             ))
                           }

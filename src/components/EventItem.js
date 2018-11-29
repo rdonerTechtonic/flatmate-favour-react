@@ -69,8 +69,8 @@ export const EventItem = function (props) {
                       <div>
                         <h2>Requestor:</h2>
                           <figure>
-                            <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(props.eventOwner)} />
-                            <figcaption>{props.eventOwner}</figcaption>
+                            <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(props.eventOwner.userEmail)} />
+                            <figcaption>{props.eventOwner.userName}</figcaption>
                           </figure>
                       </div>
                       <div>

@@ -28,6 +28,8 @@ class App extends Component {
       ffRoommates: [],
       editEventMode: false,
       editHouseMode: false,
+      currentHouseId: null,
+      currenRoommateId: null,
       //emailInvitedMode: false,
       eventToEdit: 0,
     };
@@ -191,19 +193,13 @@ class App extends Component {
   }
 
   handleLoginSubmit(e) {
+  //   const { email, password } = this.state;
 
-
-    // const { email, password } = this.state;
-    // axios({
-    //   method: 'post',
-    //   url: 'http://localhost:3005/login',
-
-    // if(loginStatus === "loggedin"){
-    //   return <Redirect push to="/dashboard" />
-    // }else if(loginStatus === "join"){
-    //   return <Redirect push to="/joinhousehold" />
-    // }
-    alert("this works")
+  if (this.currentHouseId != null) {
+    window.location = "/dashboard"
+  } else {
+    window.location = "/createorjoin"
+  }
 
 }
 

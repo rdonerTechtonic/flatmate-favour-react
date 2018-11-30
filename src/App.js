@@ -31,7 +31,7 @@ class App extends Component {
       currentHouseId: '5C018F16E417CFB382C1C94C',
       currentRoommateId: null,
       //emailInvitedMode: false,
-      eventToEdit: 0,
+      eventToEdit: null,
       houseId: null,
       roommateId: null,
     };
@@ -161,10 +161,23 @@ class App extends Component {
   }
 
   // Pass this function a houseId and it will return all events belonging to that house.
-  getEvents(houseId) {
+  getEvents(queryParams) {
+    let query = ''
+    if (queryParams._id) {
+      query = "_id=" + queryParams._id
+    }
+    if (queryParams.houseId) {
+      query = "houseId=" + queryParams.houseId
+    }
+    if (queryParams.eventOwner) {
+      query = "eventOwner=" + queryParams.eventOwner
+    }
+    if (queryParams.eventStartDate) {
+      query = "eventStartDate=" + queryParams.eventStartDate
+    }
     axios({
       method: 'get',
-      url: 'http://localhost:3005/event?houseId=' + houseId,
+      url: 'http://localhost:3005/event?' + query,
     })
     .then((response) => {this.setState({ ffEvents: response.data });})
     .catch((response) => {console.log('getEvents() failed.');});
@@ -302,7 +315,6 @@ class App extends Component {
         selectedRoommates.push(parseInt(document.getElementById('selectRoommate')[i].value));
       }
     }
-// WARNING THAT 'newEventEndDate' is assigned a value but never used
     let newEventStartDate = document.getElementById('startEventDate').value + 'T' +
     document.getElementById('startEventTime').value + '.000Z';
     let newEventEndDate = document.getElementById('endEventDate').value + 'T' +
@@ -315,7 +327,7 @@ class App extends Component {
       eventAssignees: selectedRoommates,
       eventDescription: document.getElementById('eventNotes').value,
       eventStartDate: newEventStartDate,
-      eventEndDate: newEventStartDate,
+      eventEndDate: newEventEndDate,
       eventOwner: 1,
       houseId: this.state.ffHouse.houseId,
     }, ];

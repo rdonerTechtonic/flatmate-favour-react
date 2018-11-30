@@ -121,7 +121,7 @@ class App extends Component {
   postNewRoommate(newRoommateObj) {
     axios({
       method: 'post',
-      url: 'http://localhost:3005/roommate?',
+      url: 'http://localhost:3005/auth/register',
       data: newRoommateObj,
     }).then((response) => {return console.log(response.data);
     }).catch((response) => {console.log('postNewRoommate() failed.');

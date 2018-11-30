@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 export const Registration = function (props) {
   return(
     <div>
-      <div class="centerButton">
-        <img src="/Flatmate-Favour-Logo.png" class="rounded" alt="Logo" />
+      <div className="centerButton">
+        <img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" />
       </div>
 
       <div className= "container"><center><h1>New Roommate Registration</h1></center>
@@ -32,8 +32,8 @@ export const Registration = function (props) {
             </div>
 
             <div className="form-group inline-form rightButton">
-            <Link to="/createorjoin"><button type="button" id="confirmRegistration" class="btn btn-primary" onClick={props.handleHouseSubmit}>Register</button></Link>
-            <Link to="/homepage"><button type="button" id="cancelInformation" class="btn btn-danger">Cancel</button></Link>
+            <Link to="/createorjoin"><button type="button" id="confirmRegistration" className="btn btn-primary" onClick={props.handleHouseSubmit}>Register</button></Link>
+            <Link to="/homepage"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
             </div>
           </div>
         </div>

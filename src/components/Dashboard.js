@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { UserBar } from './UserBar.js';
 import { EventDashboard } from './EventDashboard';
 import { Link } from 'react-router-dom';

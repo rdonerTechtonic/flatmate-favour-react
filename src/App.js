@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import { Homepage } from './components/Homepage.js';
 import { CreateOrJoin } from './components/CreateOrJoin.js';
@@ -13,11 +13,11 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Switch,
-  Redirect
+  // Switch,
+  // Redirect
 } from 'react-router-dom';
 import axios from 'axios';
-var store = require('store');
+// var store = require('store');
 
 class App extends Component {
   constructor() {
@@ -87,8 +87,7 @@ class App extends Component {
 
   // Pass this function a standard houseObj and it will create it on the database.
   postNewHouse(houseObj) {
-    axios
-    ({
+    axios({
       method: 'post',
       url: 'http://localhost:3005/household?',
       data: houseObj,
@@ -190,16 +189,16 @@ class App extends Component {
 
 
   // Function to call utility functions when the submit new Roommate Button is pressed.
-//   handleRoommateSubmit() {
-//     let newRoommateObj =
-//         [{
-//           roommateName: this.getRoommateNameFormData().split('@')[0],
-//           roommateId: Math.floor((Math.random() * 100000000000000) + 1),
-//           houseId: this.state.ffHouse.houseId,
-//           roommateEmail: this.getRoommateNameFormData(),
-//         },];
-//    this.newRoommate(newRoommateObj);
-//   }
+  handleRoommateSubmit() {
+   //  let newRoommateObj =
+   //      [{
+   //        roommateName: this.getRoommateNameFormData().split('@')[0],
+   //        roommateId: Math.floor((Math.random() * 100000000000000) + 1),
+   //        houseId: this.state.ffHouse.houseId,
+   //        roommateEmail: this.getRoommateNameFormData(),
+   //      },];
+   // this.newRoommate(newRoommateObj);
+  }
 
   // Function to call utility functions when the submit new/edit house button is pressed
   handleHouseSubmit() {
@@ -258,13 +257,13 @@ class App extends Component {
     const status = e.target.attributes.getNamedItem('data-status').value;
     let newStatus = '';
 
-    if (status == 'pending') {
+    if (status === 'pending') {
       newStatus = 'accepted';
       console.log('accepted');
-    } else if (status == 'accepted') {
+    } else if (status === 'accepted') {
       newStatus = 'done';
       console.log('done');
-    } else if (status == 'done') {
+    } else if (status === 'done') {
       newStatus = 'thanked';
       console.log('thanked');
     } else if (status === 'thanked') {
@@ -278,7 +277,7 @@ class App extends Component {
   handleDateChange(e) {
     console.log('Date has changed');
     console.log(e.target.value);
-    let date = e.target.value;
+    // let date = e.target.value;
   }
 
   //  Function to switch into edit mode when pressing the edit house button.
@@ -292,6 +291,9 @@ class App extends Component {
     return newHouseName;
   }
 
+  // getRoommateNameFormData() {
+  //
+  // }
   // Function to grab form data from the event page and return a new event object.
   getEventFormData() {
     let selectedRoommates = [];
@@ -300,7 +302,7 @@ class App extends Component {
         selectedRoommates.push(parseInt(document.getElementById('selectRoommate')[i].value));
       }
     }
-
+// WARNING THAT 'newEventEndDate' is assigned a value but never used
     let newEventStartDate = document.getElementById('startEventDate').value + 'T' +
     document.getElementById('startEventTime').value + '.000Z';
     let newEventEndDate = document.getElementById('endEventDate').value + 'T' +
@@ -337,7 +339,7 @@ class App extends Component {
   // ffRoommates to splice.
   getRoommatePositionById(input) {
     for (var i = 0; i < this.state.ffRoommates.length; i++) {
-      if (this.state.ffRoommates[i].roommateId == input) {
+      if (this.state.ffRoommates[i].roommateId === input) {
         return i;
       }
     }

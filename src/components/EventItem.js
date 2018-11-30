@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import gravatar from 'gravatar';
 
@@ -9,26 +9,6 @@ import gravatar from 'gravatar';
 export const EventItem = function (props) {
     let statusImg = '';
     let statusButtonText = '';
-
-    // if (!props.eventStatus.accepted) {
-    //   statusImg = '/Handshake-Icon.png';
-    //   statusButtonText = 'Accept?';
-    // }
-    //
-    // if (props.eventStatus.accepted && !props.eventStatus.completed) {
-    //   statusImg = '/Hourglass-Icon.png';
-    //   statusButtonText = 'Done?';
-    // }
-    //
-    // if (props.eventStatus.completed && !props.eventStatus.thanked) {
-    //   statusImg = '/Check-Icon.png';
-    //   statusButtonText = 'Thank?';
-    // }
-    //
-    // if (props.eventStatus.thanked) {
-    //   statusImg = '/Check-Icon.png';
-    //   statusButtonText = 'Thanked';
-    // }
 
     switch (props.eventStatus) {
       case 'pending':
@@ -47,6 +27,7 @@ export const EventItem = function (props) {
         statusImg = '/Check-Icon.png';
         statusButtonText = 'Thanked';
         break;
+      default:
     }
 
     return (
@@ -69,7 +50,7 @@ export const EventItem = function (props) {
                       <div>
                         <h2>Requestor:</h2>
                           <figure>
-                            <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(props.eventOwner.roommateEmail)} />
+                            <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} alt="gravatar" src={gravatar.url(props.eventOwner.roommateEmail)} />
                             <figcaption>{props.eventOwner.roommateName}</figcaption>
                           </figure>
                       </div>
@@ -81,7 +62,7 @@ export const EventItem = function (props) {
                           {
                             props.eventAssignees.map((elem, index) => (
                               <figure key={index} >
-                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem.roommateEmail, { size: '400' })} />
+                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} alt="gravatar" src={gravatar.url(elem.roommateEmail, { size: '400' })} />
                                 <figcaption>{elem.roommateName}</figcaption>
                               </figure>
                             ))
@@ -123,12 +104,3 @@ export const EventItem = function (props) {
 
     );
   };
-
-// <a href="event.html" className="ml-auto btn btn-light" type="button" name="button">
-
-
-// {
-//   props.eventAcceptor.map((elem, index) => (
-//     <img key={index} style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem.roommateEmail, { size: '400' })} />
-//   ))
-// }

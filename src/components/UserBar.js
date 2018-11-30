@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import gravatar from 'gravatar';
 import { Link } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ export const UserBar = function (props) {
 
           props.ffRoommates.map((elem, index) => (
               <a key={index} href=''>
-                  <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }}  src={gravatar.url(elem.roommateEmail, { size: '400' })} />
+                  <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} alt="gravatar"  src={gravatar.url(elem.roommateEmail, { size: '400' })} />
               </a>
           ))
         }
@@ -31,12 +31,3 @@ export const UserBar = function (props) {
       </div>
     );
   };
-
-// $(document).ready(populateDashboardWithRoommates);
-
-// function populateDashboardWithRoommates() {
-//   for (var i = 0; i < testHousehold.ffHouse.HouseRoomates.length; i++) {
-//     $('span.dashboardUsers').append('<button class="btn btn-info" id="' + testHousehold.ffHouse.HouseRoomates[i] + '"<a href="#"><i class="fas fa-user"></i></a></button>');
-//     // console.log(testHousehold.ffHouse);
-//   };
-// };

@@ -17,8 +17,8 @@ export const JoinHousehold = function (props) {
   //</form>
   return (
       <div>
-        <div class="centerButton">
-          <img src="/Flatmate-Favour-Logo.png" class="rounded" alt="Logo" />
+        <div className="centerButton">
+          <img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" />
         </div>
 
         <div className="container-fluid">
@@ -42,8 +42,8 @@ export const JoinHousehold = function (props) {
                 <center><button type="button" id="listOfHouses" onClick={props.deleteRoommate} className="btn btn-danger"><i className="fas fa-minus-circle"></i></button></center>
                 </div>
             <div className="form-group inline-form rightButton">
-            <Link to="/dashboard"><button type="button" id="confirmHouse" class="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>
-            <Link to="/dashboard"><button type="button" id="cancelHouse" class="btn btn-danger">Cancel</button></Link>
+            <Link to="/dashboard"><button type="button" id="confirmHouse" className="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>
+            <Link to="/dashboard"><button type="button" id="cancelHouse" className="btn btn-danger">Cancel</button></Link>
             </div>
           </div>
         </div>

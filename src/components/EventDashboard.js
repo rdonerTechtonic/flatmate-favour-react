@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { EventItem } from './EventItem.js';
 import { Link } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ export const EventDashboard = function (props) {
                 eventEndDate={elem.eventEndDate}
                 eventLocation={elem.eventLocation}
                 eventDescription={elem.eventDescription}
-                eventId={elem.eventId}
+                eventId={elem._Id}
                 handleUpdateEventStatus={props.handleUpdateEventStatus}
                 handleEventEdit={props.handleEventEdit}
                 ffEvents={elem}

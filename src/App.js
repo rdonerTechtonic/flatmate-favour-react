@@ -29,7 +29,7 @@ class App extends Component {
       editEventMode: false,
       editHouseMode: false,
       currentHouseId: null,
-      currenRoommateId: null,
+      currentRoommateId: null,
       //emailInvitedMode: false,
       eventToEdit: 0,
       houseId: null,
@@ -102,15 +102,15 @@ class App extends Component {
 
   // getLoginEmail(e){
   //   let enteredEmail = {}
-  //   enteredEmail.push(document.getElementById('userEmail').value)
+  //   enteredEmail.push(document.getElementById('roommateEmail').value)
   //   return enteredEmail;
   // }
 
   //  standard roommateObj example
   // {
-  //   userName: "Daffy Duck",
-  //   userEmail: "daffy@gmail.com",
-  //   userPassword: "password123",
+  //   roommateName: "Daffy Duck",
+  //   roommateEmail: "daffy@gmail.com",
+  //   roommaterooPassword: "password123",
   //   houseId: "5bf5a3fa16018b9d0931b72a",
   // }
 
@@ -190,8 +190,8 @@ class App extends Component {
   }
 
   // Function to delete a roommate.  Pass this the ID of the roommate to delete.
-  deleteRoommate(userId) {
-    let roommatePosition = this.getRoommatePositionById(userId);
+  deleteRoommate(roommateId) {
+    let roommatePosition = this.getRoommatePositionById(roommateId);
     let currentRoommates = JSON.parse(JSON.stringify(this.state.ffRoommates));
     currentRoommates.splice(roommatePosition, 1);
     // this.setState({ ffRoommates: currentRoommates }, this.saveStateToStorage);
@@ -208,11 +208,23 @@ class App extends Component {
 
   }
 
+  handleCreateOrJoin(){
+    alert("this works")
+    // housdId, houseName, houseIn
+  }
+
 
 
   // Function to call utility functions when the submit new Roommate Button is pressed.
   handleRoommateSubmit() {
-
+    let newRoommateObj =
+        [{
+          roommateName: this.getRoommateNameFormData().split('@')[0],
+          roommateId: Math.floor((Math.random() * 100000000000000) + 1),
+          houseId: this.state.ffHouse.houseId,
+          roommateEmail: this.getRoommateNameFormData(),
+        },];
+   this.newRoommate(newRoommateObj);
   }
 
   // Function to call utility functions when the submit new/edit house button is pressed
@@ -232,7 +244,7 @@ class App extends Component {
           houseAddress: '123 Fake St.',
           houseEvents: [],
         };
-      this.newHouse(newHouseObj);
+  //    this.newHouse(newHouseObj);
     }
   }
 
@@ -351,7 +363,7 @@ class App extends Component {
   // ffRoommates to splice.
   getRoommatePositionById(input) {
     for (var i = 0; i < this.state.ffRoommates.length; i++) {
-      if (this.state.ffRoommates[i].userId == input) {
+      if (this.state.ffRoommates[i].roommateId == input) {
         return i;
       }
     }

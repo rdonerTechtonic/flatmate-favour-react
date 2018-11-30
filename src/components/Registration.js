@@ -9,25 +9,25 @@ export const Registration = function (props) {
         <img src="/Flatmate-Favour-Logo.png" class="rounded" alt="Logo" />
       </div>
 
-      <div className= "container"><center><h1>New User Registration</h1></center>
+      <div className= "container"><center><h1>New Roommate Registration</h1></center>
         <div className="container-fluid">
           <div className="backgroundTag">
             <div className="form-group">
               <label htmlFor="houseName">Email:</label>
-              <p><input type="text" className="form-control" id="userRegistration" placeholder="Enter Valid Email Address"
+              <p><input type="text" className="form-control" id="roommateRegistration" placeholder="Enter Valid Email Address"
               /></p>
             </div>
 
             <div className="form-group">
               <label htmlFor="houseName">Roommate Name:</label>
-              <p><input type="text" className="form-control" id="userRegistration" placeholder="Name of User"
+              <p><input type="text" className="form-control" id="roommateRegistration" placeholder="Name of Roommate"
               /></p>
             </div>
 
 
             <div className="form-group">
               <label htmlFor="houseName">Password:</label>
-              <p><input type="text" className="form-control" id="userRegistration"
+              <p><input type="text" className="form-control" id="roommateRegistration" placeholder="Type your password"
               /></p>
             </div>
 

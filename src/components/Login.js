@@ -15,14 +15,14 @@ export const Login = function (props) {
           <div className="container-fluid">
             <div className="backgroundTag">
               <div className="form-group">
-                <label htmlFor="userLogin">Email:</label>
-                <p><input type="text" className="form-control" id="userEmail" placeholder="Username"
+                <label htmlFor="roommateLogin">Email:</label>
+                <p><input type="text" className="form-control" id="roommateEmail" placeholder="Username"
                 /></p>
               </div>
 
               <div className="form-group">
-                <label htmlFor="userLogin">Password:</label>
-                <p><input type="text" className="form-control" id="userPassword" placeholder="Password"
+                <label htmlFor="roommateLogin">Password:</label>
+                <p><input type="text" className="form-control" id="roommatePassword" placeholder="Password"
                 /></p>
               </div>
 

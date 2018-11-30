@@ -23,8 +23,8 @@ export const Event = function (props) {
           <label for="selectRoommate">Roommate(s):</label>
           <select multiple class="custom-select" id="selectRoommate" >
           {props.currentRoommates.map((element, index) =>
-            <option key={index} value={element.userId}>
-            {element.userName}
+            <option key={index} value={element.roommateId}>
+            {element.roommateName}
             </option>)
           }
           </select>
@@ -72,8 +72,8 @@ export const Event = function (props) {
         <label for="selectRoommate">Roommate(s):</label>
         <select multiple class="custom-select" id="selectRoommate" >
         {props.currentRoommates.map((element, index) =>
-          <option key={index} value={element.userId}>
-          {element.userName}
+          <option key={index} value={element.roommateId}>
+          {element.roommateName}
           </option>)
         }
         </select>

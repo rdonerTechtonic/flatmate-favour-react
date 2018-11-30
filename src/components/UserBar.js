@@ -20,7 +20,7 @@ export const UserBar = function (props) {
 
           props.ffRoommates.map((elem, index) => (
               <a key={index} href=''>
-                  <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }}  src={gravatar.url(elem.userEmail, { size: '400' })} />
+                  <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }}  src={gravatar.url(elem.roommateEmail, { size: '400' })} />
               </a>
           ))
         }

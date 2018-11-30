@@ -63,6 +63,27 @@ class App extends Component {
   //   houseInvitees: []
   // }
 
+  //  standard roommateObj example
+  // {
+  //   userName: "Daffy Duck",
+  //   userEmail: "daffy@gmail.com",
+  //   userPassword: "password123",
+  //   houseId: "5bf5a3fa16018b9d0931b72a",
+  // }
+
+  // Standard eventObj example
+  // {
+  //   eventTitle: "Mow the Lawn",
+  //   eventOwner: "5bf5a3fa16018b9d0931b722",
+  //   eventAssignees: ["5bf5a3fa16018b9d0931b721","5bf5a3fa16018b9d0931b723"],
+  //   eventDescription: "It's not gonna mow itself",
+  //   eventStartDate: "2018-01-01T00:00:00.000Z",
+  //   eventEndDate: "2018-01-01T00:00:00.000Z",
+  //   eventLocation: "Back Yard",
+  //   eventStatus: "pending",
+  //   houseId: "5bf5a3fa16018b9d0931b72b"
+  // }
+
   // Pass this function a standard houseObj and it will create it on the database.
   postNewHouse(houseObj) {
     axios
@@ -71,7 +92,7 @@ class App extends Component {
       url: 'http://localhost:3005/household?',
       data: houseObj,
     })
-    .then((response) => {console.log(response.data)})
+    .then((response) => {this.updateState("ffHouse", JSON.parse(response.config.data))})
     .catch((response) => {console.log('postNewHouse() failed.');});
   }
 
@@ -96,14 +117,6 @@ class App extends Component {
     .catch((response) => {console.log('getHouse() failed.');});
   }
 
-  //  standard roommateObj example
-  // {
-  //   userName: "Daffy Duck",
-  //   userEmail: "daffy@gmail.com",
-  //   userPassword: "password123",
-  //   houseId: "5bf5a3fa16018b9d0931b72a",
-  // }
-
   // Pass this function a standard roommateObj and it'll create it on the database.
   postNewRoommate(newRoommateObj) {
     axios({
@@ -124,19 +137,6 @@ class App extends Component {
     .then((response) => {this.setState({ ffRoommates: response.data });})
     .catch((response) => {console.log('getRoommates() failed.');});
   }
-
-  // Standard eventObj example
-  // {
-  //   eventTitle: "Mow the Lawn",
-  //   eventOwner: "5bf5a3fa16018b9d0931b722",
-  //   eventAssignees: ["5bf5a3fa16018b9d0931b721","5bf5a3fa16018b9d0931b723"],
-  //   eventDescription: "It's not gonna mow itself",
-  //   eventStartDate: "2018-01-01T00:00:00.000Z",
-  //   eventEndDate: "2018-01-01T00:00:00.000Z",
-  //   eventLocation: "Back Yard",
-  //   eventStatus: "pending",
-  //   houseId: "5bf5a3fa16018b9d0931b72b"
-  // }
 
   // Pass this function a standard eventObj and it will create it on the database.
   postNewEvent(eventObj) {
@@ -188,7 +188,7 @@ class App extends Component {
 
   // Function to call utility functions when the submit new/edit house button is pressed
   handleHouseSubmit() {
-    if (this.state.editHouseMode) {
+    if (this.state.houseId) {
       this.editHouse( this.state.currentHouseId, { houseName: this.getHouseNameFormData() })
       this.setState.editHouseMode = false;
     } else {
@@ -342,6 +342,8 @@ class App extends Component {
   }
 
   updateState(state, input) {
+    console.log(state);
+    console.log(input);
     if (state === "ffHouse") {
       let houseState = this.state.ffHouse
       for (var key in input) {

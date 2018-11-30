@@ -33,8 +33,8 @@ export const Household = (props) => {
               <p><select multiple className="custom-select" id="selectRoommate">
 
               {props.currentRoommates.map((element, index) =>
-                <option key={index} value={element.userId}>
-                {element.userName}
+                <option key={index} value={element.roommateId}>
+                {element.roommateName}
                 </option>)
               }
               </select></p>
@@ -71,8 +71,8 @@ export const Household = (props) => {
           <label htmlFor="selectRoommate">Remove Roommate(s):</label>
           <p><select multiple className="custom-select" id="selectRoommate">
           {props.currentRoommates.map((element, index) =>
-            <option key={index} value={element.userId}>
-            {element.userName}
+            <option key={index} value={element.roommateId}>
+            {element.roommateName}
             </option>)
           }
           </select></p>

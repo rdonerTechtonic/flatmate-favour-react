@@ -69,8 +69,8 @@ export const EventItem = function (props) {
                       <div>
                         <h2>Requestor:</h2>
                           <figure>
-                            <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(props.eventOwner.userEmail)} />
-                            <figcaption>{props.eventOwner.userName}</figcaption>
+                            <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(props.eventOwner.roommateEmail)} />
+                            <figcaption>{props.eventOwner.roommateName}</figcaption>
                           </figure>
                       </div>
                       <div>
@@ -81,8 +81,8 @@ export const EventItem = function (props) {
                           {
                             props.eventAssignees.map((elem, index) => (
                               <figure key={index} >
-                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem.userEmail, { size: '400' })} />
-                                <figcaption>{elem.userName}</figcaption>
+                                <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem.roommateEmail, { size: '400' })} />
+                                <figcaption>{elem.roommateName}</figcaption>
                               </figure>
                             ))
                           }
@@ -129,6 +129,6 @@ export const EventItem = function (props) {
 
 // {
 //   props.eventAcceptor.map((elem, index) => (
-//     <img key={index} style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem.userEmail, { size: '400' })} />
+//     <img key={index} style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} src={gravatar.url(elem.roommateEmail, { size: '400' })} />
 //   ))
 // }

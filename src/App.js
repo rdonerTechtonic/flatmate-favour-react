@@ -28,24 +28,19 @@ class App extends Component {
       ffRoommates: [],
       editEventMode: false,
       editHouseMode: false,
-      currentHouseId: null,
+      currentHouseId: false,
       currenRoommateId: null,
-      //emailInvitedMode: false,
       eventToEdit: 0,
       houseId: null,
       roommateId: null,
     };
-    // this.saveStateToStorage = this.saveStateToStorage.bind(this);
     this.loadState = this.loadState.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.editEvent = this.editEvent.bind(this);
-    //    this.newEvent = this.newEvent.bind(this);
-    //    this.newRoommate = this.newRoommate.bind(this);
     this.getEventFormData = this.getEventFormData.bind(this);
     this.getHouseNameFormData = this.getHouseNameFormData.bind(this);
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
     this.handleRoommateSubmit = this.handleRoommateSubmit.bind(this);
-    this.deleteRoommate = this.deleteRoommate.bind(this);
     this.handleUpdateEventStatus = this.handleUpdateEventStatus.bind(this);
     this.handleEditHouse = this.handleEditHouse.bind(this);
     this.handleEventEdit = this.handleEventEdit.bind(this);
@@ -64,7 +59,29 @@ class App extends Component {
   //   houseCity: "Boulder",
   //   houseState: "CO",
   //   houseLongitude: "",
-  //   houseLatitude: ""
+  //   houseLatitude: "",
+  //   houseInvitees: []
+  // }
+
+  //  standard roommateObj example
+  // {
+  //   userName: "Daffy Duck",
+  //   userEmail: "daffy@gmail.com",
+  //   userPassword: "password123",
+  //   houseId: "5bf5a3fa16018b9d0931b72a",
+  // }
+
+  // Standard eventObj example
+  // {
+  //   eventTitle: "Mow the Lawn",
+  //   eventOwner: "5bf5a3fa16018b9d0931b722",
+  //   eventAssignees: ["5bf5a3fa16018b9d0931b721","5bf5a3fa16018b9d0931b723"],
+  //   eventDescription: "It's not gonna mow itself",
+  //   eventStartDate: "2018-01-01T00:00:00.000Z",
+  //   eventEndDate: "2018-01-01T00:00:00.000Z",
+  //   eventLocation: "Back Yard",
+  //   eventStatus: "pending",
+  //   houseId: "5bf5a3fa16018b9d0931b72b"
   // }
 
   // Pass this function a standard houseObj and it will create it on the database.
@@ -75,20 +92,20 @@ class App extends Component {
       url: 'http://localhost:3005/household?',
       data: houseObj,
     })
-    .then((response) => {return console.log(response.data);})
+    .then((response) => {this.updateState("ffHouse", JSON.parse(response.config.data))})
     .catch((response) => {console.log('postNewHouse() failed.');});
   }
 
-  // Pass this function a houseId and a standard houseObj and it will edit that house on the database.
+  // Pass this function a houseId and a partial houseObj and it will edit that house on the database.
   editHouse(houseId, houseObj) {
     axios({
       method: 'put',
       url: 'http://localhost:3005/household?houseId=' + houseId,
       data: houseObj,
     })
-    .then((response) => {return console.log(response.data);})
+    .then((response) => {this.updateState("ffHouse", JSON.parse(response.config.data))})
     .catch((response) => {console.log('editHouse() failed.');});
-  }
+    }
 
   // Pass this function a houseId and it will return that house.
   getHouse(houseId) {
@@ -99,20 +116,6 @@ class App extends Component {
     .then((response) => {this.setState({ ffHouse: response.data[0] });})
     .catch((response) => {console.log('getHouse() failed.');});
   }
-
-  // getLoginEmail(e){
-  //   let enteredEmail = {}
-  //   enteredEmail.push(document.getElementById('userEmail').value)
-  //   return enteredEmail;
-  // }
-
-  //  standard roommateObj example
-  // {
-  //   userName: "Daffy Duck",
-  //   userEmail: "daffy@gmail.com",
-  //   userPassword: "password123",
-  //   houseId: "5bf5a3fa16018b9d0931b72a",
-  // }
 
   // Pass this function a standard roommateObj and it'll create it on the database.
   postNewRoommate(newRoommateObj) {
@@ -135,19 +138,6 @@ class App extends Component {
     .catch((response) => {console.log('getRoommates() failed.');});
   }
 
-  // Standard eventObj example
-  // {
-  //   eventTitle: "Mow the Lawn",
-  //   eventOwner: "5bf5a3fa16018b9d0931b722",
-  //   eventAssignees: ["5bf5a3fa16018b9d0931b721","5bf5a3fa16018b9d0931b723"],
-  //   eventDescription: "It's not gonna mow itself",
-  //   eventStartDate: "2018-01-01T00:00:00.000Z",
-  //   eventEndDate: "2018-01-01T00:00:00.000Z",
-  //   eventLocation: "Back Yard",
-  //   eventStatus: "pending",
-  //   houseId: "5bf5a3fa16018b9d0931b72b"
-  // }
-
   // Pass this function a standard eventObj and it will create it on the database.
   postNewEvent(eventObj) {
     axios({
@@ -166,7 +156,7 @@ class App extends Component {
       url: 'http://localhost:3005/event?eventId=' + eventId,
       data: eventObj,
     })
-    .then((response) => {return console.log(response.data);})
+    .then((response) => {this.updateState("ffHouse", response.data);})
     .catch((response) => {console.log('editEvent() failed.');});
   }
 
@@ -180,23 +170,6 @@ class App extends Component {
     .catch((response) => {console.log('getEvents() failed.');});
   }
 
-  // Function to delete an event.  Pass this the ID of the event you want to delete.
-  deleteEvent(eventId) {
-    let eventPosition = this.getEventPositionById(eventId);
-    let currentEvents = JSON.parse(JSON.stringify(this.state.ffEvents));
-    currentEvents.splice(eventPosition, 1);
-    this.setState({ ffEvents: currentEvents });
-    // this.saveStateToStorage();
-  }
-
-  // Function to delete a roommate.  Pass this the ID of the roommate to delete.
-  deleteRoommate(userId) {
-    let roommatePosition = this.getRoommatePositionById(userId);
-    let currentRoommates = JSON.parse(JSON.stringify(this.state.ffRoommates));
-    currentRoommates.splice(roommatePosition, 1);
-    // this.setState({ ffRoommates: currentRoommates }, this.saveStateToStorage);
-  }
-
   handleLoginSubmit(e) {
     //   const { email, password } = this.state;
 
@@ -208,8 +181,6 @@ class App extends Component {
 
   }
 
-
-
   // Function to call utility functions when the submit new Roommate Button is pressed.
   handleRoommateSubmit() {
 
@@ -217,22 +188,22 @@ class App extends Component {
 
   // Function to call utility functions when the submit new/edit house button is pressed
   handleHouseSubmit() {
-    if (this.state.editHouseMode) {
-      this.editHouse({ houseName: this.getHouseNameFormData() });
-      this.state.editHouseMode = false;
+    if (this.state.houseId) {
+      this.editHouse( this.state.currentHouseId, { houseName: this.getHouseNameFormData() })
+      this.setState.editHouseMode = false;
     } else {
       let newHouseObj =
         {
-          houseId: Math.floor((Math.random() * 100000000000000) + 1),
           houseName: this.getHouseNameFormData(),
-          houseOwner: 'delaney',
-          houseRoommates: [],
-          houseLat: '1',
-          houseLong: '2',
-          houseAddress: '123 Fake St.',
-          houseEvents: [],
+          houseOwner: this.state.currentRoommateId,
+          houseInvitees: [],
+          houseLatitude: '',
+          houseLongitude: '',
+          houseAddress: '',
+          houseState: '',
+          houseCity: '',
         };
-      this.newHouse(newHouseObj);
+      this.postNewHouse(newHouseObj);
     }
   }
 
@@ -370,46 +341,28 @@ class App extends Component {
     return selectedRoommates;
   }
 
-  // Function to save the state to local storage using store.js.  Should be called
-  // automatically when a function to create edit or delete something from state is called.
-  // saveStateToStorage() {
-  //   let dataToSave = JSON.parse(JSON.stringify(this.state));
-  //   store.set('localStorage', dataToSave);
-  // }
+  updateState(state, input) {
+    console.log(state);
+    console.log(input);
+    if (state === "ffHouse") {
+      let houseState = this.state.ffHouse
+      for (var key in input) {
+        houseState[key] = input[key]
+      }
+      this.setState({ffHouse: houseState})
+    }
+    if (state === "ffEvents") {
 
-  // Function to load state from local storage using store.js.  Should be called
-  // automatically on page load.
-  // loadStateFromStorage() {
-  //   let storedData = store.get('localStorage');
-  //   if (storedData !== undefined) {
-  //     asdf;
-  //     this.setState(
-  //       {
-  //         ffHouse: storedData.ffHouse,
-  //         ffEvents: storedData.ffEvents,
-  //         ffRoommates: storedData.ffRoommates,
-  //       });
-  //   }
-  // }
+    }
+    if (state === "ffRoommates") {
+
+    }
+  }
 
   loadState() {
-    //replace with houseId returned from login
-    let houseId = '5bf5a3fa16018b9d0931b72b';
-    // this.getHouse(houseId).then((houseObj) => {console.log(houseObj)})
-    this.getHouse(houseId);
-    this.getEvents(houseId);
-    this.getRoommates(houseId);
-    // this.getHouse(houseId).then((houseObj) => {this.setState({ffHouse: houseObj})})
-    // this.getEvents(houseId).then((eventsArr) => {this.setState({ffEvents: eventsArr})})
-    // this.getRoommates(houseId).then((roommatesArr) => {this.setState({ffRoommates: roommatesArr})})
-
-    // this.setState(
-    //   {
-    //     ffHouse: this.getHouse(houseId),
-    //     ffEvents: this.getEvents(houseId),
-    //     ffRoommates: this.getRoommates(houseId),
-    //   }
-    // );
+    this.getHouse(this.state.currentHouseId);
+    this.getEvents(this.state.currentHouseId);
+    this.getRoommates(this.state.currentHouseId);
   }
 
   // Function to load storage automatically when the app runs.

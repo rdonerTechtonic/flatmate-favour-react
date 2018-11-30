@@ -182,24 +182,24 @@ class App extends Component {
 
   }
 
-  handleCreateOrJoin(){
-    alert("this works")
-    // housdId, houseName, houseIn
-  }
+//   handleCreateOrJoin(){
+//     alert("this works")
+//     // housdId, houseName, houseIn
+//   }
 
 
 
   // Function to call utility functions when the submit new Roommate Button is pressed.
-  handleRoommateSubmit() {
-    let newRoommateObj =
-        [{
-          roommateName: this.getRoommateNameFormData().split('@')[0],
-          roommateId: Math.floor((Math.random() * 100000000000000) + 1),
-          houseId: this.state.ffHouse.houseId,
-          roommateEmail: this.getRoommateNameFormData(),
-        },];
-   this.newRoommate(newRoommateObj);
-  }
+//   handleRoommateSubmit() {
+//     let newRoommateObj =
+//         [{
+//           roommateName: this.getRoommateNameFormData().split('@')[0],
+//           roommateId: Math.floor((Math.random() * 100000000000000) + 1),
+//           houseId: this.state.ffHouse.houseId,
+//           roommateEmail: this.getRoommateNameFormData(),
+//         },];
+//    this.newRoommate(newRoommateObj);
+//   }
 
   // Function to call utility functions when the submit new/edit house button is pressed
   handleHouseSubmit() {

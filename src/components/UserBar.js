@@ -29,7 +29,7 @@ export const UserBar = function (props) {
             <i className="fas fa-users-cog"></i>
         </button></Link>
 
-        <button  className="btn btn-info"> <i class="fas fa-sign-out-alt" onClick={props.handleLogout}></i>
+      <button  className="btn btn-info"> <i className="fas fa-sign-out-alt" onClick={props.handleLogout}></i>
         </button>
       </div>
     );

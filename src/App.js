@@ -47,6 +47,7 @@ class App extends Component {
     this.handleEventEdit = this.handleEventEdit.bind(this);
     this.handleNewEvent = this.handleNewEvent.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.getHouse = this.getHouse.bind(this);
     this.getEvents = this.getEvents.bind(this);
     this.loadState = this.loadState.bind(this);
@@ -85,6 +86,24 @@ class App extends Component {
   //   houseId: "5bf5a3fa16018b9d0931b72b"
   // }
 
+
+  //TODO: clear state when user logs out
+  //clear login and register formData
+  //move to session storage and delete timeout
+  handleLogout() {
+    axios({
+      url: 'http://localhost:3005/auth/logout',
+      method: 'get',
+    }).then(() => {
+      alert('Logged out!');
+      this._dumpToken();
+      window.location = '/login';
+
+    }).catch(() => {
+      console.log('Log out failed!');
+    });
+  }
+
   //called once we have logged in
   _setTokenPoll() {
     setTimeout(() => {
@@ -97,14 +116,14 @@ class App extends Component {
   CheckTokenStatus() {
     // VERIFY USERS AUTH TOKEN VIA GET REQUEST
     axios({
-      url: `http://localhost:3005/verify`,
+      url: `http://localhost:3005/auth/verify`,
       method: 'post',
       headers: { 'x-access-token': localStorage.getItem('jwt_token') },
-    }).done(jwt => {
+    }).then(jwt => {
       //do nothing?
       // this._switchLogInHeader(jwt.name);
 
-    }).fail((jwt) => {
+    }).catch((jwt) => {
       // console.log(jwt.responseJSON.message);
       console.log('token expired');
       this._dumpToken();
@@ -157,29 +176,6 @@ class App extends Component {
       alert('No roommate found for this email');
     });
 
-  }
-
-  LogOut() {
-    //TODO: clear state when user logs out
-    //clear login and register formData
-    //move to session storage and delete timeout
-
-    //DUMP USER TOKEN FROM LOCALSTORAGE AND MAKE THE LOCK SCREEN MODAL APPEAR BLOCKING USER INTERACTION WITH THE APP.
-    axios({
-      url: `http://localhost:3005/auth/logout`,
-      type: 'GET',
-      // dataType: 'json',
-      // headers: { 'x-access-token': localStorage.getItem('jwt_token') },
-    }).done(jwt => {
-      console.log(jwt.token);
-      this._dumpToken();
-      this._lockScreenModal();
-      window.location = '/Homepage';
-    }).fail(() => {
-      console.log('logout failed');
-      this._dumpToken();
-      this._lockScreenModal();
-    });
   }
 
   _setToken(jwt) {
@@ -268,19 +264,23 @@ class App extends Component {
 
   // Pass this function a houseId and it will return all events belonging to that house.
   getEvents(queryParams) {
-    let query = ''
+    let query = '';
     if (queryParams._id) {
-      query = "_id=" + queryParams._id
+      query = '_id=' + queryParams._id;
     }
+
     if (queryParams.houseId) {
-      query = "houseId=" + queryParams.houseId
+      query = 'houseId=' + queryParams.houseId;
     }
+
     if (queryParams.eventOwner) {
-      query = "eventOwner=" + queryParams.eventOwner
+      query = 'eventOwner=' + queryParams.eventOwner;
     }
+
     if (queryParams.eventStartDate) {
-      query = "eventStartDate=" + queryParams.eventStartDate
+      query = 'eventStartDate=' + queryParams.eventStartDate;
     }
+
     axios({
       method: 'get',
       url: 'http://localhost:3005/event?' + query,

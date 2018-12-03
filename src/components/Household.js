@@ -28,19 +28,25 @@ export const Household = (props) => {
               <center><button type="button" className="btn btn-primary" onClick={props.handleRoommateSubmit} id="inviteRoommateButton"><i className="fas fa-plus-circle"></i></button></center>
           </div>
           <div className="form-group">
-              <label htmlFor="selectRoommate">Remove Roommate(s):</label>
+              <label htmlFor="selectRoommate">Invited Roommate(s):</label>
               <p><select multiple className="custom-select" id="selectRoommate">
-
-              {props.currentRoommates.map((element, index) =>
-                <option key={index} value={element.roommateId}>
-                {element.roommateName}
+              {props.currentHouse.houseInvitees.map((element, index) =>
+                <option key={index} value={props.currentHouse.houseInvitees[index]}>
+                {props.currentHouse.houseInvitees[index]}
                 </option>)
               }
               </select></p>
           </div>
-              <div className="form-group centerButton">
-              <center><button type="button" id="removeRoommateList" onClick={props.deleteRoommate} className="btn btn-danger"><i className="fas fa-minus-circle"></i></button></center>
-              </div>
+          <div className="form-group">
+              <label htmlFor="selectRoommate">Current Roommate(s):</label>
+              <p><select multiple className="custom-select" id="selectRoommate">
+              {props.currentRoommates.map((element, index) =>
+                <option key={index} value={props.currentRoommates[index].roommateName}>
+                {props.currentRoommates[index].roommateName}
+                </option>)
+              }
+              </select></p>
+          </div>
           <div className="form-group inline-form rightButton">
           <Link to="/dashboard"><button type="button" id="confirmInformation" className="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>
           <Link to="/dashboard"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
@@ -67,17 +73,16 @@ export const Household = (props) => {
             <center><button type="button" className="btn btn-primary" onClick={props.handleRoommateSubmit} id="inviteRoommateButton"><i className="fas fa-plus-circle"></i></button></center>
           </div>
           <div className="form-group">
-            <label htmlFor="selectRoommate">Remove Roommate(s):</label>
+            <label htmlFor="selectRoommate">Invited Roommate(s):</label>
             <p><select multiple className="custom-select" id="selectRoommate">
-            {props.currentRoommates.map((element, index) =>
-              <option key={index} value={element.roommateId}>
-              {element.roommateName}
+            {props.currentHouse.houseInvitees.map((element, index) =>
+              <option key={index} value={props.currentHouse.houseInvitees[index]}>
+              {props.currentHouse.houseInvitees[index]}
               </option>)
             }
             </select></p>
           </div>
             <div className="form-group centerButton">
-            <center><button type="button" id="removeRoommateList" onClick={props.deleteRoommate} className="btn btn-danger"><i className="fas fa-minus-circle"></i></button></center>
         </div>
         <div className="form-group inline-form rightButton">
           <Link to="/dashboard"><button type="button" id="confirmInformation" className="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>

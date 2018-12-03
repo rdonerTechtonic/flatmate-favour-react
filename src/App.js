@@ -260,6 +260,8 @@ class App extends Component {
     }).catch((response) => {console.log('getRoommates() failed.');});
   }
 
+
+
   // Pass this function a standard eventObj and it will create it on the database.
   postNewEvent(eventObj) {
     axios({
@@ -314,7 +316,7 @@ class App extends Component {
 
   // Function to call utility functions when the submit new/edit house button is pressed
   handleHouseSubmit() {
-    if (this.state.houseId) {
+    if (this.state.editHouseMode) {
       this.editHouse(this.state.currentHouseId, { houseName: this.getHouseNameFormData() });
       this.setState.editHouseMode = false;
     } else {
@@ -486,7 +488,6 @@ class App extends Component {
             currentRoommates={this.state.ffRoommates}
             currentHouse={this.state.ffHouse}
             handleHouseSubmit={this.handleHouseSubmit}
-            handleRoommateSubmit={this.handleRoommateSubmit}
             deleteRoommate={this.deleteRoommate}
             />}/>
           <Route path='/event' render={(props) => <Event

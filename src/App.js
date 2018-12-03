@@ -34,11 +34,12 @@ class App extends Component {
       eventToEdit: {},
       houseId: null,
       roommateId: null,
+
     };
     this.loadState = this.loadState.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.editEvent = this.editEvent.bind(this);
-    this.getEventFormData = this.getEventFormData.bind(this);
+    // this.getEventFormData = this.getEventFormData.bind(this);
     this.getHouseNameFormData = this.getHouseNameFormData.bind(this);
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
     this.handleUpdateEventStatus = this.handleUpdateEventStatus.bind(this);
@@ -50,6 +51,7 @@ class App extends Component {
     this.loadState = this.loadState.bind(this);
     this.getEventToEdit = this.getEventToEdit.bind(this)
     this.handleEventCancel = this.handleEventCancel.bind(this)
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   // standard houseObj example
@@ -85,6 +87,128 @@ class App extends Component {
   //   houseId: "5bf5a3fa16018b9d0931b72b"
   // }
 
+  handleLogout() {
+    const _self = this;
+    axios({
+      url: 'http://localhost:3005/auth/logout',
+      method: 'get',
+    }).then((response) => {
+      console.log(response.data.auth);
+      alert('Logged out!');
+      _self._dumpToken();
+      window.location = '/login';
+
+    }).catch(() => {
+      console.log('Log out failed!');
+    });
+  }
+
+  //called once we have logged in
+  _setTokenPoll() {
+    setTimeout(() => {
+            this.CheckTokenStatus();
+          }, 3600000);
+    // }, 20000);
+  }
+
+  //Checks Token Status at the server (Am I still logged in?)
+  CheckTokenStatus() {
+    // VERIFY USERS AUTH TOKEN VIA GET REQUEST
+    axios({
+      url: `http://localhost:3005/verify`,
+      method: 'post',
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+    }).done(jwt => {
+      //do nothing?
+      // this._switchLogInHeader(jwt.name);
+
+    }).fail((jwt) => {
+      // console.log(jwt.responseJSON.message);
+      console.log('token expired');
+      this._dumpToken();
+      // this.$loginModal.modal('show');
+
+      //navigate to the login page instead
+      window.location = '/login';
+      // this._lockScreenModal();
+      // false;
+    });
+  }
+
+  _dumpToken() {
+    localStorage.removeItem('jwt_token');
+  }
+
+  handleLoginSubmit() {
+    console.log(document.getElementById('roommateEmail').value);
+    console.log(document.getElementById('roommatePassword').value);
+
+    axios({
+      method: 'POST',
+      url: 'http://localhost:3005/auth/login',
+      dataType: 'json',
+      data:
+      {
+        roommateEmail: document.getElementById('roommateEmail').value,
+        roommatePassword: document.getElementById('roommatePassword').value,
+      },
+    }).then(response => {
+      console.log(response.data);
+
+      if (response.data.auth === true) {
+
+        if (response.data.houseId === false) {
+          alert(response.data.message);
+          window.location = '/CreateOrJoin';
+
+        } else if (response.data.houseId) {
+          this._setToken(response.data.token);
+          this.loadState();
+          window.location = '/dashboard';
+        }
+
+      } else {
+        alert('Incorrect password. Try again');
+      }
+
+    }).catch((err, response) => {
+      alert('No roommate found for this email');
+    });
+
+  }
+
+  LogOut() {
+    //TODO: clear state when user logs out
+    //clear login and register formData
+    //move to session storage and delete timeout
+
+    //DUMP USER TOKEN FROM LOCALSTORAGE AND MAKE THE LOCK SCREEN MODAL APPEAR BLOCKING USER INTERACTION WITH THE APP.
+    axios({
+      url: `http://localhost:3005/auth/logout`,
+      type: 'GET',
+      // dataType: 'json',
+      // headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+    }).done(jwt => {
+      console.log(jwt.token);
+      this._dumpToken();
+      this._lockScreenModal();
+      window.location = '/Homepage';
+    }).fail(() => {
+      console.log('logout failed');
+      this._dumpToken();
+      this._lockScreenModal();
+    });
+  }
+
+  _setToken(jwt) {
+    //if the response auth returns as true, then set local storage
+    if (jwt.auth)
+    {
+      localStorage.setItem('jwt_token', jwt.token);
+    }
+  }
+
+
   // Pass this function a standard houseObj and it will create it on the database.
   postNewHouse(houseObj) {
     axios({
@@ -105,7 +229,7 @@ class App extends Component {
     })
     .then((response) => {this.getHouse(this.state.currentHouseId);})
     .catch((response) => {console.log('editHouse() failed.');});
-    }
+  }
 
   // Pass this function a houseId and it will return that house.
   getHouse(houseId) {
@@ -152,11 +276,8 @@ class App extends Component {
       method: 'put',
       url: 'http://localhost:3005/event?eventId=' + eventId,
       data: eventObj,
-    })
-    .then((response) => {this.getEvents(this.state.currentHouseId);
-    })
-    // .then((response) => {this.updateState("ffEvents", response.data);})
-    .catch((response) => {console.log('editEvent() failed.');});
+    }).then((response) => {this.getEvents(this.state.currentHouseId);
+    }).catch((response) => {console.log('editEvent() failed.');});
   }
 
   getEvents(queryParams) {
@@ -193,7 +314,7 @@ class App extends Component {
   // Function to call utility functions when the submit new/edit house button is pressed
   handleHouseSubmit() {
     if (this.state.houseId) {
-      this.editHouse( this.state.currentHouseId, { houseName: this.getHouseNameFormData() })
+      this.editHouse(this.state.currentHouseId, { houseName: this.getHouseNameFormData() });
       this.setState.editHouseMode = false;
     } else {
       let newHouseObj =
@@ -301,6 +422,8 @@ class App extends Component {
 
   // Function to get the ID of the roommates selected on the household/event page.
   // Returns an array of roommate Id's
+
+  //TODO needs to be updated
   getSelectedRoommates() {
     let selectedRoommates = [];
     for (var i = 0; i < document.getElementById('selectRoommate').length; i++) {
@@ -355,6 +478,7 @@ class App extends Component {
             handleEditHouse={this.handleEditHouse}
             handleEventEdit={this.handleEventEdit}
             handleNewEvent={this.handleNewEvent}
+            handleLogout={this.handleLogout}
             />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}

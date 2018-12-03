@@ -88,6 +88,22 @@ class App extends Component {
   //   houseId: "5bf5a3fa16018b9d0931b72b"
   // }
 
+  handleLogout() {
+    const _self = this;
+    axios({
+      url: 'http://localhost:3005/auth/logout',
+      method: 'get',
+    }).then((response) => {
+      console.log(response.data.auth);
+      alert('Logged out!');
+      _self._dumpToken();
+      window.location = '/login';
+
+    }).catch(() => {
+      console.log('Log out failed!');
+    });
+  }
+
   // Pass this function a standard houseObj and it will create it on the database.
   postNewHouse(houseObj) {
     axios({
@@ -95,7 +111,7 @@ class App extends Component {
       url: 'http://localhost:3005/household?',
       data: houseObj,
     })
-    .then((response) => {this.updateState("ffHouse", JSON.parse(response.config.data))})
+    .then((response) => {this.updateState('ffHouse', JSON.parse(response.config.data));})
     .catch((response) => {console.log('postNewHouse() failed.');});
   }
 
@@ -106,9 +122,9 @@ class App extends Component {
       url: 'http://localhost:3005/household?houseId=' + houseId,
       data: houseObj,
     })
-    .then((response) => {this.updateState("ffHouse", JSON.parse(response.config.data))})
+    .then((response) => {this.updateState('ffHouse', JSON.parse(response.config.data));})
     .catch((response) => {console.log('editHouse() failed.');});
-    }
+  }
 
   // Pass this function a houseId and it will return that house.
   getHouse(houseId) {
@@ -159,7 +175,7 @@ class App extends Component {
       url: 'http://localhost:3005/event?eventId=' + eventId,
       data: eventObj,
     })
-    .then((response) => {this.updateState("ffHouse", response.data);})
+    .then((response) => {this.updateState('ffHouse', response.data);})
     .catch((response) => {console.log('editEvent() failed.');});
   }
 
@@ -180,20 +196,20 @@ class App extends Component {
 
   // Function to call utility functions when the submit new Roommate Button is pressed.
   handleRoommateSubmit() {
-   //  let newRoommateObj =
-   //      [{
-   //        roommateName: this.getRoommateNameFormData().split('@')[0],
-   //        roommateId: Math.floor((Math.random() * 100000000000000) + 1),
-   //        houseId: this.state.ffHouse.houseId,
-   //        roommateEmail: this.getRoommateNameFormData(),
-   //      },];
-   // this.newRoommate(newRoommateObj);
+    //  let newRoommateObj =
+    //      [{
+    //        roommateName: this.getRoommateNameFormData().split('@')[0],
+    //        roommateId: Math.floor((Math.random() * 100000000000000) + 1),
+    //        houseId: this.state.ffHouse.houseId,
+    //        roommateEmail: this.getRoommateNameFormData(),
+    //      },];
+    // this.newRoommate(newRoommateObj);
   }
 
   // Function to call utility functions when the submit new/edit house button is pressed
   handleHouseSubmit() {
     if (this.state.houseId) {
-      this.editHouse( this.state.currentHouseId, { houseName: this.getHouseNameFormData() })
+      this.editHouse(this.state.currentHouseId, { houseName: this.getHouseNameFormData() });
       this.setState.editHouseMode = false;
     } else {
       let newHouseObj =
@@ -292,7 +308,7 @@ class App extends Component {
         selectedRoommates.push(parseInt(document.getElementById('selectRoommate')[i].value));
       }
     }
-// WARNING THAT 'newEventEndDate' is assigned a value but never used
+    // WARNING THAT 'newEventEndDate' is assigned a value but never used
     let newEventStartDate = document.getElementById('startEventDate').value + 'T' +
     document.getElementById('startEventTime').value + '.000Z';
     let newEventEndDate = document.getElementById('endEventDate').value + 'T' +
@@ -308,7 +324,7 @@ class App extends Component {
       eventEndDate: newEventStartDate,
       eventOwner: 1,
       houseId: this.state.ffHouse.houseId,
-    }, ];
+    },];
     if (!this.state.editEventMode) {
       newEventObj[0].eventStatus = 'pending';
     }
@@ -351,17 +367,20 @@ class App extends Component {
   updateState(state, input) {
     console.log(state);
     console.log(input);
-    if (state === "ffHouse") {
-      let houseState = this.state.ffHouse
+    if (state === 'ffHouse') {
+      let houseState = this.state.ffHouse;
       for (var key in input) {
-        houseState[key] = input[key]
+        houseState[key] = input[key];
       }
-      this.setState({ffHouse: houseState})
+
+      this.setState({ ffHouse: houseState });
     }
-    if (state === "ffEvents") {
+
+    if (state === 'ffEvents') {
 
     }
-    if (state === "ffRoommates") {
+
+    if (state === 'ffRoommates') {
 
     }
   }

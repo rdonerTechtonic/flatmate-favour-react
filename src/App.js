@@ -31,7 +31,7 @@ class App extends Component {
       currentHouseId: '5C018F16E417CFB382C1C94C',
       currentRoommateId: null,
       //emailInvitedMode: false,
-      eventToEdit: 0,
+      eventToEdit: null,
       houseId: null,
       roommateId: null,
 
@@ -39,7 +39,7 @@ class App extends Component {
     this.loadState = this.loadState.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.editEvent = this.editEvent.bind(this);
-    this.getEventFormData = this.getEventFormData.bind(this);
+    // this.getEventFormData = this.getEventFormData.bind(this);
     this.getHouseNameFormData = this.getHouseNameFormData.bind(this);
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
     this.handleRoommateSubmit = this.handleRoommateSubmit.bind(this);
@@ -104,6 +104,112 @@ class App extends Component {
     });
   }
 
+  //called once we have logged in
+  _setTokenPoll() {
+    setTimeout(() => {
+            this.CheckTokenStatus();
+          }, 3600000);
+    // }, 20000);
+  }
+
+  //Checks Token Status at the server (Am I still logged in?)
+  CheckTokenStatus() {
+    // VERIFY USERS AUTH TOKEN VIA GET REQUEST
+    axios({
+      url: `http://localhost:3005/verify`,
+      method: 'post',
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+    }).done(jwt => {
+      //do nothing?
+      // this._switchLogInHeader(jwt.name);
+
+    }).fail((jwt) => {
+      // console.log(jwt.responseJSON.message);
+      console.log('token expired');
+      this._dumpToken();
+      // this.$loginModal.modal('show');
+
+      //navigate to the login page instead
+      window.location = '/login';
+      // this._lockScreenModal();
+      // false;
+    });
+  }
+
+  _dumpToken() {
+    localStorage.removeItem('jwt_token');
+  }
+
+  handleLoginSubmit() {
+    console.log(document.getElementById('roommateEmail').value);
+    console.log(document.getElementById('roommatePassword').value);
+
+    axios({
+      method: 'POST',
+      url: 'http://localhost:3005/auth/login',
+      dataType: 'json',
+      data:
+      {
+        roommateEmail: document.getElementById('roommateEmail').value,
+        roommatePassword: document.getElementById('roommatePassword').value,
+      },
+    }).then(response => {
+      console.log(response.data);
+
+      if (response.data.auth === true) {
+
+        if (response.data.houseId === false) {
+          alert(response.data.message);
+          window.location = '/CreateOrJoin';
+
+        } else if (response.data.houseId) {
+          this._setToken(response.data.token);
+          this.loadState();
+          window.location = '/dashboard';
+        }
+
+      } else {
+        alert('Incorrect password. Try again');
+      }
+
+    }).catch((err, response) => {
+      alert('No roommate found for this email');
+    });
+
+  }
+
+  LogOut() {
+    //TODO: clear state when user logs out
+    //clear login and register formData
+    //move to session storage and delete timeout
+
+    //DUMP USER TOKEN FROM LOCALSTORAGE AND MAKE THE LOCK SCREEN MODAL APPEAR BLOCKING USER INTERACTION WITH THE APP.
+    axios({
+      url: `http://localhost:3005/auth/logout`,
+      type: 'GET',
+      // dataType: 'json',
+      // headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+    }).done(jwt => {
+      console.log(jwt.token);
+      this._dumpToken();
+      this._lockScreenModal();
+      window.location = '/Homepage';
+    }).fail(() => {
+      console.log('logout failed');
+      this._dumpToken();
+      this._lockScreenModal();
+    });
+  }
+
+  _setToken(jwt) {
+    //if the response auth returns as true, then set local storage
+    if (jwt.auth)
+    {
+      localStorage.setItem('jwt_token', jwt.token);
+    }
+  }
+
+
   // Pass this function a standard houseObj and it will create it on the database.
   postNewHouse(houseObj) {
     axios({
@@ -140,7 +246,7 @@ class App extends Component {
   postNewRoommate(newRoommateObj) {
     axios({
       method: 'post',
-      url: 'http://localhost:3005/roommate?',
+      url: 'http://localhost:3005/auth/register',
       data: newRoommateObj,
     }).then((response) => {return console.log(response.data);
     }).catch((response) => {console.log('postNewRoommate() failed.');
@@ -180,17 +286,27 @@ class App extends Component {
   }
 
   // Pass this function a houseId and it will return all events belonging to that house.
-  getEvents(houseId) {
+  getEvents(queryParams) {
+    let query = ''
+    if (queryParams._id) {
+      query = "_id=" + queryParams._id
+    }
+    if (queryParams.houseId) {
+      query = "houseId=" + queryParams.houseId
+    }
+    if (queryParams.eventOwner) {
+      query = "eventOwner=" + queryParams.eventOwner
+    }
+    if (queryParams.eventStartDate) {
+      query = "eventStartDate=" + queryParams.eventStartDate
+    }
     axios({
       method: 'get',
-      url: 'http://localhost:3005/event?houseId=' + houseId,
+      url: 'http://localhost:3005/event?' + query,
     })
     .then((response) => {this.setState({ ffEvents: response.data });})
     .catch((response) => {console.log('getEvents() failed.');});
   }
-
-
-
 
 
 
@@ -301,36 +417,38 @@ class App extends Component {
   //
   // }
   // Function to grab form data from the event page and return a new event object.
-  getEventFormData() {
-    let selectedRoommates = [];
-    for (var i = 0; i < document.getElementById('selectRoommate').length; i++) {
-      if (document.getElementById('selectRoommate')[i].selected) {
-        selectedRoommates.push(parseInt(document.getElementById('selectRoommate')[i].value));
-      }
-    }
-    // WARNING THAT 'newEventEndDate' is assigned a value but never used
-    let newEventStartDate = document.getElementById('startEventDate').value + 'T' +
-    document.getElementById('startEventTime').value + '.000Z';
-    let newEventEndDate = document.getElementById('endEventDate').value + 'T' +
-    document.getElementById('endEventTime').value + '.000Z';
-    let newEventObj =
-    [{
-      eventId: Math.floor((Math.random() * 100000000000000) + 1),
-      eventTitle: document.getElementById('eventTitle').value,
-      eventLocation: document.getElementById('eventLocation').value,
-      eventAssignees: selectedRoommates,
-      eventDescription: document.getElementById('eventNotes').value,
-      eventStartDate: newEventStartDate,
-      eventEndDate: newEventStartDate,
-      eventOwner: 1,
-      houseId: this.state.ffHouse.houseId,
-    },];
-    if (!this.state.editEventMode) {
-      newEventObj[0].eventStatus = 'pending';
-    }
 
-    return newEventObj;
-  }
+  // getEventFormData() {
+  //   let selectedRoommates = [];
+  //   for (var i = 0; i < document.getElementById('selectRoommate').length; i++) {
+  //     if (document.getElementById('selectRoommate')[i].selected) {
+  //       selectedRoommates.push(parseInt(document.getElementById('selectRoommate')[i].value));
+  //     }
+  //   }
+  //   // WARNING THAT 'newEventEndDate' is assigned a value but never used
+  //   let newEventStartDate = document.getElementById('startEventDate').value + 'T' +
+  //   document.getElementById('startEventTime').value + '.000Z';
+  //   let newEventEndDate = document.getElementById('endEventDate').value + 'T' +
+  //   document.getElementById('endEventTime').value + '.000Z';
+  //   let newEventObj =
+  //   [{
+  //     eventId: Math.floor((Math.random() * 100000000000000) + 1),
+  //     eventTitle: document.getElementById('eventTitle').value,
+  //     eventLocation: document.getElementById('eventLocation').value,
+  //     eventAssignees: selectedRoommates,
+  //     eventDescription: document.getElementById('eventNotes').value,
+  //     eventStartDate: newEventStartDate,
+  //     eventEndDate: newEventStartDate,
+  //     eventOwner: 1,
+  //     houseId: this.state.ffHouse.houseId,
+  //   }, ];
+  //   if (!this.state.editEventMode) {
+  //     newEventObj[0].eventStatus = 'pending';
+  //   }
+  //
+  //   return newEventObj;
+  // }
+
 
   // Utility function to assist with deleteEvent(), finds the position of the ffEvents to splice.
   getEventPositionById(input) {
@@ -353,6 +471,8 @@ class App extends Component {
 
   // Function to get the ID of the roommates selected on the household/event page.
   // Returns an array of roommate Id's
+
+  //TODO needs to be updated
   getSelectedRoommates() {
     let selectedRoommates = [];
     for (var i = 0; i < document.getElementById('selectRoommate').length; i++) {

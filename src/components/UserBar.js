@@ -10,7 +10,7 @@ export const UserBar = function (props) {
     return (
       <div align="center">
         <button className="btn btn-info">
-          <a href="#">
+          <a href="google.com">
             <i className="fas fa-users"></i>
           </a>
         </button>
@@ -19,7 +19,7 @@ export const UserBar = function (props) {
         {
 
           props.ffRoommates.map((elem, index) => (
-              <a key={index} href=''>
+              <a key={index} href="google.com">
                   <img style={{ margin: '10px', padding: 0, width: '50px', height: '50px', borderRadius: '10%', boxShadow: '10px 10px 29px 6px rgba(0,0,0,0.75)' }} alt="gravatar"  src={gravatar.url(elem.roommateEmail, { size: '400' })} />
               </a>
           ))

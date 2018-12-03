@@ -38,7 +38,7 @@ class App extends Component {
     this.loadState = this.loadState.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.editEvent = this.editEvent.bind(this);
-    this.getEventFormData = this.getEventFormData.bind(this);
+    // this.getEventFormData = this.getEventFormData.bind(this);
     this.getHouseNameFormData = this.getHouseNameFormData.bind(this);
     this.handleHouseSubmit = this.handleHouseSubmit.bind(this);
     this.handleRoommateSubmit = this.handleRoommateSubmit.bind(this);
@@ -121,26 +121,42 @@ class App extends Component {
     localStorage.removeItem('jwt_token');
   }
 
-  _handleLogIn(e) {
-    //TODO add a back button to the login, JoinHousehold, CreateOrJoin, and register page to get to the homepage
+  loginUser() {
+    console.log(document.getElementById('roommateEmail').value);
+    console.log(document.getElementById('roommatePassword').value);
 
-    // //THIS FUNCTION WILL BE USED TO HANDLE LOGGING IN THE USER
-    // //SETTING THE USERS AUTH TOKEN IN LOCAL STORAGE
-    // //GRABBING THE USERS NAME TO UPDATE THE LOGIN HEADER
-    // //ALSO REMOVE THE LOGIN MODAL LOCK
     axios({
-      url: `http://localhost:3005/auth/login`,
-      type: 'POST',
-      data: $(e.target).serialize(),
-      // headers: { 'x-access-token': localStorage.getItem('jwt_token') },
-    }).done(jwt => {
-      this._setToken(jwt);
-      this.loadState();
-      window.location = '/dashboard';
-    }).fail(()=> { false; });
-    e.preventDefault();
+      method: 'POST',
+      url: 'http://localhost:3005/auth/login',
+      dataType: 'json',
+      data:
+      {
+        roommateEmail: document.getElementById('roommateEmail').value,
+        roommatePassword: document.getElementById('roommatePassword').value,
+      },
+    }).then(response => {
+      console.log(response.data);
 
-    return false;
+      if (response.data.auth === true) {
+
+        if (response.data.houseId === false) {
+          alert(response.data.message);
+          window.location = '/CreateOrJoin';
+
+        } else if (response.data.houseId) {
+          this._setToken(response.data.token);
+          this.loadState();
+          window.location = '/dashboard';
+        }
+
+      } else {
+        alert('Incorrect password. Try again');
+      }
+
+    }).catch((err, response) => {
+      alert('No roommate found for this email');
+    });
+
   }
 
   LogOut() {

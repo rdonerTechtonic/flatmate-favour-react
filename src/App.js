@@ -49,6 +49,7 @@ class App extends Component {
     this.getHouse = this.getHouse.bind(this);
     this.getEvents = this.getEvents.bind(this);
     this.loadState = this.loadState.bind(this);
+    this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.getEventToEdit = this.getEventToEdit.bind(this)
     this.handleEventCancel = this.handleEventCancel.bind(this)
     this.handleLogout = this.handleLogout.bind(this);

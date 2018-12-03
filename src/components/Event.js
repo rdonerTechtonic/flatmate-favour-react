@@ -23,7 +23,7 @@ export const Event = function (props) {
           <label for="selectRoommate">Roommate(s):</label>
           <select multiple class="custom-select" id="selectRoommate" >
           {props.currentRoommates.map((element, index) =>
-            <option key={index} value={element.roommateId}>
+            <option key={index} value={element._id}>
             {element.roommateName}
             </option>)
           }
@@ -50,7 +50,7 @@ export const Event = function (props) {
         </div>
         <div class="form-group inline-form rightButton">
           <Link to="/dashboard"><button type="button" id="submitEventButton" class="btn btn-primary" onClick={props.handleEventSubmit}>Submit</button></Link>
-          <Link to="/dashboard"><button type="button" id="cancelEventButton" class="btn btn-danger">Cancel</button></Link>
+          <Link to="/dashboard"><button type="button" id="cancelEventButton" class="btn btn-danger" onClick={props.handleEventCancel}>Cancel</button></Link>
         </div>
       </form>
     </div>
@@ -72,7 +72,7 @@ export const Event = function (props) {
         <label for="selectRoommate">Roommate(s):</label>
         <select multiple class="custom-select" id="selectRoommate" >
         {props.currentRoommates.map((element, index) =>
-          <option key={index} value={element.roommateId}>
+          <option key={index} value={element._id}>
           {element.roommateName}
           </option>)
         }
@@ -94,7 +94,7 @@ export const Event = function (props) {
       </div>
       <div class="form-group inline-form rightButton">
         <Link to="/dashboard"><button type="button" id="submitEventButton" class="btn btn-primary" onClick={props.handleEventSubmit}>Submit</button></Link>
-        <Link to="/dashboard"><button type="button" id="cancelEventButton" class="btn btn-danger">Cancel</button></Link>
+        <Link to="/dashboard"><button type="button" id="cancelEventButton" class="btn btn-danger" onClick={props.handleEventCancel}>Cancel</button></Link>
       </div>
     </form>
   </div>

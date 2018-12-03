@@ -32,7 +32,7 @@ export const EventItem = function (props) {
 
     return (
       <div className="card">
-              <div className="card-header task-accepted" id="heading'+ i +'">
+              <div className="card-header task-accepted" id={props.eventId}>
                 <div className="row">
                   <div className="col-2 status">
                     <img src={statusImg} alt="" className="header-icon" />
@@ -40,7 +40,7 @@ export const EventItem = function (props) {
                     <button className="col-6 collapsed alert status" data-toggle="collapse" data-target={`#collapse${props.index}`} aria-expanded="false" aria-controls={props.index} id="item1">
                   {props.eventTitle}
                 </button>
-                    <button onClick={props.handleUpdateEventStatus} className="col-3 ml-auto changeStatus btn" type="button" name="button" data-eventindex="1" data-index={props.index} data-status={props.eventStatus}>
+                    <button onClick={props.handleUpdateEventStatus} className="col-3 ml-auto changeStatus btn" type="button" name="button" data-eventindex="1" data-index={props.eventId} data-status={props.eventStatus}>
                   {statusButtonText}
                 </button>
                   </div>

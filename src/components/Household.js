@@ -86,7 +86,5 @@ export const Household = (props) => {
       </div>
     </div>
   </div>
-
-  );
-  };
+  );}
 };

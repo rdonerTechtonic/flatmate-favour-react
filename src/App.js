@@ -164,6 +164,7 @@ class App extends Component {
 
         } else if (response.data.houseId) {
           this._setToken(response.data.token);
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId });
           this.loadState();
           window.location = '/dashboard';
         }
@@ -209,6 +210,24 @@ class App extends Component {
     }
   }
 
+  lookupInvite(roommateEmail) {
+    axios({
+      method: 'post',
+      url: 'http://localhost:3005/household/lookupInvite',
+      data: { roommateEmail: roommateEmail },
+      // headers: { 'Content-Type': 'application/json' },
+    }).then(response => {
+      console.log(response.data[0]);
+
+      //will this work?
+      this.setState({ ffHouse: response.data[0] });
+
+      window.location = '/joinhousehold';
+    }).catch(() => {
+      alert('You have not been invited to any houses. Ask the house owner to invite you or create one yourself');
+      window.location = '/CreateOrJoin';
+    });
+  }
 
   // Pass this function a standard houseObj and it will create it on the database.
   postNewHouse(houseObj) {
@@ -287,19 +306,23 @@ class App extends Component {
 
   // Pass this function a houseId and it will return all events belonging to that house.
   getEvents(queryParams) {
-    let query = ''
+    let query = '';
     if (queryParams._id) {
-      query = "_id=" + queryParams._id
+      query = '_id=' + queryParams._id;
     }
+
     if (queryParams.houseId) {
-      query = "houseId=" + queryParams.houseId
+      query = 'houseId=' + queryParams.houseId;
     }
+
     if (queryParams.eventOwner) {
-      query = "eventOwner=" + queryParams.eventOwner
+      query = 'eventOwner=' + queryParams.eventOwner;
     }
+
     if (queryParams.eventStartDate) {
-      query = "eventStartDate=" + queryParams.eventStartDate
+      query = 'eventStartDate=' + queryParams.eventStartDate;
     }
+
     axios({
       method: 'get',
       url: 'http://localhost:3005/event?' + query,
@@ -532,6 +555,7 @@ class App extends Component {
           <li><Link to="/Event">Event</Link></li>
           <Route exact path="/" component={Homepage}/>
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
+            lookupInvite={this.lookupInvite}
             handleLoginSubmit={this.handleLoginSubmit}
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold

@@ -19,8 +19,9 @@ export const CreateOrJoin = function (props) {
         </div>
 
         <div className="centerButton">
-        <Link to="/joinhousehold"><button type="button" id="joinHouseButton" className="btn btn-primary btn-lg">Join Household</button>
-        </Link>
+        <button type="button" id="joinHouseButton" className="btn btn-primary btn-lg" onClick={props.lookupInvite}>Join Household</button>
+
+
         </div>
 
 
@@ -28,3 +29,6 @@ export const CreateOrJoin = function (props) {
       </div>
     );
 };
+
+// <Link to="/joinhousehold"><button type="button" id="joinHouseButton" className="btn btn-primary btn-lg">Join Household</button>
+// </Link>

@@ -34,6 +34,7 @@ class App extends Component {
       eventToEdit: null,
       houseId: null,
       roommateId: null,
+
     };
     this.loadState = this.loadState.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
@@ -50,6 +51,8 @@ class App extends Component {
     this.getHouse = this.getHouse.bind(this);
     this.getEvents = this.getEvents.bind(this);
     this.loadState = this.loadState.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+
   }
 
   // standard houseObj example
@@ -84,6 +87,22 @@ class App extends Component {
   //   eventStatus: "pending",
   //   houseId: "5bf5a3fa16018b9d0931b72b"
   // }
+
+  handleLogout() {
+    const _self = this;
+    axios({
+      url: 'http://localhost:3005/auth/logout',
+      method: 'get',
+    }).then((response) => {
+      console.log(response.data.auth);
+      alert('Logged out!');
+      _self._dumpToken();
+      window.location = '/login';
+
+    }).catch(() => {
+      console.log('Log out failed!');
+    });
+  }
 
   //called once we have logged in
   _setTokenPoll() {
@@ -290,12 +309,6 @@ class App extends Component {
   }
 
 
-  //   handleCreateOrJoin(){
-  //     alert("this works")
-  //     // housdId, houseName, houseIn
-  //   }
-
-
 
   // Function to call utility functions when the submit new Roommate Button is pressed.
   handleRoommateSubmit() {
@@ -404,6 +417,7 @@ class App extends Component {
   //
   // }
   // Function to grab form data from the event page and return a new event object.
+
   // getEventFormData() {
   //   let selectedRoommates = [];
   //   for (var i = 0; i < document.getElementById('selectRoommate').length; i++) {
@@ -535,6 +549,7 @@ class App extends Component {
             handleEditHouse={this.handleEditHouse}
             handleEventEdit={this.handleEventEdit}
             handleNewEvent={this.handleNewEvent}
+            handleLogout={this.handleLogout}
             />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}

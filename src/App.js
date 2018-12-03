@@ -121,7 +121,7 @@ class App extends Component {
     localStorage.removeItem('jwt_token');
   }
 
-  loginUser() {
+  handleLoginSubmit() {
     console.log(document.getElementById('roommateEmail').value);
     console.log(document.getElementById('roommatePassword').value);
 
@@ -276,16 +276,6 @@ class App extends Component {
     .catch((response) => {console.log('getEvents() failed.');});
   }
 
-  handleLoginSubmit(e) {
-    //   const { email, password } = this.state;
-
-    if (this.currentHouseId != null) {
-      window.location = '/dashboard';
-    } else {
-      window.location = '/createorjoin';
-    }
-
-  }
 
   //   handleCreateOrJoin(){
   //     alert("this works")

@@ -178,6 +178,100 @@ class App extends Component {
 
   }
 
+  handleRegistration() {
+    console.log(document.getElementById('roommateRegistrationEmail').value);
+    console.log(document.getElementById('roommateRegistrationName').value);
+    console.log(document.getElementById('roommateRegistrationPassword').value);
+
+    let emailInput = document.getElementById('roommateRegistrationEmail').value;
+    let userNameInput = document.getElementById('roommateRegistrationName').value;
+    let passwordInput = document.getElementById('roommateRegistrationPassword').value;
+
+    if (emailInput === '') {
+      alert('Error: Email cannot be blank!');
+      return false;
+    }
+
+    let re = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if (!re.test(emailInput)) {
+      alert('Error: Must be a valid email!');
+      return false;
+    }
+
+    if (userNameInput === '') {
+      alert('Error: Username cannot be blank!');
+      return false;
+    }
+
+    re = /^\w+$/;
+    if (!re.test(userNameInput)) {
+      alert('Error: Username must contain only letters, numbers and underscores!');
+      return false;
+    }
+
+    if (passwordInput != '') {
+      if (passwordInput.length < 6) {
+        alert('Error: Password must contain at least six characters!');
+
+        return false;
+      }
+
+      if (passwordInput == emailInput) {
+        alert('Error: Password must be different from Username!');
+        passwordInput.focus();
+        return false;
+      }
+
+      re = /[0-9]/;
+      if (!re.test(passwordInput)) {
+        alert('Error: password must contain at least one number (0-9)!');
+
+        return false;
+      }
+
+      re = /[a-z]/;
+      if (!re.test(passwordInput)) {
+        alert('Error: password must contain at least one lowercase letter (a-z)!');
+
+        return false;
+      }
+
+      re = /[A-Z]/;
+      if (!re.test(passwordInput)) {
+        alert('Error: password must contain at least one uppercase letter (A-Z)!');
+
+        return false;
+
+      }
+
+    } else {
+      alert("Error: Please check that you've entered and confirmed your password!");
+
+      return false;
+    }
+
+    axios({
+      method: 'POST',
+      url: 'http://localhost:3005/auth/register',
+      dataType: 'json',
+      data:
+      {
+        roommateName: document.getElementById('roommateRegistrationName').value,
+        roommateEmail: document.getElementById('roommateRegistrationEmail').value,
+        roommatePassword: document.getElementById('roommateRegistrationPassword').value,
+
+      },
+    }).then(response => {
+      console.log(response.data);
+      window.location = '/createorjoin';
+
+    }).catch((err, response) => {
+      alert('You need to change your data');
+    });
+
+  }
+
+
   LogOut() {
     //TODO: clear state when user logs out
     //clear login and register formData
@@ -537,7 +631,9 @@ class App extends Component {
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
             currentRoommates={this.state.ffRoommates}
           />} />
-          <Route path="/registration" component={Registration} />
+          <Route path="/registration" render={(props) => <Registration
+            handleRegistration={this.handleRegistration}
+          />} />
           <Route path="/login" render={(props) => <Login
             handleLoginSubmit={this.handleLoginSubmit}
              />} />

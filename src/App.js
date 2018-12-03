@@ -34,6 +34,7 @@ class App extends Component {
       eventToEdit: 0,
       houseId: null,
       roommateId: null,
+
     };
     this.loadState = this.loadState.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
@@ -50,6 +51,8 @@ class App extends Component {
     this.getHouse = this.getHouse.bind(this);
     this.getEvents = this.getEvents.bind(this);
     this.loadState = this.loadState.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+
   }
 
   // standard houseObj example
@@ -170,21 +173,8 @@ class App extends Component {
     .catch((response) => {console.log('getEvents() failed.');});
   }
 
-  handleLoginSubmit(e) {
-    //   const { email, password } = this.state;
 
-    if (this.currentHouseId != null) {
-      window.location = '/dashboard';
-    } else {
-      window.location = '/createorjoin'
-    }
 
-  }
-
-//   handleCreateOrJoin(){
-//     alert("this works")
-//     // housdId, houseName, houseIn
-//   }
 
 
 
@@ -420,6 +410,7 @@ class App extends Component {
             handleEditHouse={this.handleEditHouse}
             handleEventEdit={this.handleEventEdit}
             handleNewEvent={this.handleNewEvent}
+            handleLogout={this.handleLogout}
             />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}

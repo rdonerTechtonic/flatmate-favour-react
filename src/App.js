@@ -500,6 +500,7 @@ class App extends Component {
             toJoinHousehold={this.state.toJoinHousehold}
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
+            ffHouse={this.state.ffHouse}
             currentRoommates={this.state.ffRoommates}
           />} />
           <Route path="/registration" component={Registration} />

@@ -346,7 +346,11 @@ class App extends Component {
       url: 'http://localhost:3005/household?',
       data: houseObj,
     })
-    .then((response) => {this.getHouse(this.state.currentHouseId);})
+    .then((response) => {
+      this.setState({currentHouseId: response.data._id})
+      this.editRoommate(this.state.currentRoommateId, {houseId: this.state.currentHouseId})
+      this.getHouse(this.state.currentHouseId)
+    })
     .catch((response) => {console.log('postNewHouse() failed.');});
   }
 
@@ -389,7 +393,14 @@ class App extends Component {
     }).catch((response) => {console.log('getRoommates() failed.');});
   }
 
-
+  editRoommate(roommateId, editParams) {
+  axios({
+    method: 'put',
+    url: 'http://localhost:3005/roommate?roommateId=' + roommateId,
+    data: editParams
+  }).then((response) => {this.getRoommates(this.state.currentHouseId)
+  }).catch((response) => {console.log('getRoommates() failed.');});
+}
 
   // Pass this function a standard eventObj and it will create it on the database.
   postNewEvent(eventObj) {
@@ -397,7 +408,7 @@ class App extends Component {
       method: 'post',
       url: 'http://localhost:3005/event?',
       data: eventObj,
-    }).then((response) => {this.getEvents(this.state.currentHouseId);
+    }).then((response) => {this.getEvents({houseId: this.state.currentHouseId});
     }).catch((response) => {console.log('postNewEvent() failed.');
     });
   }
@@ -408,12 +419,15 @@ class App extends Component {
       method: 'put',
       url: 'http://localhost:3005/event?eventId=' + eventId,
       data: eventObj,
-    }).then((response) => {this.getEvents(this.state.currentHouseId);
+    }).then((response) => {this.getEvents({houseId: this.state.currentHouseId});
     }).catch((response) => {console.log('editEvent() failed.');});
   }
 
   getEvents(queryParams) {
     let query = '';
+    if (queryParams === null) {
+      return
+    }
     if (queryParams._id) {
       query = '_id=' + queryParams._id;
     }
@@ -464,6 +478,7 @@ class App extends Component {
           houseState: '',
           houseCity: '',
         };
+      this.editRoommate(this.state.currentRoommateId, {houseId: "1"})
       this.postNewHouse(newHouseObj);
     }
   }
@@ -571,9 +586,9 @@ class App extends Component {
   }
 
   loadState() {
-    // this.getHouse(this.state.currentHouseId);
-    // this.getEvents(this.state.currentHouseId);
-    // this.getRoommates(this.state.currentHouseId);
+    this.getHouse(this.state.currentHouseId);
+    this.getEvents(this.state.currentHouseId);
+    this.getRoommates(this.state.currentHouseId);
   }
 
   // Function to load storage automatically when the app runs.

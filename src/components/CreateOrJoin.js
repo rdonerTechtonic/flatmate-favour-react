@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 //holds buttons to create new house or join an existing house
 export const CreateOrJoin = function (props) {
+  if (props.toJoinHousehold === true) {
+     return <Redirect to='/joinhousehold' />
+   }
+
   return (
       <div>
         <div className="centerButton">
@@ -19,8 +24,9 @@ export const CreateOrJoin = function (props) {
         </div>
 
         <div className="centerButton">
-        <Link to="/joinhousehold"><button type="button" id="joinHouseButton" className="btn btn-primary btn-lg">Join Household</button>
-        </Link>
+        <button type="button" id="joinHouseButton" className="btn btn-primary btn-lg" onClick={props.lookupInvite}>Join Household</button>
+
+
         </div>
 
 
@@ -28,3 +34,10 @@ export const CreateOrJoin = function (props) {
       </div>
     );
 };
+
+// <button type="button" id="joinHouseButton" className="btn btn-primary btn-lg" onClick={props.lookupInvite(props.currentRoommateEmail)}>Join Household</button>
+
+
+
+// <Link to="/joinhousehold"><button type="button" id="joinHouseButton" className="btn btn-primary btn-lg">Join Household</button>
+// </Link>

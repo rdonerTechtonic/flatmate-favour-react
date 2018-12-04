@@ -25,8 +25,9 @@ export const JoinHousehold = function (props) {
           <div className="backgroundTag">
             <div className="form-group">
               <label htmlFor="houseName">House Name:</label>
-              <p><input type="text" className="form-control" id="selectedHouseName" placeholder="Name of house"
-              /></p>
+              <p>
+                <input type="text" className="form-control" id="selectedHouseName" placeholder="Name of house" readOnly value={props.ffHouse.houseName}/>
+              </p>
             </div>
             <div className="form-group centerButton">
                 <center><button type="button" className="btn btn-primary" onClick={props.handleRoommateSubmit} id="decisionButton"><i className="fas fa-plus-circle"></i></button></center>

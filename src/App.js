@@ -9,13 +9,8 @@ import { Login } from './components/Login.js';
 import { Dashboard } from './components/Dashboard.js';
 import { Household } from './components/Household.js';
 import { Event } from './components/Event.js';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  // Switch,
-  // Redirect
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 import axios from 'axios';
 // var store = require('store');
 
@@ -30,10 +25,13 @@ class App extends Component {
       editHouseMode: false,
       currentHouseId: '5c018f16e417cfb382c1c94c',
       currentRoommateId: '5c018fa2e417cfb382c1c94e',
+      currentRoommateEmail: null,
       //emailInvitedMode: false,
       eventToEdit: {},
       houseId: null,
       roommateId: null,
+      toCreateOrJoin: false,
+      toJoinHousehold: false
 
     };
     this.loadState = this.loadState.bind(this);
@@ -50,9 +48,10 @@ class App extends Component {
     this.getEvents = this.getEvents.bind(this);
     this.loadState = this.loadState.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-    this.getEventToEdit = this.getEventToEdit.bind(this)
-    this.handleEventCancel = this.handleEventCancel.bind(this)
+    this.getEventToEdit = this.getEventToEdit.bind(this);
+    this.handleEventCancel = this.handleEventCancel.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.lookupInvite = this.lookupInvite.bind(this);
   }
 
   // standard houseObj example
@@ -159,12 +158,16 @@ class App extends Component {
       if (response.data.auth === true) {
 
         if (response.data.houseId === false) {
-          alert(response.data.message);
-          window.location = '/CreateOrJoin';
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: null, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
+          alert(`${response.data.roommateEmail} is not a roommate of a Flatmate Favour house yet. Join a house that you have been invited to our create a house yourself.`);
+          // console.log(this.props.history);
+          // this.props.history.push('/CreateOrJoin');
+              // this.props.history.push("/some/Path");
+          // window.location = '/CreateOrJoin';
 
         } else if (response.data.houseId) {
           this._setToken(response.data.token);
-          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId });
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, currentRoommateEmail: response.data.roommateEmail });
           this.loadState();
           window.location = '/dashboard';
         }
@@ -173,8 +176,10 @@ class App extends Component {
         alert('Incorrect password. Try again');
       }
 
-    }).catch((err, response) => {
-      alert('No roommate found for this email');
+    }).catch((err) => {
+      // alert('No roommate found for this email');
+      console.log(err);
+      console.log('No roommate found for this email');
     });
 
   }
@@ -210,22 +215,27 @@ class App extends Component {
     }
   }
 
-  lookupInvite(roommateEmail) {
+  lookupInvite() {
+    console.log('hi from lookupInvite');
+    console.log(this.state.currentRoommateEmail);
     axios({
       method: 'post',
       url: 'http://localhost:3005/household/lookupInvite',
-      data: { roommateEmail: roommateEmail },
+      data: { roommateEmail: this.state.currentRoommateEmail },
       // headers: { 'Content-Type': 'application/json' },
     }).then(response => {
-      console.log(response.data[0]);
+      console.log(response);
+      console.log(response.data);
+      console.log(response.data.household[0]);
+      // console.log(response.data[0].household);
 
       //will this work?
-      this.setState({ ffHouse: response.data[0] });
+      this.setState({ ffHouse: response.data.household[0], toJoinHousehold: true });
 
-      window.location = '/joinhousehold';
+      // window.location = '/joinhousehold';
     }).catch(() => {
       alert('You have not been invited to any houses. Ask the house owner to invite you or create one yourself');
-      window.location = '/CreateOrJoin';
+      // window.location = '/CreateOrJoin';
     });
   }
 
@@ -487,6 +497,7 @@ class App extends Component {
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
             lookupInvite={this.lookupInvite}
             handleLoginSubmit={this.handleLoginSubmit}
+            toJoinHousehold={this.state.toJoinHousehold}
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
             currentRoommates={this.state.ffRoommates}
@@ -494,6 +505,7 @@ class App extends Component {
           <Route path="/registration" component={Registration} />
           <Route path="/login" render={(props) => <Login
             handleLoginSubmit={this.handleLoginSubmit}
+            toCreateOrJoin={this.state.toCreateOrJoin}
              />} />
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}

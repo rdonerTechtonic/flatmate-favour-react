@@ -113,7 +113,7 @@ class App extends Component {
       console.log(response.data.auth);
       alert('Logged out!');
       _self._dumpToken();
-      window.location = '/homepage';
+      window.location = '/';
 
     }).catch(() => {
       console.log('Log out failed!');
@@ -146,7 +146,7 @@ class App extends Component {
       // this.$loginModal.modal('show');
 
       //navigate to the login page instead
-      window.location = '/homepage';
+      window.location = '/';
       // this._lockScreenModal();
       // false;
     });
@@ -313,7 +313,7 @@ class App extends Component {
       console.log(jwt.token);
       this._dumpToken();
       this._lockScreenModal();
-      window.location = '/homepage';
+      window.location = '/';
     }).fail(() => {
       console.log('logout failed');
       this._dumpToken();

@@ -4,17 +4,13 @@ import { Link } from 'react-router-dom';
 
 //holds buttons to create new house, and login with google account
 export const JoinHousehold = function (props) {
-  console.log(props.currentRoommates);
 
-  // const clicked = (e) => {
-  //   e.preventDefault();
-  //   console.log(props.currentRoommates);
-  //   console.log(props.currentEmails);
-  // };
+  if (props.toJoinHousehold === true) {
+      props.resetToJoinHousehold();
+   }
 
+  // console.log(props.currentRoommates);
 
-  //<form onSubmit={clicked}>
-  //</form>
   return (
       <div>
         <div className="centerButton">

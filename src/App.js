@@ -58,6 +58,8 @@ class App extends Component {
     this.resetToCreateOrJoin = this.resetToCreateOrJoin.bind(this);
     this.resetToJoinHousehold = this.resetToJoinHousehold.bind(this);
     this.resetToDashboard = this.resetToDashboard.bind(this);
+    this.handleInviteRoommate = this.handleInviteRoommate.bind(this);
+    this.handleJoinHouse = this.handleJoinHouse.bind(this);
   }
 
   // standard houseObj example
@@ -505,14 +507,6 @@ class App extends Component {
     this.setState({ editEventMode: false })
   }
 
-  // Function to call utility functions when the delete roommate button is pressed.
-  handleDeleteRoommatesSubmit() {
-    let selectedRoommates = this.getSelectedRoommates();
-    for (var i = 0; i < selectedRoommates.length; i++) {
-      this.deleteRoommate(selectedRoommates[i]);
-    }
-  }
-
   // Function to handled updating the status of an event when.
   handleUpdateEventStatus(e) {
     const index = e.target.attributes.getNamedItem('data-index').value;
@@ -533,6 +527,23 @@ class App extends Component {
   //  Function to switch into edit mode when pressing the edit house button.
   handleEditHouse() {
     this.setState({ editHouseMode: true });
+  }
+
+  handleInviteRoommate() {
+    let currentHouseInvitees = this.state.ffHouse.houseInvitees
+    currentHouseInvitees.push(this.getInviteFormData());
+    this.editHouse(this.state.currentHouseId, {houseInvitees: currentHouseInvitees})
+    document.getElementById("inviteRoommate").value = ""
+
+  }
+
+  handleJoinHouse() {
+
+   this.editRoommate(this.state.currentRoommateId, {houseId: this.state.ffHouse._id})
+  }
+
+  getInviteFormData() {
+    return document.getElementById('inviteRoommate').value;
   }
 
   // Function to grab form data (housename) from the household page and return it.
@@ -565,7 +576,7 @@ class App extends Component {
       houseId: this.state.currentHouseId,
     }, ];
     if (!this.state.editEventMode) {
-      newEventObj[0].eventStatus = 'pending';
+      newEventObj[0].eventStatus = 'accepted';
     }
     return newEventObj;
   }
@@ -622,6 +633,7 @@ class App extends Component {
             currentRoommates={this.state.ffRoommates}
             toJoinHousehold={this.state.toJoinHousehold}
             resetToJoinHousehold={this.resetToJoinHousehold}
+            handleJoinHouse={this.handleJoinHouse}
           />} />
           <Route path="/registration" render={(props) => <Registration
             handleRegistration={this.handleRegistration}
@@ -650,6 +662,7 @@ class App extends Component {
             handleRoommateSubmit={this.handleRoommateSubmit}
             handleHouseSubmit={this.handleHouseSubmit}
             deleteRoommate={this.deleteRoommate}
+            handleInviteRoommate={this.handleInviteRoommate}
             />}/>
           <Route path='/event' render={(props) => <Event
             handleEventSubmit={this.handleEventSubmit}

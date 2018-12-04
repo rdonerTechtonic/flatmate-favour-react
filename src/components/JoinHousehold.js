@@ -26,7 +26,7 @@ export const JoinHousehold = function (props) {
             <div className="form-group">
               <label htmlFor="houseName">House Name:</label>
               <p>
-                <input type="text" className="form-control" id="selectedHouseName" placeholder="Name of house" value={props.ffHouse.houseName}/>
+                <input type="text" className="form-control" id="selectedHouseName" placeholder="Name of house" readOnly value={props.ffHouse.houseName}/>
               </p>
             </div>
             <div className="form-group centerButton">

@@ -620,6 +620,7 @@ class App extends Component {
             editHouseMode={this.state.editHouseMode}
             currentRoommates={this.state.ffRoommates}
             currentHouse={this.state.ffHouse}
+            handleRoommateSubmit={this.handleRoommateSubmit} 
             handleHouseSubmit={this.handleHouseSubmit}
             deleteRoommate={this.deleteRoommate}
             />}/>

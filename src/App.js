@@ -215,11 +215,11 @@ class App extends Component {
       return false;
     }
 
-    re = /^\w+$/;
-    if (!re.test(userNameInput)) {
-      alert('Error: Username must contain only letters, numbers and underscores!');
-      return false;
-    }
+    // re = /^\w+$/;
+    // if (!re.test(userNameInput)) {
+    //   alert('Error: Username must contain only letters, numbers and underscores!');
+    //   return false;
+    // }
 
     if (passwordInput != '') {
       if (passwordInput.length < 6) {
@@ -234,27 +234,27 @@ class App extends Component {
         return false;
       }
 
-      re = /[0-9]/;
-      if (!re.test(passwordInput)) {
-        alert('Error: password must contain at least one number (0-9)!');
+      // re = /[0-9]/;
+      // if (!re.test(passwordInput)) {
+      //   alert('Error: password must contain at least one number (0-9)!');
+      //
+      //   return false;
+      // }
 
-        return false;
-      }
+      // re = /[a-z]/;
+      // if (!re.test(passwordInput)) {
+      //   alert('Error: password must contain at least one lowercase letter (a-z)!');
+      //
+      //   return false;
+      // }
 
-      re = /[a-z]/;
-      if (!re.test(passwordInput)) {
-        alert('Error: password must contain at least one lowercase letter (a-z)!');
-
-        return false;
-      }
-
-      re = /[A-Z]/;
-      if (!re.test(passwordInput)) {
-        alert('Error: password must contain at least one uppercase letter (A-Z)!');
-
-        return false;
-
-      }
+      // re = /[A-Z]/;
+      // if (!re.test(passwordInput)) {
+      //   alert('Error: password must contain at least one uppercase letter (A-Z)!');
+      //
+      //   return false;
+      //
+      // }
 
     } else {
       alert("Error: Please check that you've entered and confirmed your password!");

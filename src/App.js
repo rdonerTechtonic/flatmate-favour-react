@@ -23,15 +23,18 @@ class App extends Component {
       ffRoommates: [],
       editEventMode: false,
       editHouseMode: false,
-      currentHouseId: '5c018f16e417cfb382c1c94c',
-      currentRoommateId: '5c018fa2e417cfb382c1c94e',
+      // currentHouseId: '5c018f16e417cfb382c1c94c',
+      currentHouseId: null,
+      // currentRoommateId: '5c018fa2e417cfb382c1c94e',
+      currentRoommateId: null,
       currentRoommateEmail: null,
       //emailInvitedMode: false,
       eventToEdit: {},
       houseId: null,
       roommateId: null,
       toCreateOrJoin: false,
-      toJoinHousehold: false
+      toJoinHousehold: false,
+      toDashboard: false
 
     };
     this.loadState = this.loadState.bind(this);
@@ -96,7 +99,7 @@ class App extends Component {
       console.log(response.data.auth);
       alert('Logged out!');
       _self._dumpToken();
-      window.location = '/login';
+      window.location = '/homepage';
 
     }).catch(() => {
       console.log('Log out failed!');
@@ -129,7 +132,7 @@ class App extends Component {
       // this.$loginModal.modal('show');
 
       //navigate to the login page instead
-      window.location = '/login';
+      window.location = '/homepage';
       // this._lockScreenModal();
       // false;
     });
@@ -166,10 +169,13 @@ class App extends Component {
           // window.location = '/CreateOrJoin';
 
         } else if (response.data.houseId) {
+          console.log('house found');
           this._setToken(response.data.token);
-          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, currentRoommateEmail: response.data.roommateEmail });
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, currentRoommateEmail: response.data.roommateEmail, toDashboard: true });
           this.loadState();
-          window.location = '/dashboard';
+
+          //needs to retain state
+          // window.location = '/dashboard';
         }
 
       } else {
@@ -269,7 +275,7 @@ class App extends Component {
       },
     }).then(response => {
       console.log(response.data);
-      window.location = '/createorjoin';
+      window.location = '/login';
 
     }).catch((err, response) => {
       alert('You need to change your data');
@@ -293,7 +299,7 @@ class App extends Component {
       console.log(jwt.token);
       this._dumpToken();
       this._lockScreenModal();
-      window.location = '/Homepage';
+      window.location = '/homepage';
     }).fail(() => {
       console.log('logout failed');
       this._dumpToken();
@@ -565,9 +571,9 @@ class App extends Component {
   }
 
   loadState() {
-    this.getHouse(this.state.currentHouseId);
-    this.getEvents(this.state.currentHouseId);
-    this.getRoommates(this.state.currentHouseId);
+    // this.getHouse(this.state.currentHouseId);
+    // this.getEvents(this.state.currentHouseId);
+    // this.getRoommates(this.state.currentHouseId);
   }
 
   // Function to load storage automatically when the app runs.
@@ -605,6 +611,7 @@ class App extends Component {
           <Route path="/login" render={(props) => <Login
             handleLoginSubmit={this.handleLoginSubmit}
             toCreateOrJoin={this.state.toCreateOrJoin}
+            toDashboard={this.state.toDashboard}
              />} />
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}
@@ -620,7 +627,7 @@ class App extends Component {
             editHouseMode={this.state.editHouseMode}
             currentRoommates={this.state.ffRoommates}
             currentHouse={this.state.ffHouse}
-            handleRoommateSubmit={this.handleRoommateSubmit} 
+            handleRoommateSubmit={this.handleRoommateSubmit}
             handleHouseSubmit={this.handleHouseSubmit}
             deleteRoommate={this.deleteRoommate}
             />}/>

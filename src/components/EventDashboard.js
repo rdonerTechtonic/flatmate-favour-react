@@ -40,7 +40,7 @@ export const EventDashboard = function (props) {
 
         <div className="form-group rightButton">
           <Link onClick={props.handleNewEvent} to="/event">
-            <button type="button" id="createEventObject" className="btn btn-primary">
+            <button type="button" id="createEventObject" className="btn btn-addRoommate">
               <i className="fas fa-plus-circle"></i>
             </button>
           </Link>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 //import { Link, Redirect } from 'react-router-dom';
 
 //holds buttons to create new house, and login with google account
@@ -27,7 +27,7 @@ export const Login = function (props) {
 
               <div className="form-group">
                 <label htmlFor="roommateLogin">Password:</label>
-                <p><input type="text" className="form-control" id="roommatePassword" placeholder="Password"
+                <p><input type="password" className="form-control" id="roommatePassword" placeholder="Password"
                 /></p>
               </div>
 
@@ -35,7 +35,7 @@ export const Login = function (props) {
 
               <div className="form-group inline-form rightButton">
               <button type="button" id="confirmInformation" className="btn btn-primary" onClick={props.handleLoginSubmit}>Login</button>
-              <button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button>
+              <Link to="/"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
               </div>
             </div>
           </div>

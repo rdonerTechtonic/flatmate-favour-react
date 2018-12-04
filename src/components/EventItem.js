@@ -11,10 +11,10 @@ export const EventItem = function (props) {
     let statusButtonText = '';
 
     switch (props.eventStatus) {
-      case 'pending':
-        statusImg = '/Handshake-Icon.png';
-        statusButtonText = 'Accept?';
-        break;
+      // case 'pending':
+      //   statusImg = '/Handshake-Icon.png';
+      //   statusButtonText = 'Accept?';
+      //   break;
       case 'accepted':
         statusImg = '/Hourglass-Icon.png';
         statusButtonText = 'Done?';
@@ -23,10 +23,10 @@ export const EventItem = function (props) {
         statusImg = '/Check-Icon.png';
         statusButtonText = 'Thank?';
         break;
-      case 'thanked':
-        statusImg = '/Check-Icon.png';
-        statusButtonText = 'Thanked';
-        break;
+      // case 'thanked':
+      //   statusImg = '/Check-Icon.png';
+      //   statusButtonText = 'Thanked';
+      //   break;
       default:
     }
 
@@ -97,7 +97,7 @@ export const EventItem = function (props) {
                         {props.eventDescription}
                       </p>
                     </div>
-                      <Link id={props.eventId} onClick={props.handleEventEdit} className="ml-auto btn btn-light" to="/Event">Event</Link>
+                      <Link id={props.eventId} onClick={props.handleEventEdit} className="ml-auto btn btn-light" to="/Event">Edit Event</Link>
                   </div>
                 </div>
               </div>

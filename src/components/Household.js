@@ -53,7 +53,7 @@ export const Household = (props) => {
           </div>
           <div className="form-group inline-form rightButton">
           <Link to="/dashboard"><button type="button" id="confirmInformation" className="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>
-          <Link to="/createorjoin"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
+          <Link to="/dashboard"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
           </div>
         </div>
       </div>

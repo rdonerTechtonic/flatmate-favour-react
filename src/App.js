@@ -587,7 +587,7 @@ class App extends Component {
 
   loadState() {
     this.getHouse(this.state.currentHouseId);
-    this.getEvents(this.state.currentHouseId);
+    this.getEvents({houseId: this.state.currentHouseId});
     this.getRoommates(this.state.currentHouseId);
   }
 

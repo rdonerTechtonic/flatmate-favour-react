@@ -75,7 +75,7 @@ export const Household = (props) => {
           <div className="form-group">
             <label htmlFor="selectRoommate">Invited Roommate(s):</label>
             <p><select multiple className="custom-select" id="selectRoommate">
-            {props.currentHouse.houseInvitees.map((element, index) =>
+            {props.currentHouse.houseInvitees > 0 && props.currentHouse.houseInvitees.map((element, index) =>
               <option key={index} value={props.currentHouse.houseInvitees[index]}>
               {props.currentHouse.houseInvitees[index]}
               </option>)

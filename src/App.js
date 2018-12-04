@@ -28,7 +28,7 @@ class App extends Component {
       // currentRoommateId: '5c018fa2e417cfb382c1c94e',
       currentRoommateId: null,
       currentRoommateEmail: null,
-      roommateName: '',
+      roommateName: null,
       //emailInvitedMode: false,
       eventToEdit: {},
       houseId: null,
@@ -59,6 +59,8 @@ class App extends Component {
     this.resetToCreateOrJoin = this.resetToCreateOrJoin.bind(this);
     this.resetToJoinHousehold = this.resetToJoinHousehold.bind(this);
     this.resetToDashboard = this.resetToDashboard.bind(this);
+    this.handleInviteRoommate = this.handleInviteRoommate.bind(this);
+    this.handleJoinHouse = this.handleJoinHouse.bind(this);
   }
 
   // standard houseObj example
@@ -110,11 +112,13 @@ class App extends Component {
     axios({
       url: 'http://localhost:3005/auth/logout',
       method: 'get',
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+
     }).then((response) => {
       console.log(response.data.auth);
       alert('Logged out!');
       _self._dumpToken();
-      window.location = '/homepage';
+      window.location = '/';
 
     }).catch(() => {
       console.log('Log out failed!');
@@ -137,16 +141,12 @@ class App extends Component {
       method: 'post',
       headers: { 'x-access-token': localStorage.getItem('jwt_token') },
     }).done(jwt => {
-      //do nothing?
-      // this._switchLogInHeader(jwt.name);
+      this.setState({ currentHouseId: jwt.houseId, currentRoommateId: jwt._id })
 
     }).fail((jwt) => {
-      // console.log(jwt.responseJSON.message);
       console.log('token expired');
       this._dumpToken();
-      // this.$loginModal.modal('show');
 
-      //navigate to the login page instead
       window.location = '/homepage';
       // this._lockScreenModal();
       // false;
@@ -165,6 +165,7 @@ class App extends Component {
       method: 'POST',
       url: 'http://localhost:3005/auth/login',
       dataType: 'json',
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
       data:
       {
         roommateEmail: document.getElementById('roommateEmail').value,
@@ -185,12 +186,13 @@ class App extends Component {
 
         } else if (response.data.houseId) {
           console.log('house found');
-          this._setToken(response.data.token);
-          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, roommateName:response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toDashboard: true });
-          this.loadState();
-
-          //needs to retain state
-          // window.location = '/dashboard';
+          localStorage.setItem('jwt_token', response.data.token);
+          console.log(localStorage.getItem('jwt_token'));
+          // this._setToken(response.data);
+          // this._setToken(response.data.token);
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, roommateName:response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toDashboard: true }, () => {
+            this.loadState();
+          })
         }
 
       } else {
@@ -281,6 +283,7 @@ class App extends Component {
       method: 'POST',
       url: 'http://localhost:3005/auth/register',
       dataType: 'json',
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
       data:
       {
         roommateName: document.getElementById('roommateRegistrationName').value,
@@ -298,38 +301,6 @@ class App extends Component {
 
   }
 
-
-  LogOut() {
-    //TODO: clear state when user logs out
-    //clear login and register formData
-    //move to session storage and delete timeout
-
-    //DUMP USER TOKEN FROM LOCALSTORAGE AND MAKE THE LOCK SCREEN MODAL APPEAR BLOCKING USER INTERACTION WITH THE APP.
-    axios({
-      url: `http://localhost:3005/auth/logout`,
-      type: 'GET',
-      // dataType: 'json',
-      // headers: { 'x-access-token': localStorage.getItem('jwt_token') },
-    }).done(jwt => {
-      console.log(jwt.token);
-      this._dumpToken();
-      this._lockScreenModal();
-      window.location = '/homepage';
-    }).fail(() => {
-      console.log('logout failed');
-      this._dumpToken();
-      this._lockScreenModal();
-    });
-  }
-
-  _setToken(jwt) {
-    //if the response auth returns as true, then set local storage
-    if (jwt.auth)
-    {
-      localStorage.setItem('jwt_token', jwt.token);
-    }
-  }
-
   lookupInvite() {
     console.log('hi from lookupInvite');
     console.log(this.state.currentRoommateEmail);
@@ -337,7 +308,8 @@ class App extends Component {
       method: 'post',
       url: 'http://localhost:3005/household/lookupInvite',
       data: { roommateEmail: this.state.currentRoommateEmail },
-      // headers: { 'Content-Type': 'application/json' },
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+
     }).then(response => {
       console.log(response);
       console.log(response.data);
@@ -360,6 +332,8 @@ class App extends Component {
       method: 'post',
       url: 'http://localhost:3005/household?',
       data: houseObj,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+
     })
     .then((response) => {
       this.setState({currentHouseId: response.data._id})
@@ -375,6 +349,8 @@ class App extends Component {
       method: 'put',
       url: 'http://localhost:3005/household?houseId=' + houseId,
       data: houseObj,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+
     })
     .then((response) => {this.getHouse(this.state.currentHouseId);})
     .catch((response) => {console.log('editHouse() failed.');});
@@ -385,6 +361,7 @@ class App extends Component {
     axios({
       method: 'get',
       url: 'http://localhost:3005/household?houseId=' + houseId,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
     }).then((response) => {this.setState({ ffHouse: response.data[0]});
     }).catch((response) => {console.log('getHouse() failed.');});
   }
@@ -395,6 +372,8 @@ class App extends Component {
       method: 'post',
       url: 'http://localhost:3005/auth/register',
       data: newRoommateObj,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+
     }).then((response) => {this.getRoommates(this.state.currentHouseId);
     }).catch((response) => {console.log('postNewRoommate() failed.');});
   }
@@ -404,6 +383,7 @@ class App extends Component {
     axios({
       method: 'get',
       url: 'http://localhost:3005/roommate?houseId=' + houseId,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
     }).then((response) => {this.setState({ ffRoommates: response.data });
     }).catch((response) => {console.log('getRoommates() failed.');});
   }
@@ -412,7 +392,8 @@ class App extends Component {
   axios({
     method: 'put',
     url: 'http://localhost:3005/roommate?roommateId=' + roommateId,
-    data: editParams
+    data: editParams,
+    headers: { 'x-access-token': localStorage.getItem('jwt_token') },
   }).then((response) => {this.getRoommates(this.state.currentHouseId)
   }).catch((response) => {console.log('getRoommates() failed.');});
 }
@@ -423,6 +404,7 @@ class App extends Component {
       method: 'post',
       url: 'http://localhost:3005/event?',
       data: eventObj,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
     }).then((response) => {this.getEvents({houseId: this.state.currentHouseId});
     }).catch((response) => {console.log('postNewEvent() failed.');
     });
@@ -434,6 +416,8 @@ class App extends Component {
       method: 'put',
       url: 'http://localhost:3005/event?eventId=' + eventId,
       data: eventObj,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+
     }).then((response) => {this.getEvents({houseId: this.state.currentHouseId});
     }).catch((response) => {console.log('editEvent() failed.');});
   }
@@ -462,6 +446,7 @@ class App extends Component {
     axios({
       method: 'get',
       url: 'http://localhost:3005/event?' + query,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
     })
     .then((response) => {this.setState({ ffEvents: response.data });})
     .catch((response) => {console.log('getEvents() failed.');});
@@ -471,6 +456,8 @@ class App extends Component {
     axios({
       method: 'get',
       url: 'http://localhost:3005/event?_id=' + eventId,
+      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+
     })
     .then((response) => {this.setState({ eventToEdit: response.data[0], editEventMode: true });})
     .catch((response) => {console.log('getEvents() failed.');});
@@ -521,14 +508,6 @@ class App extends Component {
     this.setState({ editEventMode: false })
   }
 
-  // Function to call utility functions when the delete roommate button is pressed.
-  handleDeleteRoommatesSubmit() {
-    let selectedRoommates = this.getSelectedRoommates();
-    for (var i = 0; i < selectedRoommates.length; i++) {
-      this.deleteRoommate(selectedRoommates[i]);
-    }
-  }
-
   // Function to handled updating the status of an event when.
   handleUpdateEventStatus(e) {
     const index = e.target.attributes.getNamedItem('data-index').value;
@@ -549,6 +528,23 @@ class App extends Component {
   //  Function to switch into edit mode when pressing the edit house button.
   handleEditHouse() {
     this.setState({ editHouseMode: true });
+  }
+
+  handleInviteRoommate() {
+    let currentHouseInvitees = this.state.ffHouse.houseInvitees
+    currentHouseInvitees.push(this.getInviteFormData());
+    this.editHouse(this.state.currentHouseId, {houseInvitees: currentHouseInvitees})
+    document.getElementById("inviteRoommate").value = ""
+
+  }
+
+  handleJoinHouse() {
+
+   this.editRoommate(this.state.currentRoommateId, {houseId: this.state.ffHouse._id})
+  }
+
+  getInviteFormData() {
+    return document.getElementById('inviteRoommate').value;
   }
 
   // Function to grab form data (housename) from the household page and return it.
@@ -581,7 +577,7 @@ class App extends Component {
       houseId: this.state.currentHouseId,
     }, ];
     if (!this.state.editEventMode) {
-      newEventObj[0].eventStatus = 'pending';
+      newEventObj[0].eventStatus = 'accepted';
     }
     return newEventObj;
   }
@@ -638,6 +634,7 @@ class App extends Component {
             currentRoommates={this.state.ffRoommates}
             toJoinHousehold={this.state.toJoinHousehold}
             resetToJoinHousehold={this.resetToJoinHousehold}
+            handleJoinHouse={this.handleJoinHouse}
           />} />
           <Route path="/registration" render={(props) => <Registration
             handleRegistration={this.handleRegistration}
@@ -667,6 +664,7 @@ class App extends Component {
             handleRoommateSubmit={this.handleRoommateSubmit}
             handleHouseSubmit={this.handleHouseSubmit}
             deleteRoommate={this.deleteRoommate}
+            handleInviteRoommate={this.handleInviteRoommate}
             />}/>
           <Route path='/event' render={(props) => <Event
             handleEventSubmit={this.handleEventSubmit}

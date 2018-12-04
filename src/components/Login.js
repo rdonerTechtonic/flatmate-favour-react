@@ -10,6 +10,10 @@ export const Login = function (props) {
      return <Redirect to='/createorjoin' />
    }
 
+  if (props.toDashboard === true) {
+    return <Redirect to='/dashboard' />
+  }
+
   return (
       <div>
         <div className="centerButton">

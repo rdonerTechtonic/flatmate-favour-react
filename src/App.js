@@ -549,7 +549,6 @@ class App extends Component {
     currentHouseInvitees.push(this.getInviteFormData());
     this.editHouse(this.state.currentHouseId, {houseInvitees: currentHouseInvitees})
     document.getElementById("inviteRoommate").value = ""
-    this.loadState()
 
   }
 

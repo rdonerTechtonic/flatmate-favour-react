@@ -9,7 +9,7 @@ import { Login } from './components/Login.js';
 import { Dashboard } from './components/Dashboard.js';
 import { Household } from './components/Household.js';
 import { Event } from './components/Event.js';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 // var store = require('store');
@@ -55,6 +55,9 @@ class App extends Component {
     this.handleEventCancel = this.handleEventCancel.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.lookupInvite = this.lookupInvite.bind(this);
+    this.resetToCreateOrJoin = this.resetToCreateOrJoin.bind(this);
+    this.resetToJoinHousehold = this.resetToJoinHousehold.bind(this);
+    this.resetToDashboard = this.resetToDashboard.bind(this);
   }
 
   // standard houseObj example
@@ -89,6 +92,17 @@ class App extends Component {
   //   eventStatus: "pending",
   //   houseId: "5bf5a3fa16018b9d0931b72b"
   // }
+  resetToCreateOrJoin() {
+    this.setState({ toCreateOrJoin: false })
+  }
+
+  resetToJoinHousehold() {
+    this.setState({ toJoinHousehold: false })
+  }
+
+  resetToDashboard() {
+    this.setState({ toDashboard: false })
+  }
 
   handleLogout() {
     const _self = this;
@@ -615,10 +629,14 @@ class App extends Component {
             lookupInvite={this.lookupInvite}
             handleLoginSubmit={this.handleLoginSubmit}
             toJoinHousehold={this.state.toJoinHousehold}
+            toCreateOrJoin={this.state.toCreateOrJoin}
+            resetToCreateOrJoin={this.resetToCreateOrJoin}
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
             ffHouse={this.state.ffHouse}
             currentRoommates={this.state.ffRoommates}
+            toJoinHousehold={this.state.toJoinHousehold}
+            resetToJoinHousehold={this.resetToJoinHousehold}
           />} />
           <Route path="/registration" render={(props) => <Registration
             handleRegistration={this.handleRegistration}
@@ -637,6 +655,8 @@ class App extends Component {
             handleEventEdit={this.handleEventEdit}
             handleNewEvent={this.handleNewEvent}
             handleLogout={this.handleLogout}
+            toDashboard={this.toDashboard}
+            resetToDashboard={this.resetToDashboard}
             />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}

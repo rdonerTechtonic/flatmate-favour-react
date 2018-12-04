@@ -28,6 +28,7 @@ class App extends Component {
       // currentRoommateId: '5c018fa2e417cfb382c1c94e',
       currentRoommateId: null,
       currentRoommateEmail: null,
+      roommateName: null,
       //emailInvitedMode: false,
       eventToEdit: {},
       houseId: null,
@@ -176,7 +177,7 @@ class App extends Component {
       if (response.data.auth === true) {
 
         if (response.data.houseId === false) {
-          this.setState({ currentRoommateId: response.data._id, currentHouseId: null, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: null, roommateName:response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
           alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
           // console.log(this.props.history);
           // this.props.history.push('/CreateOrJoin');
@@ -189,7 +190,7 @@ class App extends Component {
           console.log(localStorage.getItem('jwt_token'));
           // this._setToken(response.data);
           // this._setToken(response.data.token);
-          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, currentRoommateEmail: response.data.roommateEmail, toDashboard: true }, () => {
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, roommateName:response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toDashboard: true }, () => {
             this.loadState();
           })
         }
@@ -201,7 +202,7 @@ class App extends Component {
     }).catch((err) => {
       // alert('No roommate found for this email');
       console.log(err);
-      console.log('No roommate found for this email');
+      alert('This email is not registered as a user. Please register if you are a new user.');
     });
 
   }
@@ -646,6 +647,7 @@ class App extends Component {
           <Route path="/dashboard" render={(props) => <Dashboard
             ffEvents={this.state.ffEvents}
             ffRoommates={this.state.ffRoommates}
+            roommateName={this.state.roommateName}
             handleUpdateEventStatus={this.handleUpdateEventStatus}
             handleDateChange={this.handleDateChange}
             handleEditHouse={this.handleEditHouse}

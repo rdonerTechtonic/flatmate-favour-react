@@ -13,7 +13,10 @@ export const Dashboard = (props) => {
 
     return (
       <div>
-        <Link to="/login"><img src="/Flatmate-Favour-Logo.png" alt="flatmate favour icon" id="logo" /></Link>
+        <img src="/Flatmate-Favour-Logo.png" alt="flatmate favour icon" id="logo" />
+        <div>
+         <center><h2>Welcome {props.roommateName}!</h2></center>
+        </div>
           <UserBar handleEditHouse={props.handleEditHouse} ffRoommates={props.ffRoommates} handleLogout={props.handleLogout}/>
             <EventDashboard ffEvents={props.ffEvents} handleUpdateEventStatus={props.handleUpdateEventStatus} handleDateChange={props.handleDateChange} handleEventEdit={props.handleEventEdit} handleNewEvent={props.handleNewEvent}/>
       </div>

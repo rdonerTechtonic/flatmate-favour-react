@@ -46,24 +46,46 @@ label {
 }
 
 .btn-primary {
-  background-color: #4bed71;
+  background-color: #bdc6e5;
   border-color: transparent;
   color: #000;
+  padding-left: 0.625em;
+  padding-right: 0.625em;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .btn-primary:hover {
-  background-color: #93eda8;
-  border-color: #93eda8;
+  background-color: #38436b;
+  border-color: #38436b;
 }
 
 .btn-primary:not(:disabled):not(.disabled):active {
-  background-color: #4bed71;
+  background-color: #38436b;
   border-color: transparent;
-  color: #000;
+  color: #38436b;
 }
 
 .centerButton {
   text-align: center;
+}
+
+.btn-addRoommate{
+  background-color: #4BED71;
+  border-color: transparent;
+  color: #000;
+
+}
+
+.btn-addRoommate-primary:hover {
+  background-color: #b6fdc7;
+  border-color: #b6fdc7;
+}
+
+.btn-addRoommate:not(:disabled):not(.disabled):active {
+  background-color: #b6fdc7;
+  border-color: transparent;
+  color: #b6fdc7;
 }
 
 .rightButton {

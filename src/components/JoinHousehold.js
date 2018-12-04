@@ -26,7 +26,7 @@ export const JoinHousehold = function (props) {
               </p>
             </div>
             <div className="form-group centerButton">
-                <center><button type="button" className="btn btn-primary" onClick={props.handleRoommateSubmit} id="decisionButton"><i className="fas fa-plus-circle"></i></button></center>
+                <center><button type="button" className="btn btn-addRoommate" onClick={props.handleRoommateSubmit} id="decisionButton"><i className="fas fa-plus-circle"></i></button></center>
             </div>
             <div className="form-group">
                 <label htmlFor="invitedHouses">The below houses invited you!</label>

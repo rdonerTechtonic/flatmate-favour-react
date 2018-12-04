@@ -12,7 +12,11 @@ export const Household = (props) => {
 // It will add roommates to the roommate array with the + button and delete them from the array with the -
 // button. Then save the information to the house object with the save button.
 
-    return (<div className= "container"><center><h1>Edit Household</h1></center>
+    return (<div className= "container">
+    <div className="centerButton">
+      <img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" />
+    </div>
+    <center><h1>Edit Household</h1></center>
       <div className="container-fluid">
         <div className="backgroundTag">
           <div className="form-group">
@@ -25,7 +29,7 @@ export const Household = (props) => {
               <p><input type="email" className="form-control" id="inviteRoommate" placeholder="Enter Google Email Address"></input></p>
           </div>
           <div className="form-group centerButton">
-              <center><button type="button" className="btn btn-primary" onClick={props.handleRoommateSubmit} id="inviteRoommateButton"><i className="fas fa-plus-circle"></i></button></center>
+              <center><button type="button" className="btn btn-addRoommate" onClick={props.handleRoommateSubmit} id="inviteRoommateButton"><i className="fas fa-plus-circle"></i></button></center>
           </div>
           <div className="form-group">
               <label htmlFor="selectRoommate">Invited Roommate(s):</label>
@@ -49,7 +53,7 @@ export const Household = (props) => {
           </div>
           <div className="form-group inline-form rightButton">
           <Link to="/dashboard"><button type="button" id="confirmInformation" className="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>
-          <Link to="/dashboard"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
+          <Link to="/createorjoin"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
           </div>
         </div>
       </div>
@@ -58,6 +62,10 @@ export const Household = (props) => {
   }
   else {
   return (<div className= "container">
+
+    <div className="centerButton">
+      <img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" />
+    </div>
     <center><h1>New Household</h1></center>
       <div className="container-fluid">
         <div className="backgroundTag">
@@ -70,7 +78,7 @@ export const Household = (props) => {
             <p><input type="email" className="form-control" id="inviteRoommate" placeholder="Enter Google Email Address"></input></p>
           </div>
           <div className="form-group centerButton">
-            <center><button type="button" className="btn btn-primary" onClick={props.handleRoommateSubmit} id="inviteRoommateButton"><i className="fas fa-plus-circle"></i></button></center>
+            <center><button type="button" className="btn btn-addRoommate" onClick={props.handleRoommateSubmit} id="inviteRoommateButton"><i className="fas fa-plus-circle"></i></button></center>
           </div>
           <div className="form-group">
             <label htmlFor="selectRoommate">Invited Roommate(s):</label>
@@ -86,7 +94,7 @@ export const Household = (props) => {
         </div>
         <div className="form-group inline-form rightButton">
           <Link to="/dashboard"><button type="button" id="confirmInformation" className="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>
-          <Link to="/dashboard"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
+          <Link to="/createorjoin"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
         </div>
       </div>
     </div>

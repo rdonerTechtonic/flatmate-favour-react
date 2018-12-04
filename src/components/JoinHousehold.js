@@ -4,17 +4,13 @@ import { Link } from 'react-router-dom';
 
 //holds buttons to create new house, and login with google account
 export const JoinHousehold = function (props) {
-  console.log(props.currentRoommates);
 
-  // const clicked = (e) => {
-  //   e.preventDefault();
-  //   console.log(props.currentRoommates);
-  //   console.log(props.currentEmails);
-  // };
+  if (props.toJoinHousehold === true) {
+      props.resetToJoinHousehold();
+   }
 
+  // console.log(props.currentRoommates);
 
-  //<form onSubmit={clicked}>
-  //</form>
   return (
       <div>
         <div className="centerButton">
@@ -30,7 +26,7 @@ export const JoinHousehold = function (props) {
               </p>
             </div>
             <div className="form-group centerButton">
-                <center><button type="button" className="btn btn-primary" onClick={props.handleRoommateSubmit} id="decisionButton"><i className="fas fa-plus-circle"></i></button></center>
+                <center><button type="button" className="btn btn-addRoommate" onClick={props.handleRoommateSubmit} id="decisionButton"><i className="fas fa-plus-circle"></i></button></center>
             </div>
             <div className="form-group">
                 <label htmlFor="invitedHouses">The below houses invited you!</label>

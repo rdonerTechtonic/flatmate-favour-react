@@ -7,6 +7,9 @@ export const Event = function (props) {
 
   if (props.editEventMode) {
     return (<div className= "container">
+    <div className="centerButton">
+      <img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" />
+    </div>
     <h1>Edit Event</h1>
       <form id="eventForm">
         <div class="form-group">
@@ -58,6 +61,9 @@ export const Event = function (props) {
   }
   else {
   return (<div className= "container">
+  <div className="centerButton">
+    <img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" />
+  </div>
   <h1>New Event</h1>
     <form id="eventForm">
       <div class="form-group">

@@ -27,13 +27,13 @@ export const Registration = function (props) {
 
             <div className="form-group">
               <label htmlFor="houseName">Password:</label>
-              <p><input type="text" className="form-control" required="required" id="roommateRegistrationPassword" placeholder="Type your password"
+              <p><input type="password" className="form-control" required="required" id="roommateRegistrationPassword" placeholder="Type your password"
               /></p>
             </div>
 
             <div className="form-group inline-form rightButton">
             <button type="button" id="confirmRegistration" className="btn btn-primary" onClick={props.handleRegistration}>Register</button>
-            <Link to="/homepage"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
+            <Link to="/"><button type="button" id="cancelInformation" className="btn btn-danger">Cancel</button></Link>
             </div>
           </div>
         </div>

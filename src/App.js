@@ -9,7 +9,7 @@ import { Login } from './components/Login.js';
 import { Dashboard } from './components/Dashboard.js';
 import { Household } from './components/Household.js';
 import { Event } from './components/Event.js';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 // var store = require('store');
@@ -55,6 +55,9 @@ class App extends Component {
     this.handleEventCancel = this.handleEventCancel.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.lookupInvite = this.lookupInvite.bind(this);
+    this.resetToCreateOrJoin = this.resetToCreateOrJoin.bind(this);
+    this.resetToJoinHousehold = this.resetToJoinHousehold.bind(this);
+    this.resetToDashboard = this.resetToDashboard.bind(this);
   }
 
   // standard houseObj example
@@ -89,6 +92,17 @@ class App extends Component {
   //   eventStatus: "pending",
   //   houseId: "5bf5a3fa16018b9d0931b72b"
   // }
+  resetToCreateOrJoin() {
+    this.setState({ toCreateOrJoin: false })
+  }
+
+  resetToJoinHousehold() {
+    this.setState({ toJoinHousehold: false })
+  }
+
+  resetToDashboard() {
+    this.setState({ toDashboard: false })
+  }
 
   handleLogout() {
     const _self = this;
@@ -162,7 +176,7 @@ class App extends Component {
 
         if (response.data.houseId === false) {
           this.setState({ currentRoommateId: response.data._id, currentHouseId: null, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
-          alert(`${response.data.roommateEmail} is not a roommate of a Flatmate Favour house yet. Join a house that you have been invited to our create a house yourself.`);
+          alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
           // console.log(this.props.history);
           // this.props.history.push('/CreateOrJoin');
               // this.props.history.push("/some/Path");
@@ -206,12 +220,12 @@ class App extends Component {
 
     let re = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if (!re.test(emailInput)) {
-      alert('Error: Must be a valid email!');
+      alert('Error: Please re-enter a valid email');
       return false;
     }
 
     if (userNameInput === '') {
-      alert('Error: Username cannot be blank!');
+      alert('Error: Please enter a Username');
       return false;
     }
 
@@ -223,13 +237,13 @@ class App extends Component {
 
     if (passwordInput != '') {
       if (passwordInput.length < 6) {
-        alert('Error: Password must contain at least six characters!');
+        alert('Error: Password must contain at least six characters');
 
         return false;
       }
 
       if (passwordInput == emailInput) {
-        alert('Error: Password must be different from Username!');
+        alert('Error: Password must be different from Username');
         passwordInput.focus();
         return false;
       }
@@ -278,7 +292,7 @@ class App extends Component {
       window.location = '/login';
 
     }).catch((err, response) => {
-      alert('You need to change your data');
+      alert('Please enter new data');
     });
 
   }
@@ -615,10 +629,14 @@ class App extends Component {
             lookupInvite={this.lookupInvite}
             handleLoginSubmit={this.handleLoginSubmit}
             toJoinHousehold={this.state.toJoinHousehold}
+            toCreateOrJoin={this.state.toCreateOrJoin}
+            resetToCreateOrJoin={this.resetToCreateOrJoin}
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
             ffHouse={this.state.ffHouse}
             currentRoommates={this.state.ffRoommates}
+            toJoinHousehold={this.state.toJoinHousehold}
+            resetToJoinHousehold={this.resetToJoinHousehold}
           />} />
           <Route path="/registration" render={(props) => <Registration
             handleRegistration={this.handleRegistration}
@@ -637,6 +655,8 @@ class App extends Component {
             handleEventEdit={this.handleEventEdit}
             handleNewEvent={this.handleNewEvent}
             handleLogout={this.handleLogout}
+            toDashboard={this.toDashboard}
+            resetToDashboard={this.resetToDashboard}
             />} />
           <Route path="/household" render={(props) => <Household
             editHouseMode={this.state.editHouseMode}

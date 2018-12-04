@@ -1,9 +1,14 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 //import { Link, Redirect } from 'react-router-dom';
 
 //holds buttons to create new house, and login with google account
 
 export const Login = function (props) {
+
+  if (props.toCreateOrJoin === true) {
+     return <Redirect to='/createorjoin' />
+   }
 
   return (
       <div>
@@ -16,7 +21,7 @@ export const Login = function (props) {
             <div className="backgroundTag">
               <div className="form-group">
                 <label htmlFor="roommateLogin">Email:</label>
-                <p><input type="text" className="form-control" id="roommateEmail" placeholder="Username"
+                <p><input type="text" className="form-control" id="roommateEmail" placeholder="Email"
                 /></p>
               </div>
 

@@ -611,8 +611,9 @@ class App extends Component {
 
   // Function to load storage automatically when the app runs.
   componentDidMount() {
-    this.CheckTokenStatus();
-
+    if(localStorage.getItem('jwt_token')) {
+      this.CheckTokenStatus();
+    }
   }
 
   // <li><Link to="/">Homepage</Link></li>

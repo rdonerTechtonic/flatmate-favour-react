@@ -9,11 +9,6 @@ import { Link } from 'react-router-dom';
 export const UserBar = function (props) {
     return (
       <div align="center">
-        <button className="btn btn-info">
-          <a href="google.com">
-            <i className="fas fa-users"></i>
-          </a>
-        </button>
 
         <span className="dashboardUsers">
         {

@@ -26,7 +26,7 @@ export const JoinHousehold = function (props) {
               </p>
             </div>
             <div className="form-group centerButton">
-              <button type="button" id="confirmJoin" className="btn btn-primary" onClick={props.handleJoinHouse}>Join Household</button>
+              <Link to="/dashboard"><button type="button" id="confirmJoin" className="btn btn-primary" onClick={props.handleJoinHouse}>Join Household</button></Link>
             </div>
             <div className="form-group inline-form rightButton">
             <Link to="/dashboard"><button type="button" id="confirmHouse" className="btn btn-primary" onClick={props.handleHouseSubmit}>Submit</button></Link>

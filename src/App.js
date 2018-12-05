@@ -107,21 +107,23 @@ class App extends Component {
   }
 
   handleLogout() {
-    const _self = this;
-    axios({
-      url: 'http://localhost:3005/auth/logout',
-      method: 'get',
-      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
-
-    }).then((response) => {
-      console.log(response.data.auth);
-      alert('Logged out!');
-      _self._dumpToken();
-      window.location = '/';
-
-    }).catch(() => {
-      console.log('Log out failed!');
-    });
+    console.log("fired");
+    window.location = "/";
+    // const _self = this;
+    // axios({
+    //   url: 'http://localhost:3005/auth/logout',
+    //   method: 'get',
+    //   headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+    //
+    // }).then((response) => {
+    //   console.log(response.data.auth);
+    //   alert('Logged out!');
+    //   _self._dumpToken();
+    //   window.location = '/';
+    //
+    // }).catch(() => {
+    //   console.log('Log out failed!');
+    // });
   }
 
   //called once we have logged in
@@ -538,8 +540,8 @@ class App extends Component {
   }
 
   handleJoinHouse() {
-
-   this.editRoommate(this.state.currentRoommateId, {houseId: this.state.ffHouse._id})
+    this.setState({currentHouseId: this.state.ffHouse._id})
+    this.editRoommate(this.state.currentRoommateId, {houseId: this.state.ffHouse._id})
   }
 
   getInviteFormData() {

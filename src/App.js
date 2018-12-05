@@ -612,14 +612,6 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
           </header>
-          <li><Link to="/">Homepage</Link></li>
-          <li><Link to="/joinhousehold">JoinHousehold</Link></li>
-          <li><Link to="/createorjoin">CreateOrJoin</Link></li>
-          <li><Link to="/registration">Registration</Link></li>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/household">household</Link></li>
-          <li><Link to="/Event">Event</Link></li>
           <Route exact path="/" component={Homepage}/>
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
             lookupInvite={this.lookupInvite}

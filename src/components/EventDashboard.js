@@ -9,9 +9,8 @@ export const EventDashboard = function (props) {
         <form>
           <div className="form-group">
             <label htmlFor="formGroupExampleInput2" className="dashboard-label">
-              Date:
+
             </label>
-            <input type="date" onChange={props.handleDateChange} className="form-control datepicker" id="formGroupExampleInput2" placeholder="Another input" />
           </div>
         </form>
 

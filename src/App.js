@@ -137,14 +137,15 @@ class App extends Component {
   CheckTokenStatus() {
     // VERIFY USERS AUTH TOKEN VIA GET REQUEST
     axios({
-      url: `http://localhost:3005/verify`,
-      method: 'post',
+      url: `http://localhost:3005/auth/verify`,
+      method: 'GET',
       headers: { 'x-access-token': localStorage.getItem('jwt_token') },
-    }).done(jwt => {
-      this.setState({ currentHouseId: jwt.houseId, currentRoommateId: jwt._id })
+    }).then(jwt => {
+      this.setState({ currentHouseId: jwt.houseId, currentRoommateId: jwt._id }, ()=>{
+      this.loadState()});
+      
+    }).catch((err) => {
 
-    }).fail((jwt) => {
-      console.log('token expired');
       this._dumpToken();
 
       window.location = '/homepage';
@@ -604,7 +605,7 @@ class App extends Component {
 
   // Function to load storage automatically when the app runs.
   componentWillMount() {
-    this.loadState();
+    this.CheckTokenStatus()
   }
 
   render() {

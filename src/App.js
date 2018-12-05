@@ -61,6 +61,7 @@ class App extends Component {
     this.resetToDashboard = this.resetToDashboard.bind(this);
     this.handleInviteRoommate = this.handleInviteRoommate.bind(this);
     this.handleJoinHouse = this.handleJoinHouse.bind(this);
+    this.CheckTokenStatus = this.CheckTokenStatus.bind(this);
   }
 
   // standard houseObj example
@@ -141,14 +142,18 @@ class App extends Component {
       method: 'GET',
       headers: { 'x-access-token': localStorage.getItem('jwt_token') },
     }).then(jwt => {
-      this.setState({ currentHouseId: jwt.houseId, currentRoommateId: jwt._id }, ()=>{
+      console.log("success");
+      console.log(jwt);
+      this.setState({ currentHouseId: jwt.data.houseId, currentRoommateId: jwt.data._id, roommateName: jwt.data.roommateName }, ()=>{
+        console.log("state below in callback");
+      console.log(this.state);
       this.loadState()});
-      
+
     }).catch((err) => {
 
       this._dumpToken();
 
-      window.location = '/homepage';
+      window.location = '/';
       // this._lockScreenModal();
       // false;
     });
@@ -178,7 +183,7 @@ class App extends Component {
       if (response.data.auth === true) {
 
         if (response.data.houseId === false) {
-          this.setState({ currentRoommateId: response.data._id, currentHouseId: null, roommateName:response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: null, roommateName: response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
           alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
           // console.log(this.props.history);
           // this.props.history.push('/CreateOrJoin');
@@ -191,7 +196,7 @@ class App extends Component {
           console.log(localStorage.getItem('jwt_token'));
           // this._setToken(response.data);
           // this._setToken(response.data.token);
-          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, roommateName:response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toDashboard: true }, () => {
+          this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, roommateName: response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toDashboard: true }, () => {
             this.loadState();
           })
         }
@@ -239,7 +244,7 @@ class App extends Component {
     //   return false;
     // }
 
-    if (passwordInput != '') {
+    if (passwordInput !== '') {
       if (passwordInput.length < 6) {
         alert('Error: Password must contain at least six characters');
 
@@ -359,6 +364,7 @@ class App extends Component {
 
   // Pass this function a houseId and it will return that house.
   getHouse(houseId) {
+    console.log(houseId, ' house id');
     axios({
       method: 'get',
       url: 'http://localhost:3005/household?houseId=' + houseId,
@@ -604,9 +610,19 @@ class App extends Component {
   }
 
   // Function to load storage automatically when the app runs.
-  componentWillMount() {
-    this.CheckTokenStatus()
+  componentDidMount() {
+    this.CheckTokenStatus();
+
   }
+
+  // <li><Link to="/">Homepage</Link></li>
+  // <li><Link to="/joinhousehold">JoinHousehold</Link></li>
+  // <li><Link to="/createorjoin">CreateOrJoin</Link></li>
+  // <li><Link to="/registration">Registration</Link></li>
+  // <li><Link to="/login">Login</Link></li>
+  // <li><Link to="/dashboard">Dashboard</Link></li>
+  // <li><Link to="/household">household</Link></li>
+  // <li><Link to="/Event">Event</Link></li>
 
   render() {
     return (
@@ -614,14 +630,7 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
           </header>
-          <li><Link to="/">Homepage</Link></li>
-          <li><Link to="/joinhousehold">JoinHousehold</Link></li>
-          <li><Link to="/createorjoin">CreateOrJoin</Link></li>
-          <li><Link to="/registration">Registration</Link></li>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/household">household</Link></li>
-          <li><Link to="/Event">Event</Link></li>
+
           <Route exact path="/" component={Homepage}/>
           <Route path="/createorjoin" render={(props) => <CreateOrJoin
             lookupInvite={this.lookupInvite}

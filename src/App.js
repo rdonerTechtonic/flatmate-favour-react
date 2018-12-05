@@ -38,7 +38,6 @@ class App extends Component {
       toDashboard: false
 
     };
-    this.loadState = this.loadState.bind(this);
     this.handleEventSubmit = this.handleEventSubmit.bind(this);
     this.editEvent = this.editEvent.bind(this);
     // this.getEventFormData = this.getEventFormData.bind(this);
@@ -143,7 +142,7 @@ class App extends Component {
     }).then(jwt => {
       this.setState({ currentHouseId: jwt.houseId, currentRoommateId: jwt._id }, ()=>{
       this.loadState()});
-      
+
     }).catch((err) => {
 
       this._dumpToken();
@@ -192,6 +191,7 @@ class App extends Component {
           // this._setToken(response.data);
           // this._setToken(response.data.token);
           this.setState({ currentRoommateId: response.data._id, currentHouseId: response.data.houseId, roommateName:response.data.roommateName, currentRoommateEmail: response.data.roommateEmail, toDashboard: true }, () => {
+
             this.loadState();
           })
         }
@@ -604,8 +604,9 @@ class App extends Component {
   }
 
   // Function to load storage automatically when the app runs.
-  componentWillMount() {
+  componentDidMount() {
     this.CheckTokenStatus()
+    this.loadState()
   }
 
   render() {

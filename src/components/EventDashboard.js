@@ -6,15 +6,6 @@ import { Link } from 'react-router-dom';
 export const EventDashboard = function (props) {
     return (
       <div>
-        <form>
-          <div className="form-group">
-            <label htmlFor="formGroupExampleInput2" className="dashboard-label">
-              Date:
-            </label>
-            <input type="date" onChange={props.handleDateChange} className="form-control datepicker" id="formGroupExampleInput2" placeholder="Another input" />
-          </div>
-        </form>
-
         <div id="accordion">
           {
             props.ffEvents.map((elem, index) => (

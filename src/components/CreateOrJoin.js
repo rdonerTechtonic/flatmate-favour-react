@@ -17,11 +17,12 @@ export const CreateOrJoin = function (props) {
   return (
       <div>
         <div className="centerButton">
-          <img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" />
+          <Link to="/login"><img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" /></Link>
         </div>
 
         <div>
-          <center><p style={{color:'red'}}> {props.currentRoommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.</p></center>
+          <center><h4> {props.currentRoommateEmail} is not a roommate of a house.</h4></center>
+          <center><h4>Please create a new house or check to see if there is a household to join.</h4></center>
         </div>
 
         <div className="centerButton">
@@ -38,7 +39,8 @@ export const CreateOrJoin = function (props) {
         </div>
 
         <div id="errorMessage" >
-          <center><p style={{color:'red'}}>You have not been invited to any houses. Ask the house owner to invite you or create one yourself</p></center>
+          <center><h4>You have not been invited to any houses.</h4></center>
+          <center><h4>Ask the house owner to invite you or create one yourself.</h4></center>
         </div>
 
 

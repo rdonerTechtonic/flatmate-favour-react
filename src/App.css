@@ -27,6 +27,14 @@ label {
   color: #e0fbfc;
 }
 
+p {
+  color: #fff; 
+}
+
+#errorMessage {
+ visibility:hidden;
+}
+
 .btn-danger {
   background-color: #ee6c4d;
   border-color: transparent;

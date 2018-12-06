@@ -60,6 +60,7 @@ class App extends Component {
     this.resetToDashboard = this.resetToDashboard.bind(this);
     this.handleInviteRoommate = this.handleInviteRoommate.bind(this);
     this.handleJoinHouse = this.handleJoinHouse.bind(this);
+    this.roommateAlert = this.roommateAlert.bind(this);
   }
 
   // standard houseObj example
@@ -179,7 +180,7 @@ class App extends Component {
 
         if (response.data.houseId === false) {
           this.setState({ currentRoommateId: response.data._id, currentHouseId: null, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
-          alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
+          // alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
           // console.log(this.props.history);
           // this.props.history.push('/CreateOrJoin');
               // this.props.history.push("/some/Path");
@@ -322,7 +323,9 @@ class App extends Component {
 
       // window.location = '/joinhousehold';
     }).catch(() => {
-      alert('You have not been invited to any houses. Ask the house owner to invite you or create one yourself');
+      this.roommateAlert();
+
+      // alert('You have not been invited to any houses. Ask the house owner to invite you or create one yourself');
       // window.location = '/CreateOrJoin';
     });
   }
@@ -608,6 +611,15 @@ class App extends Component {
     this.loadState();
   }
 
+  roommateAlert() {
+      document.getElementById('errorMessage').style.visibility= "visible" ;
+  }
+
+
+
+
+
+
   render() {
     return (
       <Router>
@@ -621,6 +633,7 @@ class App extends Component {
             toJoinHousehold={this.state.toJoinHousehold}
             toCreateOrJoin={this.state.toCreateOrJoin}
             resetToCreateOrJoin={this.resetToCreateOrJoin}
+            currentRoommateEmail={this.state.currentRoommateEmail}
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
             ffHouse={this.state.ffHouse}
@@ -672,5 +685,7 @@ class App extends Component {
     );
   }
 }
+
+
 
 export default App;

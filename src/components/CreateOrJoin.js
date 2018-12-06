@@ -20,19 +20,25 @@ export const CreateOrJoin = function (props) {
           <img src="/Flatmate-Favour-Logo.png" className="rounded" alt="Logo" />
         </div>
 
+        <div>
+          <center><p style={{color:'red'}}> {props.currentRoommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.</p></center>
+        </div>
+
         <div className="centerButton">
           <Link to="/household"><button type="button" id="createHouseButton" className="btn btn-primary btn-lg">Create Household</button>
           </Link>
         </div>
 
         <div className="centerText">
-          <p>OR</p>
+          <h5>OR</h5>
         </div>
 
         <div className="centerButton">
         <button type="button" id="joinHouseButton" className="btn btn-primary btn-lg" onClick={props.lookupInvite}>Join Household</button>
+        </div>
 
-
+        <div id="errorMessage" >
+          <center><p style={{color:'red'}}>You have not been invited to any houses. Ask the house owner to invite you or create one yourself</p></center>
         </div>
 
 

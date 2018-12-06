@@ -12,10 +12,20 @@ export const Dashboard = (props) => {
    }
 
     return (
+
       <div>
-        <Link to="/login"><img src="/Flatmate-Favour-Logo.png" alt="flatmate favour icon" id="logo" /></Link>
+        <div className="centerButton">
+          <img src="/Flatmate-Favour-Logo.png" alt="flatmate favour icon" id="logo" />
+        </div>
+
+        <div className="container-fluid">
+          <div className="backgroundTag">
+            <div className="form-group">
           <UserBar handleEditHouse={props.handleEditHouse} ffRoommates={props.ffRoommates} handleLogout={props.handleLogout}/>
             <EventDashboard ffEvents={props.ffEvents} handleUpdateEventStatus={props.handleUpdateEventStatus} handleDateChange={props.handleDateChange} handleEventEdit={props.handleEventEdit} handleNewEvent={props.handleNewEvent}/>
+          </div>
+        </div>
       </div>
+    </div>  
     );
   };

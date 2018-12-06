@@ -22,9 +22,20 @@ h1 {
 h2{
   font-size: 1.5em;
 }
+h4{
+  color: #fff;
+}
 
 label {
   color: #e0fbfc;
+}
+
+p {
+  color: #fff;
+}
+
+#errorMessage {
+ visibility:hidden;
 }
 
 .btn-danger {

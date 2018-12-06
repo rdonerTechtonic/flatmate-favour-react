@@ -18,7 +18,7 @@ export const Homepage = function (props) {
         </div>
 
         <div className="centerText">
-          <p>OR</p>
+          <h5>OR</h5>
         </div>
 
         <div className="centerButton">

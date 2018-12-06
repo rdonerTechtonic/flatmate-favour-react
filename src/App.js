@@ -60,6 +60,7 @@ class App extends Component {
     this.resetToDashboard = this.resetToDashboard.bind(this);
     this.handleInviteRoommate = this.handleInviteRoommate.bind(this);
     this.handleJoinHouse = this.handleJoinHouse.bind(this);
+    this.roommateAlert = this.roommateAlert.bind(this);
     this.handleRegistration = this.handleRegistration.bind(this);
   }
 
@@ -180,7 +181,7 @@ class App extends Component {
 
         if (response.data.houseId === false) {
           this.setState({ currentRoommateId: response.data._id, currentHouseId: null, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
-          alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
+          // alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
           // console.log(this.props.history);
           // this.props.history.push('/CreateOrJoin');
               // this.props.history.push("/some/Path");
@@ -308,8 +309,6 @@ class App extends Component {
   }
 
   lookupInvite() {
-    console.log('hi from lookupInvite');
-    console.log(this.state.currentRoommateEmail);
     axios({
       method: 'post',
       url: 'http://localhost:3005/household/lookupInvite',
@@ -317,18 +316,11 @@ class App extends Component {
       headers: { 'x-access-token': localStorage.getItem('jwt_token') },
 
     }).then(response => {
-      console.log(response);
-      console.log(response.data);
-      console.log(response.data.household[0]);
-      // console.log(response.data[0].household);
-
-      //will this work?
       this.setState({ ffHouse: response.data.household[0], toJoinHousehold: true });
 
-      // window.location = '/joinhousehold';
     }).catch(() => {
-      alert('You have not been invited to any houses. Ask the house owner to invite you or create one yourself');
-      // window.location = '/CreateOrJoin';
+      this.roommateAlert();
+
     });
   }
 
@@ -620,6 +612,15 @@ class App extends Component {
     this.loadState();
   }
 
+  roommateAlert() {
+      document.getElementById('errorMessage').style.visibility= "visible" ;
+  }
+
+
+
+
+
+
   render() {
     return (
       <Router>
@@ -633,6 +634,7 @@ class App extends Component {
             toJoinHousehold={this.state.toJoinHousehold}
             toCreateOrJoin={this.state.toCreateOrJoin}
             resetToCreateOrJoin={this.resetToCreateOrJoin}
+            currentRoommateEmail={this.state.currentRoommateEmail}
           />} />
           <Route path="/joinhousehold" render={(props) => <JoinHousehold
             ffHouse={this.state.ffHouse}
@@ -686,5 +688,7 @@ class App extends Component {
     );
   }
 }
+
+
 
 export default App;

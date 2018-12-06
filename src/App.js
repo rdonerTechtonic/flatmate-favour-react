@@ -60,6 +60,7 @@ class App extends Component {
     this.resetToDashboard = this.resetToDashboard.bind(this);
     this.handleInviteRoommate = this.handleInviteRoommate.bind(this);
     this.handleJoinHouse = this.handleJoinHouse.bind(this);
+    this.handleRegistration = this.handleRegistration.bind(this);
   }
 
   // standard houseObj example
@@ -209,13 +210,10 @@ class App extends Component {
   }
 
   handleRegistration() {
-    console.log(document.getElementById('roommateRegistrationEmail').value);
-    console.log(document.getElementById('roommateRegistrationName').value);
-    console.log(document.getElementById('roommateRegistrationPassword').value);
-
     let emailInput = document.getElementById('roommateRegistrationEmail').value;
     let userNameInput = document.getElementById('roommateRegistrationName').value;
     let passwordInput = document.getElementById('roommateRegistrationPassword').value;
+    let reenterPassword = document.getElementById('reenterPassword').value;
 
     if (emailInput === '') {
       alert('Error: Email cannot be blank!');
@@ -280,6 +278,11 @@ class App extends Component {
       return false;
     }
 
+    if (passwordInput !== reenterPassword) {
+      alert("Error: Password's don't match");
+      return false;
+    }
+
     axios({
       method: 'POST',
       url: 'http://localhost:3005/auth/register',
@@ -294,7 +297,9 @@ class App extends Component {
       },
     }).then(response => {
       console.log(response.data);
-      window.location = '/login';
+
+      this.setState({ currentRoommateId: response.data._id, currentHouseId: null, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
+      // alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
 
     }).catch((err, response) => {
       alert('Please enter new data');
@@ -368,16 +373,16 @@ class App extends Component {
   }
 
   // Pass this function a standard roommateObj and it'll create it on the database.
-  postNewRoommate(newRoommateObj) {
-    axios({
-      method: 'post',
-      url: 'http://localhost:3005/auth/register',
-      data: newRoommateObj,
-      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
-
-    }).then((response) => {this.getRoommates(this.state.currentHouseId);
-    }).catch((response) => {console.log('postNewRoommate() failed.');});
-  }
+  // postNewRoommate(newRoommateObj) {
+  //   axios({
+  //     method: 'post',
+  //     url: 'http://localhost:3005/auth/register',
+  //     data: newRoommateObj,
+  //     headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+  //
+  //   }).then((response) => {this.getRoommates(this.state.currentHouseId);
+  //   }).catch((response) => {console.log('postNewRoommate() failed.');});
+  // }
 
   // Pass this function a houseId and it will return all roommates belonging to that house.
   getRoommates(houseId) {
@@ -631,6 +636,8 @@ class App extends Component {
           />} />
           <Route path="/registration" render={(props) => <Registration
             handleRegistration={this.handleRegistration}
+            toCreateOrJoin={this.state.toCreateOrJoin}
+
           />} />
           <Route path="/login" render={(props) => <Login
             handleLoginSubmit={this.handleLoginSubmit}

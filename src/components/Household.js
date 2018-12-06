@@ -32,8 +32,18 @@ export const Household = (props) => {
               <center><button type="button" className="btn btn-addRoommate" onClick={props.handleInviteRoommate} id="inviteRoommateButton"><i className="fas fa-plus-circle"></i></button></center>
           </div>
           <div className="form-group">
-              <label htmlFor="selectRoommate">Current Roommate(s):</label>
+              <label htmlFor="selectRoommate">Invited Roommate(s):</label>
               <p><select multiple className="custom-select" id="selectRoommate">
+              {props.currentHouse.houseInvitees.map((element, index) =>
+                <option key={index}>
+                {props.currentHouse.houseInvitees[index]}
+                </option>)
+              }
+              </select></p>
+          </div>
+          <div className="form-group">
+              <label htmlFor="selectRoommate">Current Roommate(s):</label>
+              <p><select multiple className="custom-select" id="invitedRoommate">
               {props.currentRoommates.map((element, index) =>
                 <option key={index} value={props.currentRoommates[index].roommateName}>
                 {props.currentRoommates[index].roommateName}

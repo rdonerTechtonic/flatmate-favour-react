@@ -61,6 +61,7 @@ class App extends Component {
     this.handleInviteRoommate = this.handleInviteRoommate.bind(this);
     this.handleJoinHouse = this.handleJoinHouse.bind(this);
     this.roommateAlert = this.roommateAlert.bind(this);
+    this.handleRegistration = this.handleRegistration.bind(this);
   }
 
   // standard houseObj example
@@ -210,13 +211,10 @@ class App extends Component {
   }
 
   handleRegistration() {
-    console.log(document.getElementById('roommateRegistrationEmail').value);
-    console.log(document.getElementById('roommateRegistrationName').value);
-    console.log(document.getElementById('roommateRegistrationPassword').value);
-
     let emailInput = document.getElementById('roommateRegistrationEmail').value;
     let userNameInput = document.getElementById('roommateRegistrationName').value;
     let passwordInput = document.getElementById('roommateRegistrationPassword').value;
+    let reenterPassword = document.getElementById('reenterPassword').value;
 
     if (emailInput === '') {
       alert('Error: Email cannot be blank!');
@@ -281,6 +279,11 @@ class App extends Component {
       return false;
     }
 
+    if (passwordInput !== reenterPassword) {
+      alert("Error: Password's don't match");
+      return false;
+    }
+
     axios({
       method: 'POST',
       url: 'http://localhost:3005/auth/register',
@@ -295,7 +298,9 @@ class App extends Component {
       },
     }).then(response => {
       console.log(response.data);
-      window.location = '/login';
+
+      this.setState({ currentRoommateId: response.data._id, currentHouseId: null, currentRoommateEmail: response.data.roommateEmail, toCreateOrJoin: true });
+      // alert(`${response.data.roommateEmail} is not a roommate of a house. Please create a new house or check to see if there is a household to join.`);
 
     }).catch((err, response) => {
       alert('Please enter new data');
@@ -304,8 +309,6 @@ class App extends Component {
   }
 
   lookupInvite() {
-    console.log('hi from lookupInvite');
-    console.log(this.state.currentRoommateEmail);
     axios({
       method: 'post',
       url: 'http://localhost:3005/household/lookupInvite',
@@ -313,20 +316,11 @@ class App extends Component {
       headers: { 'x-access-token': localStorage.getItem('jwt_token') },
 
     }).then(response => {
-      console.log(response);
-      console.log(response.data);
-      console.log(response.data.household[0]);
-      // console.log(response.data[0].household);
-
-      //will this work?
       this.setState({ ffHouse: response.data.household[0], toJoinHousehold: true });
 
-      // window.location = '/joinhousehold';
     }).catch(() => {
       this.roommateAlert();
 
-      // alert('You have not been invited to any houses. Ask the house owner to invite you or create one yourself');
-      // window.location = '/CreateOrJoin';
     });
   }
 
@@ -371,16 +365,16 @@ class App extends Component {
   }
 
   // Pass this function a standard roommateObj and it'll create it on the database.
-  postNewRoommate(newRoommateObj) {
-    axios({
-      method: 'post',
-      url: 'http://localhost:3005/auth/register',
-      data: newRoommateObj,
-      headers: { 'x-access-token': localStorage.getItem('jwt_token') },
-
-    }).then((response) => {this.getRoommates(this.state.currentHouseId);
-    }).catch((response) => {console.log('postNewRoommate() failed.');});
-  }
+  // postNewRoommate(newRoommateObj) {
+  //   axios({
+  //     method: 'post',
+  //     url: 'http://localhost:3005/auth/register',
+  //     data: newRoommateObj,
+  //     headers: { 'x-access-token': localStorage.getItem('jwt_token') },
+  //
+  //   }).then((response) => {this.getRoommates(this.state.currentHouseId);
+  //   }).catch((response) => {console.log('postNewRoommate() failed.');});
+  // }
 
   // Pass this function a houseId and it will return all roommates belonging to that house.
   getRoommates(houseId) {
@@ -539,12 +533,19 @@ class App extends Component {
     currentHouseInvitees.push(this.getInviteFormData());
     this.editHouse(this.state.currentHouseId, {houseInvitees: currentHouseInvitees})
     document.getElementById("inviteRoommate").value = ""
-
+    this.loadState();
   }
 
   handleJoinHouse() {
     this.setState({currentHouseId: this.state.ffHouse._id})
     this.editRoommate(this.state.currentRoommateId, {houseId: this.state.ffHouse._id})
+    let updatedInvitees = this.state.ffHouse.houseInvitees
+    for (var i = 0; i < updatedInvitees.length; i++) {
+      if (updatedInvitees[i] === this.state.currentRoommateEmail) {
+        updatedInvitees.splice(i, 1)
+      }
+    }
+    this.editHouse(this.state.currentHouseId, {houseInvitees: updatedInvitees})
   }
 
   getInviteFormData() {
@@ -644,6 +645,8 @@ class App extends Component {
           />} />
           <Route path="/registration" render={(props) => <Registration
             handleRegistration={this.handleRegistration}
+            toCreateOrJoin={this.state.toCreateOrJoin}
+
           />} />
           <Route path="/login" render={(props) => <Login
             handleLoginSubmit={this.handleLoginSubmit}

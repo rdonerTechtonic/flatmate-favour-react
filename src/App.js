@@ -536,12 +536,19 @@ class App extends Component {
     currentHouseInvitees.push(this.getInviteFormData());
     this.editHouse(this.state.currentHouseId, {houseInvitees: currentHouseInvitees})
     document.getElementById("inviteRoommate").value = ""
-
+    this.loadState();
   }
 
   handleJoinHouse() {
     this.setState({currentHouseId: this.state.ffHouse._id})
     this.editRoommate(this.state.currentRoommateId, {houseId: this.state.ffHouse._id})
+    let updatedInvitees = this.state.ffHouse.houseInvitees
+    for (var i = 0; i < updatedInvitees.length; i++) {
+      if (updatedInvitees[i] === this.state.currentRoommateEmail) {
+        updatedInvitees.splice(i, 1)
+      }
+    }
+    this.editHouse(this.state.currentHouseId, {houseInvitees: updatedInvitees})
   }
 
   getInviteFormData() {
